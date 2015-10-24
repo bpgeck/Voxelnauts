@@ -1,0 +1,5 @@
+# voxel-game
+Teams build voxel fortresses only to have them destroyed by their enemies. A fun voxel-based take on capture the flag.
+
+The "master" branch should ALWAYS WORK, so don't commmit anything that's broken or incomplete.
+Any broken or incomplete stuff should be committed into the "development" branch.
