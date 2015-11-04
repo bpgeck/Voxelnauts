@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Chunk : MonoBehaviour {
 
+	public bool update;
+
 	public int chunkX;
 	public int chunkY;
 	public int chunkZ;
@@ -38,8 +40,15 @@ public class Chunk : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update() {
+
+	}
+
+	void LateUpdate () {
+		if (update) {
+			GenerateMesh ();
+			update = false;
+		}
 	}
 
 	byte Block(int x, int y, int z) {
