@@ -5,21 +5,19 @@ using System;
 public class ModifyTerrain : MonoBehaviour {
 
 	World world;
-	GameObject cameraGO;
 
 	void Start() {
 		world = gameObject.GetComponent ("World") as World;
-		cameraGO = GameObject.FindGameObjectWithTag ("MainCamera");
 	}
 
 	void Update() {
 		if (Input.GetMouseButtonDown (0))
-			ReplaceBlockCursor (0);
+			ReplaceBlockCursor (BlockType.Air);
 		if (Input.GetMouseButtonDown (1))
-			AddBlockCursor (1); //TODO Change to get selected block
+			AddBlockCursor (BlockType.Rock); //TODO Change to get selected block
 	}
 
-	public void ReplaceBlockCursor(byte block) {
+	public void ReplaceBlockCursor(BlockType block) {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
 
@@ -29,7 +27,7 @@ public class ModifyTerrain : MonoBehaviour {
 		}
 	}
 
-	public void AddBlockCursor(byte block) {
+	public void AddBlockCursor(BlockType block) {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
 		
@@ -40,21 +38,21 @@ public class ModifyTerrain : MonoBehaviour {
 		}
 	}
 
-	public void ReplaceBlockAt(RaycastHit hit, byte block) {
+	public void ReplaceBlockAt(RaycastHit hit, BlockType block) {
 		Vector3 position = hit.point;
 		position += hit.normal * -0.5f;
 
 		SetBlockAt (position, block);
 	}
 	
-	public void AddBlockAt(RaycastHit hit, byte block) {
+	public void AddBlockAt(RaycastHit hit, BlockType block) {
 		Vector3 position = hit.point;
 		position += (hit.normal * 0.5f);
 		
 		SetBlockAt (position, block);
 	}
 	
-	public void SetBlockAt(Vector3 position, byte block) {
+	public void SetBlockAt(Vector3 position, BlockType block) {
 		int x= Mathf.RoundToInt( position.x );
 		int y= Mathf.RoundToInt( position.y );
 		int z= Mathf.RoundToInt( position.z );
@@ -62,7 +60,7 @@ public class ModifyTerrain : MonoBehaviour {
 		SetBlockAt(x,y,z,block);
 	}
 	
-	public void SetBlockAt(int x, int y, int z, byte block) {
+	public void SetBlockAt(int x, int y, int z, BlockType block) {
 		world.data [x, y, z] = block;
 		UpdateChunkAt (x, y, z);
 	}

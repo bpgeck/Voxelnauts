@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -36,7 +36,7 @@ public class Chunk : MonoBehaviour {
 		mesh = GetComponent<MeshFilter> ().mesh;
 		col = GetComponent<MeshCollider> ();
 
-		GenerateMesh();
+		update = true;
 	}
 	
 	// Update is called once per frame
@@ -51,20 +51,20 @@ public class Chunk : MonoBehaviour {
 		}
 	}
 
-	byte Block(int x, int y, int z) {
+	BlockType Block(int x, int y, int z) {
 		return world.Block (x + chunkX, y + chunkY, z + chunkZ);
 	}
 
-	void CubePY (int x, int y, int z, byte block) {
+	void CubePY (int x, int y, int z, BlockType block) {
 		newVertices.Add (new Vector3 (x, y, z + 1));
 		newVertices.Add (new Vector3 (x + 1, y, z + 1));
 		newVertices.Add (new Vector3 (x + 1, y, z));
 		newVertices.Add (new Vector3 (x, y, z));
 		
 		Vector2 texturePos = new Vector2 (0, 0);
-		if (Block (x, y, z) == 1) {
+		if (Block (x, y, z) == BlockType.Rock) {
 			texturePos = tStone;
-		} else if (Block (x, y, z) == 2) {
+		} else if (Block (x, y, z) == BlockType.RockDust) {
 			texturePos = tGrassTop;
 		}
 
@@ -72,80 +72,80 @@ public class Chunk : MonoBehaviour {
 		Cube (texturePos);
 	}
 
-	void CubePZ (int x, int y, int z, byte block) {
+	void CubePZ (int x, int y, int z, BlockType block) {
 		newVertices.Add (new Vector3 (x + 1, y - 1, z + 1));
 		newVertices.Add (new Vector3 (x + 1, y, z + 1));
 		newVertices.Add (new Vector3 (x, y, z + 1));
 		newVertices.Add (new Vector3 (x, y - 1, z + 1));
 		
 		Vector2 texturePos = new Vector2 (0, 0);
-		if (Block (x, y, z) == 1) {
+		if (Block (x, y, z) == BlockType.Rock) {
 			texturePos = tStone;
-		} else if (Block (x, y, z) == 2) {
+		} else if (Block (x, y, z) == BlockType.RockDust) {
 			texturePos = tGrass;
 		}
 
 		Cube (texturePos);
 	}
 
-	void CubePX (int x, int y, int z, byte block) {
+	void CubePX (int x, int y, int z, BlockType block) {
 		newVertices.Add (new Vector3 (x + 1, y - 1, z));
 		newVertices.Add (new Vector3 (x + 1, y, z));
 		newVertices.Add (new Vector3 (x + 1, y, z + 1));
 		newVertices.Add (new Vector3 (x + 1, y - 1, z + 1));
 		
 		Vector2 texturePos = new Vector2 (0, 0);
-		if (Block (x, y, z) == 1) {
+		if (Block (x, y, z) == BlockType.Rock) {
 			texturePos = tStone;
-		} else if (Block (x, y, z) == 2) {
+		} else if (Block (x, y, z) == BlockType.RockDust) {
 			texturePos = tGrass;
 		}
 		
 		Cube (texturePos);
 	}
 
-	void CubeNZ (int x, int y, int z, byte block) {
+	void CubeNZ (int x, int y, int z, BlockType block) {
 		newVertices.Add (new Vector3 (x, y - 1, z));
 		newVertices.Add (new Vector3 (x, y, z));
 		newVertices.Add (new Vector3 (x + 1, y, z));
 		newVertices.Add (new Vector3 (x + 1, y - 1, z));
 		
 		Vector2 texturePos = new Vector2 (0, 0);
-		if (Block (x, y, z) == 1) {
+		if (Block (x, y, z) == BlockType.Rock) {
 			texturePos = tStone;
-		} else if (Block (x, y, z) == 2) {
+		} else if (Block (x, y, z) == BlockType.RockDust) {
 			texturePos = tGrass;
 		}
 		
 		Cube (texturePos);
 	}
 
-	void CubeNX (int x, int y, int z, byte block) {
+	void CubeNX (int x, int y, int z, BlockType block) {
 		newVertices.Add (new Vector3 (x, y - 1, z + 1));
 		newVertices.Add (new Vector3 (x, y, z + 1));
 		newVertices.Add (new Vector3 (x, y, z));
 		newVertices.Add (new Vector3 (x, y - 1, z));
 		
 		Vector2 texturePos = new Vector2 (0, 0);
-		if (Block (x, y, z) == 1) {
+		if (Block (x, y, z) == BlockType.Rock) {
 			texturePos = tStone;
-		} else if (Block (x, y, z) == 2) {
+		} else if (Block (x, y, z) == BlockType.RockDust) {
 			texturePos = tGrass;
 		}
 		
 		Cube (texturePos);
 	}
 
-	void CubeNY (int x, int y, int z, byte block) {
+	void CubeNY (int x, int y, int z, BlockType block) {
 		newVertices.Add (new Vector3 (x, y - 1, z));
 		newVertices.Add (new Vector3 (x + 1, y - 1, z));
 		newVertices.Add (new Vector3 (x + 1, y - 1, z + 1));
 		newVertices.Add (new Vector3 (x, y - 1, z + 1));
 		
 		Vector2 texturePos = new Vector2 (0, 0);
-		if (Block (x, y, z) == 1) {
+		if (Block (x, y, z) == BlockType.Rock) {
 			texturePos = tStone;
-		} else if (Block (x, y, z) == 2) {
+		} else if (Block (x, y, z) == BlockType.RockDust) {
 			texturePos = tGrass;
 		}
 		
@@ -173,22 +173,22 @@ public class Chunk : MonoBehaviour {
 			for (int y = 0; y < chunkSize; y++) {
 				for (int z = 0; z < chunkSize; z++) {
 					if (Block (x, y, z) != 0) {
-						if (Block (x, y+1, z) == 0) {
+						if (Block (x, y+1, z) == BlockType.Air) {
 							CubePY (x, y, z, Block (x, y, z));
 						}
-						if (Block (x, y-1, z) == 0) {
+						if (Block (x, y-1, z) == BlockType.Air) {
 							CubeNY (x, y, z, Block (x, y, z));
 						}
-						if (Block (x+1, y, z) == 0) {
+						if (Block (x+1, y, z) == BlockType.Air) {
 							CubePX (x, y, z, Block (x, y, z));
 						}
-						if (Block (x-1, y, z) == 0) {
+						if (Block (x-1, y, z) == BlockType.Air) {
 							CubeNX (x, y, z, Block (x, y, z));
 						}
-						if (Block (x, y, z+1) == 0) {
+						if (Block (x, y, z+1) == BlockType.Air) {
 							CubePZ (x, y, z, Block (x, y, z));
 						}
-						if (Block (x, y, z-1) == 0) {
+						if (Block (x, y, z-1) == BlockType.Air) {
 							CubeNZ (x, y, z, Block (x, y, z));
 						}
 					}
