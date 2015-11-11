@@ -8,7 +8,7 @@ public class NetworkingPlayerSetup : NetworkBehaviour { // Notive I inherit from
     
 	void Start () {
         /* If we are not controlling this player (i.e. if it is beign controlled by another user),
-            then we want to disable things like movement and sound reception, that way the only thing
+            then we want to disable things like movement and sound reception, that way the things
             user controls do not interfere with other players */
 	    if (!isLocalPlayer)
         {
