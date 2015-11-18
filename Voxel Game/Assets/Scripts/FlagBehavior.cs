@@ -15,13 +15,16 @@ public class FlagBehavior : MonoBehaviour
 	void OnCollisionEnter(Collision collision)
 	{
 		//Check if colliding object is a player on the opposite team
-		foreach (Renderer rend in flagRend) 
+		if (collision.collider.CompareTag ("Player"))
 		{
-			rend.enabled = false;
-		}
-		foreach (BoxCollider box in boxCollider) 
-		{
-			box.enabled = false;
+			foreach (Renderer rend in flagRend)
+			{
+				rend.enabled = false;
+			}
+			foreach (BoxCollider box in boxCollider)
+			{
+				box.enabled = false;
+			}
 		}
 	}
 
