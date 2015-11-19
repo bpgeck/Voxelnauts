@@ -8,7 +8,7 @@ public class FlagBehavior : MonoBehaviour
 
 	void Start () 
 	{
-		flagRend = GetComponentInChildren<MeshRenderer> ();
+		flagRend = GetComponentsInChildren<MeshRenderer> ();
 		boxCollider = GetComponentsInChildren<BoxCollider> ();
 	}
 

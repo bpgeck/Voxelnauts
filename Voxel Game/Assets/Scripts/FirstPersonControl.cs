@@ -11,12 +11,15 @@ public class FirstPersonControl : MonoBehaviour
 	float verticalRotation = 0;
 	float verticalVelocity = 0;
 
+    Camera firstPersonCamera;
 	CharacterController characterController;
 	// Use this for initialization
 	void Start()
 	{
-		Cursor.visible = false; 
+		Cursor.visible = false;
 		characterController = GetComponent <CharacterController> ();
+        firstPersonCamera = this.transform.Find("Eyes").GetComponent<Camera> ();
+        GetComponent<Animator>().SetBool("isMoving", false);
 	}
 	
 	// Update is called once per frame
@@ -28,23 +31,43 @@ public class FirstPersonControl : MonoBehaviour
 		verticalRotation -= Input.GetAxis ("Mouse Y") * mouseSensitivity;
 		verticalRotation = Mathf.Clamp (verticalRotation, -upDownRange, upDownRange);
 
-		Camera.main.transform.localRotation = Quaternion.Euler (verticalRotation, 0, 0);
+        firstPersonCamera.transform.localRotation = Quaternion.Euler (verticalRotation, 0, 0);
 
 		//Movement
 		float forwardSpeed = Input.GetAxis ("Vertical") * movementSpeed;
 		float sideSpeed = Input.GetAxis ("Horizontal") * movementSpeed;
 
-		verticalVelocity += Physics.gravity.y * Time.deltaTime;
+        if (characterController.isGrounded && Input.GetButton("Jump"))
+        {
+            verticalVelocity = jumpSpeed;
+        }
+        else if (characterController.isGrounded)
+        {
+            verticalVelocity = 0.0F;
+        }
 
-		if (characterController.isGrounded && Input.GetButton ("Jump")) 
-		{
-			verticalVelocity = jumpSpeed;
-		}
+        if (!characterController.isGrounded)
+        {
+            verticalVelocity += Physics.gravity.y * Time.deltaTime;
+        }
 
-		Vector3 speed = new Vector3 (sideSpeed, verticalVelocity, forwardSpeed);
+        Vector3 speed = new Vector3 (sideSpeed, verticalVelocity, forwardSpeed);
 
 		speed = transform.rotation * speed;
 
 		characterController.Move (speed * Time.deltaTime);
-	}
+
+        if (speed.magnitude > 2.0F)
+        {
+            GetComponent<Animator>().SetBool("isMoving", true);
+        }
+        else
+        {
+            GetComponent<Animator>().SetBool("isMoving", false);
+        }
+        //else
+        //{
+        //    isMoving = false;
+        //}
+    }
 }
