@@ -36,7 +36,7 @@ public class Chunk : MonoBehaviour {
 		mesh = GetComponent<MeshFilter> ().mesh;
 		col = GetComponent<MeshCollider> ();
 
-		update = true;
+		GenerateMesh ();
 	}
 	
 	// Update is called once per frame

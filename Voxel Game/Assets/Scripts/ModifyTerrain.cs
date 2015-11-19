@@ -61,6 +61,7 @@ public class ModifyTerrain : MonoBehaviour {
 	}
 	
 	public void SetBlockAt(int x, int y, int z, BlockType block) {
+		print("Adding: " + x + ", " + y + ", " + z);
 		world.data [x, y, z] = block;
 		UpdateChunkAt (x, y, z);
 	}
@@ -70,29 +71,31 @@ public class ModifyTerrain : MonoBehaviour {
 		int updateY = Mathf.FloorToInt (y / world.chunkSize);
 		int updateZ = Mathf.FloorToInt (z / world.chunkSize);
 
+		print("Updating: " + updateX + ", " + updateY + ", " + updateZ);
+
 		world.chunks [updateX, updateY, updateZ].update = true;
 		//X-
-		if(world.chunkSize * updateX == 0 && updateX != 0) {
+		if(x-(world.chunkSize * updateX) == 0 && updateX != 0) {
 			world.chunks[updateX-1, updateY, updateZ].update = true;
 		}
 		//X+
-		if(world.chunkSize * updateX == 15 && updateX != world.chunks.GetLength(0) - 1) {
-			world.chunks[updateX-1, updateY, updateZ].update = true;
+		if(x-(world.chunkSize * updateX) == 15 && updateX != world.chunks.GetLength(0) - 1) {
+			world.chunks[updateX+1, updateY, updateZ].update = true;
 		}
 		//Y-
-		if(world.chunkSize * updateY == 0 && updateY != 0) {
+		if(y-(world.chunkSize * updateY) == 0 && updateY != 0) {
 			world.chunks[updateX, updateY-1, updateZ].update = true;
 		}
 		//Y+
-		if(world.chunkSize * updateX == 15 && updateY != world.chunks.GetLength(1) - 1) {
+		if(y-(world.chunkSize * updateY) == 15 && updateY != world.chunks.GetLength(1) - 1) {
 			world.chunks[updateX, updateY+1, updateZ].update = true;
 		}
 		//Z-
-		if(world.chunkSize * updateZ == 0 && updateZ != 0) {
+		if(z-(world.chunkSize * updateZ) == 0 && updateZ != 0) {
 			world.chunks[updateX, updateY, updateZ-1].update = true;
 		}
 		//Z+
-		if(world.chunkSize * updateZ == 15 && updateZ != world.chunks.GetLength(2) - 1) {
+		if(z-(world.chunkSize * updateZ) == 15 && updateZ != world.chunks.GetLength(2) - 1) {
 			world.chunks[updateX, updateY, updateZ+1].update = true;
 		}
 	}
