@@ -63,10 +63,10 @@ public class World : MonoBehaviour {
 	}
 
 	public bool LoadWorld() {
-		if (File.Exists (Application.dataPath + worldName + ".dat")) {
+		if (File.Exists (Application.dataPath + "/SaveData/" + worldName + ".dat")) {
 			WorldData worldData;
 			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Open (Application.dataPath + worldName + ".dat", FileMode.Open, FileAccess.Read);
+			FileStream file = File.Open (Application.dataPath + "/SaveData/" + worldName + ".dat", FileMode.Open, FileAccess.Read);
 			worldData = (WorldData)bf.Deserialize (file);
 			file.Close ();
 			Debug.Log ("Loaded World: " + worldName);
@@ -87,29 +87,18 @@ public class World : MonoBehaviour {
 		SaveWorld ();
 	}
 
-	public void SaveWorldWithUniqueName(string baseName, int x) {
-		string filename = baseName;
-		if (x == 0)
-			filename += " (" + x + ")";
-		if (!File.Exists (Application.dataPath + filename + ".dat"))
-			SaveWorldAs (filename);
-		else
-			SaveWorldWithUniqueName(baseName, ++x);
-	}
-
-
 	public void SaveWorld() {
 		WorldData worldData = new WorldData (worldX, worldY, worldZ, chunkSize, data);
 		BinaryFormatter bf = new BinaryFormatter ();
-		FileStream file = new FileStream (Application.dataPath + worldName + ".dat", FileMode.Create, FileAccess.Write);
+		FileStream file = new FileStream (Application.dataPath + "/SaveData/" + worldName + ".dat", FileMode.Create, FileAccess.Write);
 		bf.Serialize (file, worldData);
 		file.Close ();
 	}
 
 	public void GenBaseWorld() {
-		worldX = 256;
+		worldX = 64;
 		worldY = 64;
-		worldZ = 256;
+		worldZ = 64;
 		chunkSize = 32;
 		data = new BlockType[worldX, worldY, worldZ];
 
@@ -124,7 +113,7 @@ public class World : MonoBehaviour {
 				}
 			}
 		}
-		SaveWorldWithUniqueName (worldName, 0);
+		SaveWorldAs (worldName);
 	}
 
 	public void InstantiateChunks() {
@@ -142,9 +131,10 @@ public class World : MonoBehaviour {
 					chunks[x,y,z].chunkX = x * chunkSize;
 					chunks[x,y,z].chunkY = y * chunkSize;
 					chunks[x,y,z].chunkZ = z * chunkSize;
+					chunks[x,y,z].update = true;
 				}
 			}
 		}
-		Destroy (chunk);
+		//Destroy (chunk);
 	}
 }
