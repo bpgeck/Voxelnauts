@@ -13,8 +13,6 @@ public class ItemDictionary : MonoBehaviour {
     {
         itemData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Streaming Assets/Items.json"));
         fillDictionary();
-
-        Debug.Log(getItemByID(0).Title);
     }
 
     void fillDictionary()
