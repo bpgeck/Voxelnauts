@@ -30,9 +30,8 @@ public class ModifyTerrain : MonoBehaviour {
 	public void AddBlockCursor(BlockType block) {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
-		
+
 		if (Physics.Raycast (ray, out hit)) {
-			
 			AddBlockAt(hit, block);
 			Debug.DrawLine(ray.origin, ray.origin + (ray.direction*hit.distance), Color.green, 2);
 		}
@@ -61,7 +60,7 @@ public class ModifyTerrain : MonoBehaviour {
 	}
 	
 	public void SetBlockAt(int x, int y, int z, BlockType block) {
-		print("Adding: " + x + ", " + y + ", " + z);
+		print("Adding Block: " + x + ", " + y + ", " + z + ", " + block.ToString());
 		world.data [x, y, z] = block;
 		UpdateChunkAt (x, y, z);
 	}
@@ -71,7 +70,7 @@ public class ModifyTerrain : MonoBehaviour {
 		int updateY = Mathf.FloorToInt (y / world.chunkSize);
 		int updateZ = Mathf.FloorToInt (z / world.chunkSize);
 
-		print("Updating: " + updateX + ", " + updateY + ", " + updateZ);
+		print("Updating Chunk: " + updateX + ", " + updateY + ", " + updateZ);
 
 		world.chunks [updateX, updateY, updateZ].update = true;
 		//X-

@@ -30,7 +30,8 @@ public class World : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.LeftControl) && Input.GetKeyDown (KeyCode.S)) {
+		if (Input.GetKey (KeyCode.LeftShift) && Input.GetKeyDown (KeyCode.S)) {
+			print ("saved: " + worldName);
 			SaveWorld ();
 		}
 	}
@@ -135,6 +136,6 @@ public class World : MonoBehaviour {
 				}
 			}
 		}
-		//Destroy (chunk);
+		Destroy (chunk);
 	}
 }
