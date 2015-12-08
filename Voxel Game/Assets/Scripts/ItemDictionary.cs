@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 
 public class ItemDictionary : MonoBehaviour {
-    private List<Item> dictionary = new List<Item>();
+    private static List<Item> dictionary = new List<Item>();
     private JsonData itemData;
 
     void Start()
@@ -23,7 +23,7 @@ public class ItemDictionary : MonoBehaviour {
         }
     }
 
-    public Item getItemByID(int id)
+    public static Item getItemByID(int id)
     {
         Item returnItem;
         try

@@ -6,12 +6,12 @@ public class ItemInformation : MonoBehaviour {
 
     void Awake ()
     {
-        Debug.Log("I have been awoken");
+
     }
 
 	// Use this for initialization
 	void Start () {
-        Debug.Log("I have started");
+
 	}
 	
 	// Update is called once per frame

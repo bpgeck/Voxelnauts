@@ -6,24 +6,23 @@ using System.IO;
 
 public class Inventory : MonoBehaviour {
     List<Item> inventory = new List<Item>();
-    ItemDictionary dictionary;
 
     void Start () {
+
 	}
 
-    void OnCollisionEnter (Collision col)
+    void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Debug.Log("Collided");
-        if (col.gameObject.name.Contains("Flag"))
+        Debug.Log(hit.gameObject.name);
+        if (hit.gameObject.GetComponent<ItemInformation>() != null)
         {
-            Debug.Log("Touching the flag!!");
-            pickUp(col.gameObject);
+            pickUp(hit.gameObject);
         }
     }
 
     void pickUp (GameObject item)
     {
-        inventory.Add(dictionary.getItemByID(item.GetComponent<ItemInformation>().ID));
+        inventory.Add(ItemDictionary.getItemByID(item.GetComponent<ItemInformation>().ID));
     }
 
     int amountInInventory (int checkId)
