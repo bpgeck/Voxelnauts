@@ -10,13 +10,15 @@ public class FirstPersonControl : MonoBehaviour
 	public float upDownRange = 60.0f;
 	float verticalRotation = 0;
 	float verticalVelocity = 0;
+    Vector3 startPosition;
 
     Camera firstPersonCamera;
 	CharacterController characterController;
 	// Use this for initialization
 	void Start()
 	{
-		Cursor.visible = false;
+        startPosition = this.transform.position; // this wiill be the place the player responds to each time he dies
+		Cursor.visible = true; // temporarily set to true for testing
 		characterController = GetComponent <CharacterController> ();
         firstPersonCamera = this.transform.Find("Eyes").GetComponent<Camera> ();
         GetComponent<Animator>().SetBool("isMoving", false);
@@ -65,9 +67,11 @@ public class FirstPersonControl : MonoBehaviour
         {
             GetComponent<Animator>().SetBool("isMoving", false);
         }
-        //else
-        //{
-        //    isMoving = false;
-        //}
+    }
+
+    public void Die()
+    {
+        this.GetComponent<Inventory>().DropAll();
+        this.transform.position = startPosition;
     }
 }
