@@ -1,6 +1,10 @@
 [
-	{
-		"id": 0,
-		"title": "Flag"
-	}
+    {
+        "id": 0,
+        "title": "Flag"
+    },
+    {
+        "id": 1,
+        "title":  "Block"
+    }
 ]

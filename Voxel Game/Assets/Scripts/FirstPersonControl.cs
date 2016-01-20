@@ -16,7 +16,7 @@ public class FirstPersonControl : MonoBehaviour
 	CharacterController characterController;
 	// Use this for initialization
 	void Start()
-	{
+    {
         startPosition = this.transform.position; // this wiill be the place the player responds to each time he dies
 		Cursor.visible = true; // temporarily set to true for testing
 		characterController = GetComponent <CharacterController> ();
@@ -26,7 +26,8 @@ public class FirstPersonControl : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update()
-	{
+    {
+        // Rotation stuff
 		float rotLeftRight = Input.GetAxis ("Mouse X") * mouseSensitivity;
 		transform.Rotate (0, rotLeftRight, 0);
 
@@ -35,7 +36,7 @@ public class FirstPersonControl : MonoBehaviour
 
         firstPersonCamera.transform.localRotation = Quaternion.Euler (verticalRotation, 0, 0);
 
-		//Movement
+		// Movement stuff
 		float forwardSpeed = Input.GetAxis ("Vertical") * movementSpeed;
 		float sideSpeed = Input.GetAxis ("Horizontal") * movementSpeed;
 
@@ -48,6 +49,7 @@ public class FirstPersonControl : MonoBehaviour
             verticalVelocity = 0.0F;
         }
 
+        // If the player is in the air then accelerate the player toward the ground
         if (!characterController.isGrounded)
         {
             verticalVelocity += Physics.gravity.y * Time.deltaTime;
@@ -59,6 +61,7 @@ public class FirstPersonControl : MonoBehaviour
 
 		characterController.Move (speed * Time.deltaTime);
 
+        // Adjust animation depending on speed of player
         if (speed.magnitude > 2.0F)
         {
             GetComponent<Animator>().SetBool("isMoving", true);
@@ -69,6 +72,8 @@ public class FirstPersonControl : MonoBehaviour
         }
     }
 
+    // On death, drop all items
+    // Flag drops in a special way
     public void Die()
     {
         this.GetComponent<Inventory>().DropAll();

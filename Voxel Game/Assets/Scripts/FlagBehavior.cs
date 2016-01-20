@@ -12,20 +12,28 @@ public class FlagBehavior : MonoBehaviour
 		boxCollider = GetComponentsInChildren<BoxCollider> ();
 	}
 
-	void OnCollisionEnter(Collision collision)
+	public void Disappear()
 	{
 		//Check if colliding object is a player on the opposite team
-		if (collision.collider.CompareTag ("Player"))
+        foreach (Renderer rend in flagRend)
 		{
-			foreach (Renderer rend in flagRend)
-			{
-				rend.enabled = false;
-			}
-			foreach (BoxCollider box in boxCollider)
-			{
-				box.enabled = false;
-			}
+			rend.enabled = false;
+		}
+		foreach (BoxCollider box in boxCollider)
+		{
+			box.enabled = false;
 		}
 	}
 
+    public void Reappear() // this will be called when the user dies
+    {
+        foreach (Renderer rend in flagRend)
+        {
+            rend.enabled = true;
+        }
+        foreach (BoxCollider box in boxCollider)
+        {
+            box.enabled = true;
+        }
+    }
 }

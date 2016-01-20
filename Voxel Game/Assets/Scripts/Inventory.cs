@@ -5,25 +5,22 @@ using System.Collections.Generic;
 using System.IO;
 
 public class Inventory : MonoBehaviour {
-    List<Item> inventory = new List<Item>();
+    public List<Item> inventory = new List<Item>();
 
     void Start () {
 
-	}
+    }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        // if this you touch a grab-able object, pick it up
-        if (hit.gameObject.GetComponent<ItemInformation>() != null)
-        {
-            PickUp(hit.gameObject);
-        }
+        
     }
 
     // adds the game object to your inventory
-    void PickUp (GameObject item)
+    public void PickUp (GameObject item)
     {
-        inventory.Add(ItemDictionary.getItemByID(item.GetComponent<ItemInformation>().ID));
+        Debug.Log("Got an item: " + item.name);
+        inventory.Add(ItemDictionary.getItemByID(item.GetComponent<ItemProperties>().ID));
     }
 
     // returns number of specific objects in inventory
@@ -59,6 +56,10 @@ public class Inventory : MonoBehaviour {
         // create corresponding prefabs of all objects in inventory
         // drop all prefabs at certain radius around player
         // delete all entries in `inventory` List
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            Drop(inventory[i]);
+        }
     }
 
     public void Drop(Item item)
@@ -67,5 +68,18 @@ public class Inventory : MonoBehaviour {
         // create prefab of Item argument
         // drop prefab
         // remove 1 copy of the corresponding item from `inventory` List
+        if (item.ID == 0) // if the user is dropping a flag, don't spawn a prefab, just reset the flag's mesh
+        {
+            GameObject flag = GameObject.Find("Flag");
+            flag.GetComponent<FlagBehavior>();
+        }
+        else
+        {
+            GameObject droppedItem = (GameObject)Instantiate(Resources.Load("Item"));
+            droppedItem.GetComponent<ItemProperties>().SetInfoFromItem(item);
+            Debug.Log("Dropped an item: " + item.Title);
+        }
+
+        inventory.Remove(item);
     }
 }
