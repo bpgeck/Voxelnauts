@@ -65,6 +65,7 @@ public class World : MonoBehaviour {
 
 	public bool LoadWorld() {
 		if (File.Exists (Application.dataPath + "/SaveData/" + worldName + ".dat")) {
+			print ("awk");
 			WorldData worldData;
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Open (Application.dataPath + "/SaveData/" + worldName + ".dat", FileMode.Open, FileAccess.Read);
@@ -137,5 +138,6 @@ public class World : MonoBehaviour {
 			}
 		}
 		Destroy (chunk);
+		print (chunks.GetLength (0) + ", " + chunks.GetLength (1) + ", " + chunks.GetLength (2));
 	}
 }

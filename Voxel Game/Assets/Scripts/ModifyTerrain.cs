@@ -5,16 +5,37 @@ using System;
 public class ModifyTerrain : MonoBehaviour {
 
 	World world;
+	BlockType current = BlockType.Bedrock;
 
 	void Start() {
 		world = gameObject.GetComponent ("World") as World;
 	}
 
 	void Update() {
+
+		if (Input.GetAxis ("Mouse ScrollWheel") > 0)
+			SetCurrentBlock (1);
+		else if (Input.GetAxis ("Mouse ScrollWheel") < 0)
+			SetCurrentBlock (-1);
+
 		if (Input.GetMouseButtonDown (0))
 			ReplaceBlockCursor (BlockType.Air);
 		if (Input.GetMouseButtonDown (1))
-			AddBlockCursor (BlockType.Rock); //TODO Change to get selected block
+			AddBlockCursor (current);
+	}
+
+	public void SetCurrentBlock (int x) {
+
+		if (x == 0)
+			return;
+		else if (x > 0 && current == BlockType.RockDust)
+			current = BlockType.Bedrock;
+		else if (x < 0 && current == BlockType.Bedrock)
+			current = BlockType.RockDust;
+		else
+			current = (BlockType)(byte)((int)current + x);
+
+		print ("Selected BlockType: " + current.ToString ());
 	}
 
 	public void ReplaceBlockCursor(BlockType block) {
@@ -73,6 +94,7 @@ public class ModifyTerrain : MonoBehaviour {
 		print("Updating Chunk: " + updateX + ", " + updateY + ", " + updateZ);
 
 		world.chunks [updateX, updateY, updateZ].update = true;
+
 		//X-
 		if(x-(world.chunkSize * updateX) == 0 && updateX != 0) {
 			world.chunks[updateX-1, updateY, updateZ].update = true;
