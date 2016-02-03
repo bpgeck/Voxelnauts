@@ -12,16 +12,26 @@ public class ModifyTerrain : MonoBehaviour {
 	}
 
 	void Update() {
-
+		//shift commands
+		if (Input.GetKey (KeyCode.LeftShift) && Input.GetKeyDown (KeyCode.S)) {
+			//shift+S
+			if (Input.GetKeyDown (KeyCode.S)) {
+				print ("saved: " + world.worldName);
+				world.SaveWorld ();
+			}
+		}
+		//scrollwheel
 		if (Input.GetAxis ("Mouse ScrollWheel") > 0)
 			SetCurrentBlock (1);
 		else if (Input.GetAxis ("Mouse ScrollWheel") < 0)
 			SetCurrentBlock (-1);
-
+		//lmb
 		if (Input.GetMouseButtonDown (0))
 			ReplaceBlockCursor (BlockType.Air);
+		//rmb
 		if (Input.GetMouseButtonDown (1))
 			AddBlockCursor (current);
+
 	}
 
 	public void SetCurrentBlock (int x) {
@@ -87,36 +97,36 @@ public class ModifyTerrain : MonoBehaviour {
 	}
 	
 	public void UpdateChunkAt(int x, int y, int z){
-		int updateX = Mathf.FloorToInt (x / world.chunkSize);
-		int updateY = Mathf.FloorToInt (y / world.chunkSize);
-		int updateZ = Mathf.FloorToInt (z / world.chunkSize);
+		int updateX = Mathf.FloorToInt (x / world.GetChunkSize());
+		int updateY = Mathf.FloorToInt (y / world.GetChunkSize());
+		int updateZ = Mathf.FloorToInt (z / world.GetChunkSize());
 
 		print("Updating Chunk: " + updateX + ", " + updateY + ", " + updateZ);
 
 		world.chunks [updateX, updateY, updateZ].update = true;
 
 		//X-
-		if(x-(world.chunkSize * updateX) == 0 && updateX != 0) {
+		if(x-(world.GetChunkSize() * updateX) == 0 && updateX != 0) {
 			world.chunks[updateX-1, updateY, updateZ].update = true;
 		}
 		//X+
-		if(x-(world.chunkSize * updateX) == 15 && updateX != world.chunks.GetLength(0) - 1) {
+		if(x-(world.GetChunkSize() * updateX) == 15 && updateX != world.chunks.GetLength(0) - 1) {
 			world.chunks[updateX+1, updateY, updateZ].update = true;
 		}
 		//Y-
-		if(y-(world.chunkSize * updateY) == 0 && updateY != 0) {
+		if(y-(world.GetChunkSize() * updateY) == 0 && updateY != 0) {
 			world.chunks[updateX, updateY-1, updateZ].update = true;
 		}
 		//Y+
-		if(y-(world.chunkSize * updateY) == 15 && updateY != world.chunks.GetLength(1) - 1) {
+		if(y-(world.GetChunkSize() * updateY) == 15 && updateY != world.chunks.GetLength(1) - 1) {
 			world.chunks[updateX, updateY+1, updateZ].update = true;
 		}
 		//Z-
-		if(z-(world.chunkSize * updateZ) == 0 && updateZ != 0) {
+		if(z-(world.GetChunkSize() * updateZ) == 0 && updateZ != 0) {
 			world.chunks[updateX, updateY, updateZ-1].update = true;
 		}
 		//Z+
-		if(z-(world.chunkSize * updateZ) == 15 && updateZ != world.chunks.GetLength(2) - 1) {
+		if(z-(world.GetChunkSize() * updateZ) == 15 && updateZ != world.chunks.GetLength(2) - 1) {
 			world.chunks[updateX, updateY, updateZ+1].update = true;
 		}
 	}

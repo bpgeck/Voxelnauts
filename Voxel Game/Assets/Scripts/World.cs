@@ -9,10 +9,10 @@ public class World : MonoBehaviour {
 	public Chunk[,,] chunks;
 	
 	public BlockType[,,] data;
-	public int worldX = 64;
-	public int worldY = 64;
-	public int worldZ = 64;
-	public int chunkSize=32;
+	private int worldX;
+	private int worldY;
+	private int worldZ;
+	private int chunkSize=64;
 
 	public string worldName;
 
@@ -23,17 +23,18 @@ public class World : MonoBehaviour {
 			worldName = "world";
 
 		if (!LoadWorld ())
-			GenBaseWorld ();
+			GenWorldWithBitmap ();
 
 		InstantiateChunks ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey (KeyCode.LeftShift) && Input.GetKeyDown (KeyCode.S)) {
-			print ("saved: " + worldName);
-			SaveWorld ();
-		}
+
+	}
+
+	public int GetChunkSize() {
+		return chunkSize;
 	}
 
 	public BlockType Block(int x, int y, int z) {
@@ -54,10 +55,6 @@ public class World : MonoBehaviour {
 		return (int) rValue;
 	}
 
-	public int GetChunkSize() {
-		return chunkSize;
-	}
-
 	public void LoadWorld(string newWorldName) {
 		worldName = newWorldName;
 		LoadWorld ();
@@ -65,7 +62,6 @@ public class World : MonoBehaviour {
 
 	public bool LoadWorld() {
 		if (File.Exists (Application.dataPath + "/SaveData/" + worldName + ".dat")) {
-			print ("awk");
 			WorldData worldData;
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Open (Application.dataPath + "/SaveData/" + worldName + ".dat", FileMode.Open, FileAccess.Read);
@@ -97,11 +93,7 @@ public class World : MonoBehaviour {
 		file.Close ();
 	}
 
-	public void GenBaseWorld() {
-		worldX = 64;
-		worldY = 64;
-		worldZ = 64;
-		chunkSize = 32;
+	public void GenWorld() {
 		data = new BlockType[worldX, worldY, worldZ];
 
 		for (int x = 0; x < worldX; x++) {
@@ -112,6 +104,31 @@ public class World : MonoBehaviour {
 					} else {
 						data[x,y,z] = BlockType.Air;
 					}
+				}
+			}
+		}
+		SaveWorldAs (worldName);
+	}
+
+	public void GenWorldWithBitmap() {
+
+		Texture2D heightmap = Resources.Load (worldName + "_heightmap") as Texture2D;
+		worldX = heightmap.width;
+		worldY = chunkSize;
+		worldZ = heightmap.height;
+		data = new BlockType[worldX, worldY, worldZ];
+
+		for (int x = 0; x < worldX; x++) {
+			for (int z = 0; z < worldZ; z++) {
+
+				int h = (int)heightmap.GetPixel (x,z).grayscale * worldY;
+				data[x,0,z] = BlockType.Bedrock;
+
+				for (int y = 1; y < worldY; y++) {
+					if(y <= h)
+						data[x,y,z] = BlockType.Rock;
+					else
+						data[x,y,z] = BlockType.Air;
 				}
 			}
 		}
@@ -129,7 +146,6 @@ public class World : MonoBehaviour {
 					GameObject newChunk = Instantiate (chunk, new Vector3 (x*chunkSize-0.5f,  y*chunkSize+0.5f, z*chunkSize-0.5f), new Quaternion(0,0,0,0)) as GameObject;
 					chunks[x,y,z] = newChunk.GetComponent ("Chunk") as Chunk;
 					chunks[x,y,z].worldGO = gameObject;
-					chunks[x,y,z].chunkSize = chunkSize;
 					chunks[x,y,z].chunkX = x * chunkSize;
 					chunks[x,y,z].chunkY = y * chunkSize;
 					chunks[x,y,z].chunkZ = z * chunkSize;

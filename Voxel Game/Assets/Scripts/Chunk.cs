@@ -10,7 +10,7 @@ public class Chunk : MonoBehaviour {
 	public int chunkY;
 	public int chunkZ;
 
-	public int chunkSize;
+	private int chunkSize;
 	public GameObject worldGO;
 	private World world;
 
@@ -28,7 +28,7 @@ public class Chunk : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		world = worldGO.GetComponent ("World") as World;
-		chunkSize = world.GetChunkSize ();
+		chunkSize = world.GetChunkSize();
 
 		mesh = GetComponent<MeshFilter> ().mesh;
 		col = GetComponent<MeshCollider> ();
