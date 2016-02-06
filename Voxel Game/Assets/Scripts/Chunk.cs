@@ -18,7 +18,7 @@ public class Chunk : MonoBehaviour {
 	private List<int> newTriangles = new List<int>();
 	private List<Vector2> newUV = new List<Vector2>();
 
-	private float tUnit = .25f;
+	private float tUnit = .125f;
 
 	private Mesh mesh;
 	private MeshCollider col;
@@ -58,7 +58,7 @@ public class Chunk : MonoBehaviour {
 		newVertices.Add (new Vector3 (x + 1, y, z));
 		newVertices.Add (new Vector3 (x, y, z));
 
-		Cube (new Vector2 (((int)block % (int)(.5/tUnit) * 2 + 1), (int)((int)block * tUnit)));
+		Cube (block);
 	}
 
 	void CubePZ (int x, int y, int z, BlockType block) {
@@ -67,7 +67,7 @@ public class Chunk : MonoBehaviour {
 		newVertices.Add (new Vector3 (x, y, z + 1));
 		newVertices.Add (new Vector3 (x, y - 1, z + 1));
 		
-		Cube (new Vector2 (((int)block % (int)(.5/tUnit) * 2), (int)((int)block * tUnit)));
+		Cube (block);
 	}
 
 	void CubePX (int x, int y, int z, BlockType block) {
@@ -76,7 +76,7 @@ public class Chunk : MonoBehaviour {
 		newVertices.Add (new Vector3 (x + 1, y, z + 1));
 		newVertices.Add (new Vector3 (x + 1, y - 1, z + 1));
 
-		Cube (new Vector2 (((int)block % (int)(.5/tUnit) * 2), (int)((int)block * tUnit)));
+		Cube (block);
 	}
 
 	void CubeNZ (int x, int y, int z, BlockType block) {
@@ -85,7 +85,7 @@ public class Chunk : MonoBehaviour {
 		newVertices.Add (new Vector3 (x + 1, y, z));
 		newVertices.Add (new Vector3 (x + 1, y - 1, z));
 		
-		Cube (new Vector2 (((int)block % (int)(.5/tUnit) * 2), (int)((int)block * tUnit)));
+		Cube (block);
 	}
 
 	void CubeNX (int x, int y, int z, BlockType block) {
@@ -94,7 +94,7 @@ public class Chunk : MonoBehaviour {
 		newVertices.Add (new Vector3 (x, y, z));
 		newVertices.Add (new Vector3 (x, y - 1, z));
 		
-		Cube (new Vector2 (((int)block % (int)(.5/tUnit) * 2), (int)((int)block * tUnit)));
+		Cube (block);
 	}
 
 	void CubeNY (int x, int y, int z, BlockType block) {
@@ -103,10 +103,11 @@ public class Chunk : MonoBehaviour {
 		newVertices.Add (new Vector3 (x + 1, y - 1, z + 1));
 		newVertices.Add (new Vector3 (x, y - 1, z + 1));
 		
-		Cube (new Vector2 (((int)block % (int)(.5/tUnit) * 2), (int)((int)block * tUnit)));
+		Cube (block);
 	}
 
-	void Cube (Vector2 texturePos) {
+	void Cube (BlockType block) {
+		Vector2 texturePos = new Vector2((((int)block-1) % (int)(1/tUnit)), (int)(((int)block-1) * tUnit));
 		newTriangles.Add (faceCount * 4);
 		newTriangles.Add (faceCount * 4 + 1);
 		newTriangles.Add (faceCount * 4 + 2);

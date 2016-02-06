@@ -23,7 +23,7 @@ public class World : MonoBehaviour {
 			worldName = "world";
 
 		if (!LoadWorld ())
-			GenWorldWithBitmap ();
+			GenWorldWithHeightmap ();
 
 		InstantiateChunks ();
 	}
@@ -100,7 +100,7 @@ public class World : MonoBehaviour {
 			for (int z = 0; z < worldZ; z++) {
 				for (int y = 0; y < worldY; y++) {
 					if (y == 0) {
-						data[x,y,z] = BlockType.Rock;
+						data[x,y,z] = BlockType.Stone_Black;
 					} else {
 						data[x,y,z] = BlockType.Air;
 					}
@@ -110,7 +110,7 @@ public class World : MonoBehaviour {
 		SaveWorldAs (worldName);
 	}
 
-	public void GenWorldWithBitmap() {
+	public void GenWorldWithHeightmap() {
 
 		Texture2D heightmap = Resources.Load (worldName + "_heightmap") as Texture2D;
 		worldX = heightmap.width;
@@ -121,12 +121,12 @@ public class World : MonoBehaviour {
 		for (int x = 0; x < worldX; x++) {
 			for (int z = 0; z < worldZ; z++) {
 
-				int h = (int)heightmap.GetPixel (x,z).grayscale * worldY;
-				data[x,0,z] = BlockType.Bedrock;
+				int h = 
+				data[x,0,z] = BlockType.Stone_Black;
 
 				for (int y = 1; y < worldY; y++) {
 					if(y <= h)
-						data[x,y,z] = BlockType.Rock;
+						data[x,y,z] = BlockType.Stone;
 					else
 						data[x,y,z] = BlockType.Air;
 				}

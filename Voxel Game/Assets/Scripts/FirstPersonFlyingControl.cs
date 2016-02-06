@@ -17,11 +17,11 @@ public class FirstPersonFlyingControl : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		startPosition = this.transform.position; // this wiill be the place the player responds to each time he dies
-		Cursor.visible = true; // temporarily set to true for testing
+		startPosition = this.transform.position;
 		characterController = GetComponent <CharacterController> ();
 		firstPersonCamera = this.transform.Find("Eyes").GetComponent<Camera> ();
 		GetComponent<Animator>().SetBool("isMoving", false);
+		Screen.lockCursor = true;
 	}
 	
 	// Update is called once per frame

@@ -5,7 +5,7 @@ using System;
 public class ModifyTerrain : MonoBehaviour {
 
 	World world;
-	BlockType current = BlockType.Bedrock;
+	BlockType current = BlockType.Clay_Dark;
 
 	void Start() {
 		world = gameObject.GetComponent ("World") as World;
@@ -38,10 +38,10 @@ public class ModifyTerrain : MonoBehaviour {
 
 		if (x == 0)
 			return;
-		else if (x > 0 && current == BlockType.RockDust)
-			current = BlockType.Bedrock;
-		else if (x < 0 && current == BlockType.Bedrock)
-			current = BlockType.RockDust;
+		else if (x > 0 && current == BlockType.Snow)
+			current = BlockType.Clay_Dark;
+		else if (x < 0 && current == BlockType.Clay_Dark)
+			current = BlockType.Snow;
 		else
 			current = (BlockType)(byte)((int)current + x);
 

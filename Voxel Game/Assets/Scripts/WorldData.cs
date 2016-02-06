@@ -2,6 +2,11 @@
 using System.Collections;
 using System.Runtime.Serialization;
 
+/*
+ * This object stores voxel level data
+ * It is meant to be used to store a level in an external file
+ */
+
 [System.Serializable]
 public class WorldData {
 	public int worldX;

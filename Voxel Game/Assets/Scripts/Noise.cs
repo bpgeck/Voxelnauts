@@ -194,7 +194,7 @@ namespace Noise
 			return (float)(32.0 * (n0 + n1 + n2 + n3) + 1) * 0.5f; // change to 76.0 if you want
 		}
 		
-		// get multiple octaves of noise at once
+		// get multiple octaves of noise at once.
 		public static float GetOctaveNoise(double pX, double pY, double pZ, int pOctaves)
 		{
 			float value = 0;
