@@ -4,8 +4,7 @@ using System.IO;
 using System.Collections;
 
 public class World : MonoBehaviour {
-
-	public GameObject chunk;
+	
 	public Chunk[,,] chunks;
 	
 	public BlockType[,,] data;
@@ -18,14 +17,13 @@ public class World : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
 		if (worldName == null)
 			worldName = "world";
 
-		if (!LoadWorld ())
-			GenWorldWithHeightmap ();
+		if (!GenWorldWithTerrain ())
+			GenWorld ();
 
-		InstantiateChunks ();
+		PopulateChunks ();
 	}
 	
 	// Update is called once per frame
@@ -43,28 +41,17 @@ public class World : MonoBehaviour {
 		}
 		return data [x, y, z];
 	}
-
-	int PerlinNoise(int x, int y, int z, float scale, float height, float power) {
-		float rValue;
-		rValue = Noise.Noise.GetNoise (((double)x) / scale, ((double)y) / scale, ((double)z) / scale);
-		rValue *= height;
-
-		if (power != 0) {
-			rValue = Mathf.Pow (rValue, power);
-		}
-		return (int) rValue;
-	}
-
+	
 	public void LoadWorld(string newWorldName) {
 		worldName = newWorldName;
 		LoadWorld ();
 	}
 
 	public bool LoadWorld() {
-		if (File.Exists (Application.dataPath + "/SaveData/" + worldName + ".dat")) {
+		if (File.Exists (Application.dataPath + "/Resources/" + worldName + ".dat")) {
 			WorldData worldData;
 			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Open (Application.dataPath + "/SaveData/" + worldName + ".dat", FileMode.Open, FileAccess.Read);
+			FileStream file = File.Open (Application.dataPath + "/Resources/" + worldName + ".dat", FileMode.Open, FileAccess.Read);
 			worldData = (WorldData)bf.Deserialize (file);
 			file.Close ();
 			Debug.Log ("Loaded World: " + worldName);
@@ -88,12 +75,15 @@ public class World : MonoBehaviour {
 	public void SaveWorld() {
 		WorldData worldData = new WorldData (worldX, worldY, worldZ, chunkSize, data);
 		BinaryFormatter bf = new BinaryFormatter ();
-		FileStream file = new FileStream (Application.dataPath + "/SaveData/" + worldName + ".dat", FileMode.Create, FileAccess.Write);
+		FileStream file = new FileStream (Application.dataPath + "/Resources/" + worldName + ".dat", FileMode.Create, FileAccess.Write);
 		bf.Serialize (file, worldData);
 		file.Close ();
 	}
 
 	public void GenWorld() {
+		worldX = 256;
+		worldY = 64;
+		worldZ = 256;
 		data = new BlockType[worldX, worldY, worldZ];
 
 		for (int x = 0; x < worldX; x++) {
@@ -107,53 +97,56 @@ public class World : MonoBehaviour {
 				}
 			}
 		}
-		SaveWorldAs (worldName);
 	}
 
-	public void GenWorldWithHeightmap() {
-
-		Texture2D heightmap = Resources.Load (worldName + "_heightmap") as Texture2D;
-		worldX = heightmap.width;
-		worldY = chunkSize;
-		worldZ = heightmap.height;
-		data = new BlockType[worldX, worldY, worldZ];
-
-		for (int x = 0; x < worldX; x++) {
-			for (int z = 0; z < worldZ; z++) {
-
-				int h = 
-				data[x,0,z] = BlockType.Stone_Black;
-
-				for (int y = 1; y < worldY; y++) {
-					if(y <= h)
-						data[x,y,z] = BlockType.Stone;
-					else
-						data[x,y,z] = BlockType.Air;
+	public bool GenWorldWithTerrain() {
+		if (File.Exists (Application.dataPath + "/Resources/" + worldName + "_terrain.asset")) {
+			TerrainData terrain = Resources.Load (worldName + "_terrain") as TerrainData;
+			worldX = (int)terrain.size.x;
+			//worldY = (int)terrain.size.y;
+			worldY = chunkSize;
+			worldZ = (int)terrain.size.z;
+			data = new BlockType[worldX, worldY, worldZ];
+			
+			for (int x = 0; x < worldX; x++) {
+				for (int z = 0; z < worldZ; z++) {
+					
+					int h = (int)terrain.GetHeight (x, z);
+					data [x, 0, z] = BlockType.Stone_Black;
+					
+					for (int y = 1; y < worldY; y++) {
+						if (y <= h)
+							data [x, y, z] = BlockType.Stone;
+						else
+							data [x, y, z] = BlockType.Air;
+					}
 				}
 			}
+			return true;
+		} else {
+			print ("Could not find Terrain object with name: \"" + worldName + "_terrain.asset\".");
+			return false;
 		}
-		SaveWorldAs (worldName);
+
 	}
 
-	public void InstantiateChunks() {
+	public void PopulateChunks() {
+		GameObject[] chunkArr = GameObject.FindGameObjectsWithTag ("Chunk");
 		chunks = new Chunk[Mathf.FloorToInt (worldX / chunkSize),
 		                   Mathf.FloorToInt (worldY / chunkSize),
 		                   Mathf.FloorToInt (worldZ / chunkSize)];
-		
-		for (int x = 0; x < chunks.GetLength (0); x++) {
-			for (int y = 0; y < chunks.GetLength (1); y++) {
-				for (int z = 0; z < chunks.GetLength (2); z++) {
-					GameObject newChunk = Instantiate (chunk, new Vector3 (x*chunkSize-0.5f,  y*chunkSize+0.5f, z*chunkSize-0.5f), new Quaternion(0,0,0,0)) as GameObject;
-					chunks[x,y,z] = newChunk.GetComponent ("Chunk") as Chunk;
-					chunks[x,y,z].worldGO = gameObject;
-					chunks[x,y,z].chunkX = x * chunkSize;
-					chunks[x,y,z].chunkY = y * chunkSize;
-					chunks[x,y,z].chunkZ = z * chunkSize;
-					chunks[x,y,z].update = true;
-				}
-			}
+
+		print ("Found " + chunkArr.GetLength(0) + " chunks.");
+		print ("Placing " + chunks.GetLength(0) + "x" + chunks.GetLength(1) + "x" + chunks.GetLength(2) + " grid of chunks");
+
+		foreach (GameObject chunkGO in chunkArr) {
+			Chunk chunk = chunkGO.GetComponent ("Chunk") as Chunk;
+			int x = chunk.chunkX/chunkSize;
+			int y = chunk.chunkY/chunkSize;
+			int z = chunk.chunkZ/chunkSize;
+			chunkGO.transform.position = new Vector3 (x*chunkSize-0.5f, y*chunkSize+0.5f, z*chunkSize-0.5f );
+			chunks[x,y,z] = chunk;
+			print ("Placed \"" + chunkGO.name + "\" in chunks[" + x + "," + y + "," + z + "].");
 		}
-		Destroy (chunk);
-		print (chunks.GetLength (0) + ", " + chunks.GetLength (1) + ", " + chunks.GetLength (2));
 	}
 }

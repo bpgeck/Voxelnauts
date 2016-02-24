@@ -5,7 +5,7 @@ using System.Collections;
 public class FirstPersonFlyingControl : MonoBehaviour 
 {
 	public float movementSpeed = 15.0f;
-	public float mouseSensitivity = 15.0f;
+	public float mouseSensitivity = 20.0f;
 	public float jumpSpeed = 20.0f;
 	public float upDownRange = 60.0f;
 	float verticalRotation = 0;
@@ -21,17 +21,25 @@ public class FirstPersonFlyingControl : MonoBehaviour
 		characterController = GetComponent <CharacterController> ();
 		firstPersonCamera = this.transform.Find("Eyes").GetComponent<Camera> ();
 		GetComponent<Animator>().SetBool("isMoving", false);
-		Screen.lockCursor = true;
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 	}
 	
 	// Update is called once per frame
 	void Update()
 	{
+		if (Input.GetKey (KeyCode.LeftAlt) && Cursor.lockState == CursorLockMode.Locked) {
+			Cursor.visible = true;
+			Cursor.lockState = CursorLockMode.None;
+		} else {
+			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Locked;
+		}
 		// Rotation stuff
 		float rotLeftRight = Input.GetAxis ("Mouse X") * mouseSensitivity;
 		transform.Rotate (0, rotLeftRight, 0);
 		
-		verticalRotation -= Input.GetAxis ("Mouse Y") * mouseSensitivity;
+		verticalRotation -= Input.GetAxis ("Mouse Y") * mouseSensitivity/2;
 		verticalRotation = Mathf.Clamp (verticalRotation, -upDownRange, upDownRange);
 		
 		firstPersonCamera.transform.localRotation = Quaternion.Euler (verticalRotation, 0, 0);
