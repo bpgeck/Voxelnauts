@@ -28,12 +28,14 @@ public class FirstPersonFlyingControl : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKey (KeyCode.LeftAlt) && Cursor.lockState == CursorLockMode.Locked) {
-			Cursor.visible = true;
-			Cursor.lockState = CursorLockMode.None;
-		} else {
-			Cursor.visible = false;
-			Cursor.lockState = CursorLockMode.Locked;
+		if (Input.GetKeyDown (KeyCode.LeftAlt)) {
+			if (Cursor.lockState == CursorLockMode.Locked) {
+				Cursor.visible = true;
+				Cursor.lockState = CursorLockMode.None;
+			} else {
+				Cursor.visible = false;
+				Cursor.lockState = CursorLockMode.Locked;
+			}
 		}
 		// Rotation stuff
 		float rotLeftRight = Input.GetAxis ("Mouse X") * mouseSensitivity;

@@ -11,7 +11,7 @@ public class World : MonoBehaviour {
 	private int worldX;
 	private int worldY;
 	private int worldZ;
-	private int chunkSize=64;
+	private int chunkSize=32;
 
 	public string worldName;
 
@@ -36,9 +36,19 @@ public class World : MonoBehaviour {
 	}
 
 	public BlockType Block(int x, int y, int z) {
-		if (x >= worldX || x < 0 || y >= worldY || y < 0 || z >= worldZ || z < 0) {
-			return BlockType.Air;
-		}
+		if (x >= worldX)
+			return data [worldX-1, y, z];
+		if (x < 0)
+			return data [0, y, z];
+		if (y >= worldY)
+			return data [x, worldY-1, z];
+		if (y < 0)
+			return data [x, 0, z];
+		if (z >= worldZ)
+			return data [x, y, worldZ-1];
+		if (z < 0)
+			return data [x, y, 0];
+
 		return data [x, y, z];
 	}
 	
@@ -104,7 +114,7 @@ public class World : MonoBehaviour {
 			TerrainData terrain = Resources.Load (worldName + "_terrain") as TerrainData;
 			worldX = (int)terrain.size.x;
 			//worldY = (int)terrain.size.y;
-			worldY = chunkSize;
+			worldY = 2*chunkSize;
 			worldZ = (int)terrain.size.z;
 			data = new BlockType[worldX, worldY, worldZ];
 			
@@ -140,12 +150,13 @@ public class World : MonoBehaviour {
 		print ("Placing " + chunks.GetLength(0) + "x" + chunks.GetLength(1) + "x" + chunks.GetLength(2) + " grid of chunks");
 
 		foreach (GameObject chunkGO in chunkArr) {
-			Chunk chunk = chunkGO.GetComponent ("Chunk") as Chunk;
+			Chunk chunk = chunkGO.GetComponent<Chunk>();
 			int x = chunk.chunkX/chunkSize;
 			int y = chunk.chunkY/chunkSize;
 			int z = chunk.chunkZ/chunkSize;
 			chunkGO.transform.position = new Vector3 (x*chunkSize-0.5f, y*chunkSize+0.5f, z*chunkSize-0.5f );
 			chunks[x,y,z] = chunk;
+			chunk.GetComponent<Chunk>().enabled = true;
 			print ("Placed \"" + chunkGO.name + "\" in chunks[" + x + "," + y + "," + z + "].");
 		}
 	}

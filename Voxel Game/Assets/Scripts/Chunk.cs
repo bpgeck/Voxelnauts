@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -20,25 +21,38 @@ public class Chunk : MonoBehaviour {
 
 	private float tUnit = .125f;
 
+	private MeshFilter meshFilter;
 	private Mesh mesh;
 	private MeshCollider col;
 
 	private int faceCount;
 
-	// Use this for initialization
 	void Start () {
-		world = worldGO.GetComponent ("World") as World;
+		//init
+		world = worldGO.GetComponent<World>();
 		chunkSize = world.GetChunkSize();
-
-		mesh = GetComponent<MeshFilter> ().mesh;
 		col = GetComponent<MeshCollider> ();
 
-		GenerateMesh ();
-	}
-	
-	// Update is called once per frame
-	void Update() {
+		//add mesh if none exists
+		if(GetComponent<MeshFilter>() == null) {
+			mesh = new Mesh ();
+			meshFilter = gameObject.AddComponent<MeshFilter>();
+			meshFilter.mesh = mesh;
+			GenerateMesh ();
+			AssetDatabase.CreateAsset (mesh, "Assets/Resources/" + name + ".asset");
+			AssetDatabase.SaveAssets ();
+			mesh = AssetDatabase.LoadAssetAtPath("Assets/Resources/" + name, System.Type.GetType ("Mesh")) as Mesh;
+		}
 
+	}
+
+	void Update() {
+		//shift+S
+		if (Input.GetKey (KeyCode.LeftShift) && Input.GetKeyDown (KeyCode.S)) {
+			print ("Saved " + name + ".");
+			AssetDatabase.CreateAsset (mesh, "Assets/Resources/" + name + ".asset");
+			AssetDatabase.SaveAssets();
+		}
 	}
 
 	void LateUpdate () {
@@ -57,7 +71,6 @@ public class Chunk : MonoBehaviour {
 		newVertices.Add (new Vector3 (x + 1, y, z + 1));
 		newVertices.Add (new Vector3 (x + 1, y, z));
 		newVertices.Add (new Vector3 (x, y, z));
-
 		Cube (block);
 	}
 
@@ -160,6 +173,8 @@ public class Chunk : MonoBehaviour {
 		mesh.triangles = newTriangles.ToArray ();
 		mesh.Optimize ();
 		mesh.RecalculateNormals ();
+		mesh.RecalculateBounds ();
+		meshFilter.mesh = mesh;
 
 		col.sharedMesh = null;
 		col.sharedMesh = mesh;
