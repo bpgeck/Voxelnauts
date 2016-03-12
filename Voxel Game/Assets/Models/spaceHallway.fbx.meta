@@ -1,0 +1,121 @@
+fileFormatVersion: 2
+guid: 60c27261185d36441aa75d4b44b4da6c
+timeCreated: 1457817477
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: group
+    100002: group1
+    100004: group2
+    100006: group3
+    100008: group4
+    100010: group5
+    100012: group6
+    100014: group7
+    100016: mirrorCutPlane1
+    100018: mirrorCutPlane2
+    100020: mirrorCutPlane3
+    100022: pasted__group
+    100024: pasted__group1
+    100026: pasted__group3
+    100028: pasted__group3 1
+    100030: pasted__pasted__group
+    100032: pasted__pasted__group1
+    100034: pasted__pasted__pasted__group
+    100036: pasted__pasted__space_Hallway
+    100038: pCube1
+    100040: pCube2
+    100042: //RootNode
+    100044: transform1
+    100046: transform2
+    400000: group
+    400002: group1
+    400004: group2
+    400006: group3
+    400008: group4
+    400010: group5
+    400012: group6
+    400014: group7
+    400016: mirrorCutPlane1
+    400018: mirrorCutPlane2
+    400020: mirrorCutPlane3
+    400022: pasted__group
+    400024: pasted__group1
+    400026: pasted__group3
+    400028: pasted__group3 1
+    400030: pasted__pasted__group
+    400032: pasted__pasted__group1
+    400034: pasted__pasted__pasted__group
+    400036: pasted__pasted__space_Hallway
+    400038: pCube1
+    400040: pCube2
+    400042: //RootNode
+    400044: transform1
+    400046: transform2
+    2300000: pasted__pasted__space_Hallway
+    3300000: pasted__pasted__space_Hallway
+    4300000: pasted__pasted__space_Hallway
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

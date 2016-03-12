@@ -366,6 +366,14 @@ ModelImporter:
     100716: transform97
     100718: transform98
     100720: transform99
+    100722: group
+    100724: group1
+    100726: pasted__pCube30
+    100728: pasted__pCube30 1
+    100730: pasted__pCube37
+    100732: pasted__pCube37 1
+    100734: pasted__pCube38
+    100736: pasted__pCube38 1
     400000: ambientLight2
     400002: ambientLight3
     400004: ambientLight4
@@ -727,6 +735,14 @@ ModelImporter:
     400716: transform97
     400718: transform98
     400720: transform99
+    400722: group
+    400724: group1
+    400726: pasted__pCube30
+    400728: pasted__pCube30 1
+    400730: pasted__pCube37
+    400732: pasted__pCube37 1
+    400734: pasted__pCube38
+    400736: pasted__pCube38 1
     2300000: mirrorCutPlane4
     2300002: mirrorCutPlane6
     2300004: pCube30
@@ -742,6 +758,12 @@ ModelImporter:
     2300024: polySurface81
     2300026: polySurface95
     2300028: spacePlatform:pCube48
+    2300030: pasted__pCube30
+    2300032: pasted__pCube30 1
+    2300034: pasted__pCube37
+    2300036: pasted__pCube37 1
+    2300038: pasted__pCube38
+    2300040: pasted__pCube38 1
     3300000: mirrorCutPlane4
     3300002: mirrorCutPlane6
     3300004: pCube30
@@ -757,6 +779,12 @@ ModelImporter:
     3300024: polySurface81
     3300026: polySurface95
     3300028: spacePlatform:pCube48
+    3300030: pasted__pCube30
+    3300032: pasted__pCube30 1
+    3300034: pasted__pCube37
+    3300036: pasted__pCube37 1
+    3300038: pasted__pCube38
+    3300040: pasted__pCube38 1
     4300000: polySurface64
     4300002: polySurface66
     4300004: polySurface81
@@ -772,6 +800,12 @@ ModelImporter:
     4300024: pCube38
     4300026: mirrorCutPlane6
     4300028: spacePlatform:pCube48
+    4300030: pasted__pCube30
+    4300032: pasted__pCube37
+    4300034: pasted__pCube38
+    4300036: pasted__pCube30
+    4300038: pasted__pCube37
+    4300040: pasted__pCube38
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -829,10 +863,8 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
-    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
-  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
