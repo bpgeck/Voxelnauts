@@ -58,10 +58,10 @@ public class World : MonoBehaviour {
 	}
 
 	public bool LoadWorld() {
-		if (File.Exists (Application.dataPath + "/Resources/" + worldName + ".dat")) {
+		if (File.Exists (Application.dataPath + "/Resources/" + worldName + "/" + worldName + ".dat")) {
 			WorldData worldData;
 			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Open (Application.dataPath + "/Resources/" + worldName + ".dat", FileMode.Open, FileAccess.Read);
+			FileStream file = File.Open (Application.dataPath + "/Resources/" + worldName + "/" + worldName + ".dat", FileMode.Open, FileAccess.Read);
 			worldData = (WorldData)bf.Deserialize (file);
 			file.Close ();
 			Debug.Log ("Loaded World: " + worldName);
@@ -85,7 +85,7 @@ public class World : MonoBehaviour {
 	public void SaveWorld() {
 		WorldData worldData = new WorldData (worldX, worldY, worldZ, chunkSize, data);
 		BinaryFormatter bf = new BinaryFormatter ();
-		FileStream file = new FileStream (Application.dataPath + "/Resources/" + worldName + ".dat", FileMode.Create, FileAccess.Write);
+		FileStream file = new FileStream (Application.dataPath + "/Resources/" + worldName + "/" + worldName + ".dat", FileMode.Create, FileAccess.Write);
 		bf.Serialize (file, worldData);
 		file.Close ();
 	}
@@ -110,8 +110,8 @@ public class World : MonoBehaviour {
 	}
 
 	public bool GenWorldWithTerrain() {
-		if (File.Exists (Application.dataPath + "/Resources/" + worldName + "_terrain.asset")) {
-			TerrainData terrain = Resources.Load (worldName + "_terrain") as TerrainData;
+		if (File.Exists (Application.dataPath + "/Resources/" + worldName + "/" + worldName + "_terrain.asset")) {
+			TerrainData terrain = Resources.Load (worldName + "/" + worldName + "_terrain") as TerrainData;
 			worldX = (int)terrain.size.x;
 			//worldY = (int)terrain.size.y;
 			worldY = 2*chunkSize;

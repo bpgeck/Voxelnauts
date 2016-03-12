@@ -32,25 +32,24 @@ public class Chunk : MonoBehaviour {
 		world = worldGO.GetComponent<World>();
 		chunkSize = world.GetChunkSize();
 		col = GetComponent<MeshCollider> ();
-
-		//add mesh if none exists
-		if(GetComponent<MeshFilter>() == null) {
-			mesh = new Mesh ();
-			meshFilter = gameObject.AddComponent<MeshFilter>();
-			meshFilter.mesh = mesh;
-			GenerateMesh ();
-			AssetDatabase.CreateAsset (mesh, "Assets/Resources/" + name + ".asset");
+		try {
+			mesh = AssetDatabase.LoadAssetAtPath("Assets/Resources/" + world.worldName + "/" + name, mesh.GetType()) as Mesh;
+		} catch {
+			mesh = new Mesh();
+			AssetDatabase.CreateAsset (mesh, "Assets/Resources/" + world.worldName + "/" + name + ".asset");
 			AssetDatabase.SaveAssets ();
-			mesh = AssetDatabase.LoadAssetAtPath("Assets/Resources/" + name, System.Type.GetType ("Mesh")) as Mesh;
 		}
-
+		meshFilter = GetComponent<MeshFilter>();
+		meshFilter.mesh = mesh;
+		GenerateMesh ();
 	}
 
 	void Update() {
 		//shift+S
 		if (Input.GetKey (KeyCode.LeftShift) && Input.GetKeyDown (KeyCode.S)) {
 			print ("Saved " + name + ".");
-			AssetDatabase.CreateAsset (mesh, "Assets/Resources/" + name + ".asset");
+			AssetDatabase.DeleteAsset ("Assets/Resources/" + world.worldName + "/" + name + ".asset");
+			AssetDatabase.CreateAsset (mesh, "Assets/Resources/" + world.worldName + "/" + name + ".asset");
 			AssetDatabase.SaveAssets();
 		}
 	}
