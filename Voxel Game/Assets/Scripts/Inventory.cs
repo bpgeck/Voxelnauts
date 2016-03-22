@@ -10,7 +10,7 @@ public class Inventory : MonoBehaviour
 
     void Start () 
 	{
-
+		DropAll ();
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -40,7 +40,7 @@ public class Inventory : MonoBehaviour
     }
 
     // returns true if the user has even one of the item in inventory
-    bool IsInInventory (int checkId)
+    public bool IsInInventory (int checkId)
     {
         for (int i = 0; i < inventory.Count; i++)
         {
@@ -75,11 +75,6 @@ public class Inventory : MonoBehaviour
 			GameObject flag = GameObject.Find ("Flag");
 			flag.GetComponent<FlagBehavior> ().Reappear ();
 		} 
-		else if (item.ID == 1)
-		{
-			GameObject bodyFlag = GameObject.Find("Body Flag");
-			Instantiate(bodyFlag, new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z), Quaternion.identity);
-		}
         else
         {
             GameObject droppedItem = (GameObject)Instantiate(Resources.Load("Item"));

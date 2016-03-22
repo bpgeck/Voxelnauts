@@ -39,7 +39,7 @@ public class RaycastGun : MonoBehaviour
 		{
 			if(Input.GetButton(buttonName))
 			{
-				heat += .005;
+				heat += .01;
 				firing = true;
 				if(Time.time > nextFire)
 				{
@@ -85,7 +85,7 @@ public class RaycastGun : MonoBehaviour
 			canFire = false;
 			firing = false;
 		} 
-		else if (heat <= .01 && heat > 0) 
+		else if (heat <= .2 && heat > 0) 
 		{
 			canFire = true;
 		} 

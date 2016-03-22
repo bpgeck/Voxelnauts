@@ -19,18 +19,11 @@ public class ItemProperties : MonoBehaviour {
     void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.name.Contains("Character"))
-        {
-            // first, add this item to the player's inventory
-            col.gameObject.GetComponent<Inventory>().PickUp(this.gameObject);
-
-            if (this.ID == 0) // if flag, just disable mesh
-            {
-                this.GetComponent<FlagBehavior>().Disappear();
-            }
-			else if (this.ID == 1) //if body flag, destroy the object
+        {   
+			int teamState = col.gameObject.GetComponent<TeamCheck>().SameTeam(this.gameObject);
+			if(this.ID == 1)
 			{
 				GameObject.Destroy(this.gameObject);
-				int teamState = col.gameObject.GetComponent<TeamCheck>().SameTeam(this.gameObject);
 				if(teamState == 1)
 				{
 					GameObject flag = GameObject.Find ("Flag");
@@ -38,13 +31,26 @@ public class ItemProperties : MonoBehaviour {
 				}
 				else if(teamState == 2)
 				{
+
 				}
 			}
-            else
-            {
-                // next, destroy this object
-                GameObject.Destroy(this.gameObject);
-            }
+			else
+			{
+
+				if (this.ID == 0) // if flag, just disable mesh
+				{
+					if(teamState == 2)
+					{
+						col.gameObject.GetComponent<Inventory>().PickUp(this.gameObject);
+						this.GetComponent<FlagBehavior>().Disappear();
+					}
+				}
+				else
+				{
+					// next, destroy this object
+					GameObject.Destroy(this.gameObject);
+				}
+			}
         }
     }
 

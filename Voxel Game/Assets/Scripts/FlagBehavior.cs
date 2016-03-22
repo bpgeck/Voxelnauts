@@ -4,12 +4,12 @@ using System.Collections;
 public class FlagBehavior : MonoBehaviour 
 {
 	public Renderer[] flagRend;
-	public BoxCollider[] boxCollider;
+	public BoxCollider boxCollider;
 
 	void Start () 
 	{
 		flagRend = GetComponentsInChildren<MeshRenderer> ();
-		boxCollider = GetComponentsInChildren<BoxCollider> ();
+		boxCollider = GetComponent<BoxCollider> ();
 	}
 
 	public void Disappear()
@@ -19,10 +19,7 @@ public class FlagBehavior : MonoBehaviour
 		{
 			rend.enabled = false;
 		}
-		foreach (BoxCollider box in boxCollider)
-		{
-			box.enabled = false;
-		}
+			boxCollider.enabled = false;
 	}
 
     public void Reappear() // this will be called when the user dies
@@ -31,9 +28,6 @@ public class FlagBehavior : MonoBehaviour
         {
             rend.enabled = true;
         }
-        foreach (BoxCollider box in boxCollider)
-        {
-            box.enabled = true;
-        }
+            boxCollider.enabled = true;
     }
 }

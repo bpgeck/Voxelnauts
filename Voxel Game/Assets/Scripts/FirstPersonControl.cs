@@ -12,6 +12,8 @@ public class FirstPersonControl : MonoBehaviour
 	float verticalVelocity = 0;
     Vector3 startPosition;
 
+	public GameObject bodyFlag;
+
     Camera firstPersonCamera;
 	CharacterController characterController;
 	// Use this for initialization
@@ -76,6 +78,10 @@ public class FirstPersonControl : MonoBehaviour
     // Flag drops in a special way
     public void Die()
     {
+		if (this.GetComponent<Inventory>().IsInInventory (0)) 
+		{
+			Instantiate(bodyFlag, new Vector3(this.transform.position.x,this.transform.position.y,this.transform.position.z), Quaternion.identity);
+		}
         this.GetComponent<Inventory>().DropAll();
         this.transform.position = startPosition;
     }
