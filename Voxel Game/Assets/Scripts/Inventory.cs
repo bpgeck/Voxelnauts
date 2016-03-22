@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-public class Inventory : MonoBehaviour {
+public class Inventory : MonoBehaviour 
+{
     public List<Item> inventory = new List<Item>();
 
-    void Start () {
+    void Start () 
+	{
 
     }
 
@@ -68,11 +70,16 @@ public class Inventory : MonoBehaviour {
         // create prefab of Item argument
         // drop prefab
         // remove 1 copy of the corresponding item from `inventory` List
-        if (item.ID == 0) // if the user is dropping a flag, don't spawn a prefab, just reset the flag's mesh
-        {
-            GameObject flag = GameObject.Find("Flag");
-            flag.GetComponent<FlagBehavior>();
-        }
+        if (item.ID == 0) 
+		{ // if the user is dropping a flag, don't spawn a prefab, just reset the flag's mesh
+			GameObject flag = GameObject.Find ("Flag");
+			flag.GetComponent<FlagBehavior> ().Reappear ();
+		} 
+		else if (item.ID == 1)
+		{
+			GameObject bodyFlag = GameObject.Find("Body Flag");
+			Instantiate(bodyFlag, new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z), Quaternion.identity);
+		}
         else
         {
             GameObject droppedItem = (GameObject)Instantiate(Resources.Load("Item"));

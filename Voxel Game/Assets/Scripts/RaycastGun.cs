@@ -16,7 +16,12 @@ public class RaycastGun : MonoBehaviour
 	public float timeTillMaxSpreadAngle = 1.0f;
 	public AnimationCurve bulletSpreadCurve;
 	public LayerMask layerMask = -1;
-	
+	public double heat;
+	public bool canFire;
+	public bool firing;
+	public float fireRate;
+	public float nextFire = 0f;
+
 	private bool readyToFire = true;
 	private float fireTime;
 	
@@ -29,26 +34,31 @@ public class RaycastGun : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if(Input.GetButton(buttonName)) //GetButtonDown for semi-auto, GetButton for automatic fire
+		 //GetButtonDown for semi-auto, GetButton for automatic fire
+		if (canFire)
 		{
-			fireTime += Time.deltaTime;
-			
-			if(readyToFire)
+			if(Input.GetButton(buttonName))
 			{
+				heat += .005;
+				firing = true;
+				if(Time.time > nextFire)
+				{
+				nextFire = Time.time + fireRate;
+				fireTime += Time.deltaTime;
 				RaycastHit hit;
-				
+
 				Vector3 fireDirection = transform.forward;
-				
+			
 				Quaternion fireRotation = Quaternion.LookRotation(fireDirection);
-				
+			
 				Quaternion randomRotation = Random.rotation;
-				
+			
 				float currentSpread = bulletSpreadCurve.Evaluate(fireTime/timeTillMaxSpreadAngle)*maxBulletSpreadAngle;
-				
+			
 				//float currentSpread = Mathf.Lerp(0.0f, maxBulletSpreadAngle, fireTime/timeTillMaxSpreadAngle);
-				
+			
 				fireRotation = Quaternion.RotateTowards(fireRotation,randomRotation,Random.Range(0.0f,currentSpread));
-				
+			
 				if(Physics.Raycast(transform.position,fireRotation*Vector3.forward,out hit,Mathf.Infinity,layerMask))
 				{
 					GunHit gunHit = new GunHit();
@@ -58,13 +68,35 @@ public class RaycastGun : MonoBehaviour
 					readyToFire = false;
 					Invoke("SetReadyToFire", fireDelay);
 				}
+				}
+			}
+			else
+			{
+				firing = false;
 			}
 		}
-		else
+		if(!firing)
 		{
 			fireTime = 0.0f;
+			heat -= .005;
 		}
+		if (heat >= 1) 
+		{
+			canFire = false;
+			firing = false;
+		} 
+		else if (heat <= .01 && heat > 0) 
+		{
+			canFire = true;
+		} 
+		else if (heat <= 0) 
+		{
+			heat = 0;
+			canFire = true;
+		}
+		Debug.Log ("Heat: " + heat);
 	}
+
 	
 	void SetReadyToFire()
 	{

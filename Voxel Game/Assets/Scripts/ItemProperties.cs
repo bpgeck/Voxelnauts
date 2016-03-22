@@ -27,6 +27,19 @@ public class ItemProperties : MonoBehaviour {
             {
                 this.GetComponent<FlagBehavior>().Disappear();
             }
+			else if (this.ID == 1) //if body flag, destroy the object
+			{
+				GameObject.Destroy(this.gameObject);
+				int teamState = col.gameObject.GetComponent<TeamCheck>().SameTeam(this.gameObject);
+				if(teamState == 1)
+				{
+					GameObject flag = GameObject.Find ("Flag");
+					flag.GetComponent<FlagBehavior> ().Reappear ();
+				}
+				else if(teamState == 2)
+				{
+				}
+			}
             else
             {
                 // next, destroy this object
