@@ -148,7 +148,9 @@ ModelImporter:
     400138: transform8
     400140: transform9
     2300000: spaceTube
+    2300002: //RootNode
     3300000: spaceTube
+    3300002: //RootNode
     4300000: spaceTube
     9500000: //RootNode
   materials:

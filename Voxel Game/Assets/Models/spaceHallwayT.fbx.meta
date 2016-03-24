@@ -698,7 +698,9 @@ ModelImporter:
     400688: transform98
     400690: transform99
     2300000: space_tJoint
+    2300002: //RootNode
     3300000: space_tJoint
+    3300002: //RootNode
     4300000: space_tJoint
     9500000: //RootNode
   materials:

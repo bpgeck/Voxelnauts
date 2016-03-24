@@ -29,6 +29,8 @@ ModelImporter:
     100042: //RootNode
     100044: transform1
     100046: transform2
+    100048: space_Hallway
+    100050: space_Hallway 1
     400000: group
     400002: group1
     400004: group2
@@ -53,9 +55,14 @@ ModelImporter:
     400042: //RootNode
     400044: transform1
     400046: transform2
+    400048: space_Hallway
+    400050: space_Hallway 1
     2300000: pasted__pasted__space_Hallway
+    2300002: space_Hallway 1
     3300000: pasted__pasted__space_Hallway
+    3300002: space_Hallway 1
     4300000: pasted__pasted__space_Hallway
+    4300002: space_Hallway
     9500000: //RootNode
   materials:
     importMaterials: 1

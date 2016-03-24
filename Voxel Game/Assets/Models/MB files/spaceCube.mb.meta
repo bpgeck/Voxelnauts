@@ -81,6 +81,7 @@ ModelImporter:
     100146: transform7
     100148: transform8
     100150: transform9
+    100152: space_Cube
     400000: ambientLight1
     400002: directionalLight1
     400004: mirrorCutPlane1
@@ -157,9 +158,13 @@ ModelImporter:
     400146: transform7
     400148: transform8
     400150: transform9
+    400152: space_Cube
     2300000: pCube35
+    2300002: space_Cube
     3300000: pCube35
+    3300002: space_Cube
     4300000: pCube35
+    4300002: space_Cube
     9500000: //RootNode
   materials:
     importMaterials: 1

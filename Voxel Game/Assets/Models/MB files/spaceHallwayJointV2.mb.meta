@@ -393,6 +393,7 @@ ModelImporter:
     100770: transform97
     100772: transform98
     100774: transform99
+    100776: space_Hallway_Joint
     400000: ambientLight2
     400002: ambientLight3
     400004: ambientLight4
@@ -781,6 +782,7 @@ ModelImporter:
     400770: transform97
     400772: transform98
     400774: transform99
+    400776: space_Hallway_Joint
     2300000: pasted__pasted__pCube49
     2300002: pasted__pCube40
     2300004: pasted__pCube49
@@ -819,6 +821,7 @@ ModelImporter:
     2300070: pasted__polySurface157
     2300072: pasted__polySurface158
     2300074: pasted__polySurface159
+    2300076: space_Hallway_Joint
     3300000: pasted__pasted__pCube49
     3300002: pasted__pCube40
     3300004: pasted__pCube49
@@ -857,6 +860,7 @@ ModelImporter:
     3300070: pasted__polySurface157
     3300072: pasted__polySurface158
     3300074: pasted__polySurface159
+    3300076: space_Hallway_Joint
     4300000: pasted__pCube40
     4300002: pasted__polySurface125
     4300004: pasted__polySurface126
@@ -895,6 +899,7 @@ ModelImporter:
     4300070: pasted__polySurface159
     4300072: pasted__pCube49
     4300074: pasted__pasted__pCube49
+    4300076: space_Hallway_Joint
     9500000: //RootNode
   materials:
     importMaterials: 1
