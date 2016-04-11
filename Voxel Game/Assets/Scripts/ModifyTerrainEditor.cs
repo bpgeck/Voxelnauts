@@ -2,9 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public class ModifyTerrain : MonoBehaviour {
+public class ModifyTerrainEditor : MonoBehaviour {
 
 	World world;
+	BlockType current = BlockType.Clay_Dark;
 
 	void Start() {
 		world = gameObject.GetComponent ("World") as World;
@@ -12,27 +13,41 @@ public class ModifyTerrain : MonoBehaviour {
 
 	void Update() {
 
-	}
-
-	public void DestroyAreaOnCollision(Collision collision, float radius) {
-		Vector3 point = collision.contacts [0].point + (collision.contacts [0].normal * -0.5f);
-		point.x = Mathf.RoundToInt (point.x);
-		point.y = Mathf.RoundToInt (point.y);
-		point.z = Mathf.RoundToInt (point.z);
-		int c = (int)(radius / 2);
-		for (int i = -c; i <= c; i++) {
-			for (int j = -c; j <= c; j++) {
-				for (int k = -c; j <= c; k++) {
-					int x = point.x + i;
-					int y = point.y + j;
-					int z = point.z + k;
-					float distance = Math.Sqrt(x*x + y*y + z*z);
-					if (distance <= radius) {
-						SetBlockAt(x,y,z,BlockType.Air);
-					}
-				}
+		//shift commands
+		if (Input.GetKey (KeyCode.LeftShift) && Input.GetKeyDown (KeyCode.S)) {
+			//shift+S
+			if (Input.GetKeyDown (KeyCode.S)) {
+				print ("saved: " + world.worldName);
+				world.SaveWorld ();
 			}
 		}
+		//scrollwheel
+		if (Input.GetAxis ("Mouse ScrollWheel") > 0)
+			SetCurrentBlock (1);
+		else if (Input.GetAxis ("Mouse ScrollWheel") < 0)
+			SetCurrentBlock (-1);
+		//lmb
+		if (Input.GetMouseButtonDown (0))
+			ReplaceBlockCursor (BlockType.Air);
+		//rmb
+		if (Input.GetMouseButtonDown (1))
+			AddBlockCursor (current);
+
+
+	}
+
+	public void SetCurrentBlock (int x) {
+
+		if (x == 0)
+			return;
+		else if (x > 0 && current == BlockType.Snow)
+			current = BlockType.Clay_Dark;
+		else if (x < 0 && current == BlockType.Clay_Dark)
+			current = BlockType.Snow;
+		else
+			current = (BlockType)(byte)((int)current + x);
+
+		print ("Selected BlockType: " + current.ToString ());
 	}
 
 	public void ReplaceBlockCursor(BlockType block) {
