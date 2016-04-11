@@ -23,10 +23,10 @@ public class ModifyTerrain : MonoBehaviour {
 		for (int i = -c; i <= c; i++) {
 			for (int j = -c; j <= c; j++) {
 				for (int k = -c; j <= c; k++) {
-					int x = point.x + i;
-					int y = point.y + j;
-					int z = point.z + k;
-					float distance = Math.Sqrt(x*x + y*y + z*z);
+					int x = (int)(point.x + i);
+					int y = (int)(point.y + j);
+					int z = (int)(point.z + k);
+					float distance = Mathf.Sqrt(x*x + y*y + z*z);
 					if (distance <= radius) {
 						SetBlockAt(x,y,z,BlockType.Air);
 					}
