@@ -25,19 +25,6 @@ public class FirstPersonControl : MonoBehaviour
 		Cursor.visible = true; // temporarily set to true for testing
 		characterController = GetComponent <CharacterController> ();
         firstPersonCamera = this.transform.Find("Eyes").GetComponent<Camera> ();
-        geckAnimator = this.transform.Find("geckstronautAnimatedWithGun").GetComponent<Animator> ();
-        geckAnimator.SetBool("HasGun", false);
-        geckAnimator.SetBool("Idle", false);
-        geckAnimator.SetBool("Walking", false);
-        geckAnimator.SetBool("Running", false);
-        geckAnimator.SetBool("Shooting", false);
-
-        gunAnimator = this.transform.Find("geckstronautAnimatedWithGun").Find("SpaceAR:SpaceAR:Mesh").GetComponent<Animator>();
-        gunAnimator.SetBool("HasGun", false);
-        gunAnimator.SetBool("Idle", false);
-        gunAnimator.SetBool("Walking", false);
-        gunAnimator.SetBool("Running", false);
-        gunAnimator.SetBool("Shooting", false);
     }
 	
 	// Update is called once per frame
@@ -71,20 +58,6 @@ public class FirstPersonControl : MonoBehaviour
             verticalVelocity += Physics.gravity.y * Time.deltaTime;
         }
 
-        // Check if player is holding a gun
-        if (this.transform.Find("geckstronautAnimatedWithGun").transform.Find("SpaceAR:SpaceAR:Mesh") != null)
-        {
-            geckAnimator.SetBool("HasGun", true);
-            gunAnimator.SetBool("HasGun", true);
-            this.transform.Find("geckstronautAnimatedWithGun").transform.Find("SpaceAR:SpaceAR:Mesh").gameObject.SetActive(true);
-        }
-        else
-        {
-            geckAnimator.SetBool("HasGun", false);
-            gunAnimator.SetBool("HasGun", false);
-            this.transform.Find("geckstronautAnimatedWithGun").transform.Find("SpaceAR:SpaceAR:Mesh").gameObject.SetActive(false);
-        }
-
         // If player is pressing left CTRL, then walk
         if (Input.GetKey(KeyCode.LeftControl))
         {
@@ -94,61 +67,9 @@ public class FirstPersonControl : MonoBehaviour
             }
         }
 
-        // If player is shooting, set shooting animation
-        if (Input.GetMouseButton(0))
-        {
-            geckAnimator.SetBool("Shooting", true);
-            gunAnimator.SetBool("Shooting", true);
-            if (forwardSpeed > 5.0F)
-            {
-                geckAnimator.SetBool("Running", false);
-                gunAnimator.SetBool("Running", false);
-                geckAnimator.SetBool("Walking", true);
-                gunAnimator.SetBool("Walking", true);
-                forwardSpeed = 4.9F;
-            }
-        }
-        else
-        {
-            geckAnimator.SetBool("Shooting", false);
-            gunAnimator.SetBool("Shooting", false);
-        }
-
         // set the speed
         Vector3 speed = new Vector3(sideSpeed, verticalVelocity, forwardSpeed);
         speed = transform.rotation * speed;
-
-        // Adjust animation depending on speed of player
-        if (speed.magnitude > 0.5F)
-        {
-            if (speed.magnitude > 5.0F)
-            {
-                geckAnimator.SetBool("Idle", false);
-                gunAnimator.SetBool("Idle", false);
-                geckAnimator.SetBool("Walking", false);
-                gunAnimator.SetBool("Walking", false);
-                geckAnimator.SetBool("Running", true);
-                gunAnimator.SetBool("Running", true);
-            }
-            else
-            {
-                geckAnimator.SetBool("Idle", false);
-                gunAnimator.SetBool("Idle", false);
-                geckAnimator.SetBool("Walking", true);
-                gunAnimator.SetBool("Walking", true);
-                geckAnimator.SetBool("Running", false);
-                gunAnimator.SetBool("Running", false);
-            }
-        }
-        else
-        {
-            geckAnimator.SetBool("Idle", true);
-            gunAnimator.SetBool("Idle", true);
-            geckAnimator.SetBool("Walking", false);
-            gunAnimator.SetBool("Walking", false);
-            geckAnimator.SetBool("Running", false);
-            gunAnimator.SetBool("Running", false);
-        }
 
         // move that bitch
         characterController.Move(speed * Time.deltaTime);
