@@ -11,7 +11,7 @@ public class World : MonoBehaviour {
 	private int worldX;
 	private int worldY;
 	private int worldZ;
-	private int chunkSize=32;
+	private int chunkSize=64;
 
 	public string worldName;
 
