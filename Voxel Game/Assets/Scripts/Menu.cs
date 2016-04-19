@@ -4,21 +4,28 @@ using System.Collections;
 public class Menu : MonoBehaviour {
 	
 	private bool showOptions = false;
+	private GameObject manager;
 	public float shadowDrawDistance;
+	private float hSlider = 5.0f;
+	private string mouseSens = "Mouse Sensitivity";
 	public int ResX;
 	public int ResY;
 	public bool Fullscreen;
+
 	// Use this for initialization
 	void Start () {
 		showOptions = false;
+		manager = GameObject.FindGameObjectWithTag ("GameController");
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		manager.GetComponent<GameManagerScript> ().mouseSensitivity = hSlider;
 	}
 	
 	void OnGUI() {
+
 		if(GUI.Button(new Rect(900, 250, 300, 100), "Connect")) {
 			// Application.LoadLevel(1);
 		}
@@ -114,12 +121,40 @@ public class Menu : MonoBehaviour {
 				ResY = 480;
 				Debug.Log ("480p");
 			}
+			if (QualitySettings.vSyncCount == 0){ 
+				//VSync is currently off
+				if(GUI.Button(new Rect(900, 150, 140, 100), "Vsync: Off")) {
+					QualitySettings.vSyncCount = 1;
+				}
+			}
+			else if (QualitySettings.vSyncCount == 1){
+				//Vsync is currently on
+				if(GUI.Button(new Rect(900, 150, 140, 100), "Vsync: On")) {
+					QualitySettings.vSyncCount = 0;
+				}
+			}
+			if (manager.GetComponent<GameManagerScript>().rawMouse == false){
+				//Turns raw mouse input on
+				if(GUI.Button(new Rect(1045, 150, 140, 100), "Raw Mouse Input: Off")) {
+					manager.GetComponent<GameManagerScript>().rawMouse = true;
+				}
+			}
+			if (manager.GetComponent<GameManagerScript>().rawMouse == true){
+				//Turns raw mouse input off
+				if(GUI.Button(new Rect(1045, 150, 140, 100), "Raw Mouse Input: On")) {
+					manager.GetComponent<GameManagerScript>().rawMouse = false;
+				}
+			}
+
+			hSlider = GUI.HorizontalSlider(new Rect(755, 150, 140, 100), hSlider, 1.0f, 100f);
+		/*
 			if(GUI.Button(new Rect(900, 150, 140, 100), "Vsync On")) {
 				QualitySettings.vSyncCount = 1;
 			}
 			if(GUI.Button(new Rect(1045, 150, 140, 100), "Vsync Off")) {
 				QualitySettings.vSyncCount = 0;
 			}
+		*/
 		}
 	}
 }

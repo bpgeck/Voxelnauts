@@ -5,12 +5,15 @@ using System.Collections;
 public class AstroFirstPersonControl : MonoBehaviour 
 {
 	public float movementSpeed = 5.0f;
-	public float mouseSensitivity = 5.0f;
+	private float mouseSensitivity;
 	public float jumpSpeed = 20.0f;
 	public float upDownRange = 60.0f;
+	private float rotLeftRight;
 	float verticalRotation = 0;
 	float verticalVelocity = 0;
     Vector3 startPosition;
+
+	private GameObject manager;
 
 	public GameObject bodyFlag;
 
@@ -30,16 +33,28 @@ public class AstroFirstPersonControl : MonoBehaviour
         geckAnimator.SetBool("Walking", false);
         geckAnimator.SetBool("Running", false);
         geckAnimator.SetBool("Shooting", false);
+		manager = GameObject.FindGameObjectWithTag ("GameController");
+		mouseSensitivity = manager.GetComponent<GameManagerScript> ().mouseSensitivity;
     }
 	
 	// Update is called once per frame
 	void Update()
     {
         // Rotation stuff
-		float rotLeftRight = Input.GetAxis ("Mouse X") * mouseSensitivity;
+		if (manager.GetComponent<GameManagerScript> ().rawMouse == false) {
+			rotLeftRight = Input.GetAxis ("Mouse X") * mouseSensitivity;
+		} 
+		else if (manager.GetComponent<GameManagerScript> ().rawMouse == true) {
+			rotLeftRight = Input.GetAxisRaw ("Mouse X") * mouseSensitivity;
+		}
 		transform.Rotate (0, rotLeftRight, 0);
-
-		verticalRotation -= Input.GetAxis ("Mouse Y") * mouseSensitivity;
+		
+		if (manager.GetComponent<GameManagerScript>().rawMouse == false){
+			verticalRotation -= Input.GetAxis ("Mouse Y") * mouseSensitivity;
+		}
+		if (manager.GetComponent<GameManagerScript>().rawMouse == true){
+				verticalRotation -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity;	
+		}
 		verticalRotation = Mathf.Clamp (verticalRotation, -upDownRange, upDownRange);
 
         firstPersonCamera.transform.localRotation = Quaternion.Euler (verticalRotation, 0, 0);
