@@ -14,8 +14,7 @@ public class ModifyTerrain : MonoBehaviour {
 
 	}
 
-	public void DestroyAreaOnCollision(Collision collision, float radius) {
-		Vector3 point = collision.contacts [0].point + (collision.contacts [0].normal * -0.5f);
+	public void DestroyArea(Vector3 point, float radius) {
 		point.x = Mathf.RoundToInt (point.x);
 		point.y = Mathf.RoundToInt (point.y);
 		point.z = Mathf.RoundToInt (point.z);
