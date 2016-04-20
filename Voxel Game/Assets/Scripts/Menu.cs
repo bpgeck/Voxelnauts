@@ -11,13 +11,12 @@ public class Menu : MonoBehaviour {
 	public int ResX;
 	public int ResY;
 	public bool Fullscreen;
-	public GUIStyle backgroundStyle;
-	public GUIStyle thumbStyle;
 
 	// Use this for initialization
 	void Start () {
 		showOptions = false;
 		manager = GameObject.FindGameObjectWithTag ("GameController");
+
 	}
 	
 	// Update is called once per frame
@@ -146,8 +145,8 @@ public class Menu : MonoBehaviour {
 					manager.GetComponent<GameManagerScript>().rawMouse = false;
 				}
 			}
-			GUI.Label(new Rect(700,190,140,100),mouseSens);
-			hSlider = GUI.HorizontalSlider(new Rect(625, 210, 250, 20), hSlider, 1.0f, 100f, backgroundStyle, thumbStyle);
+
+			hSlider = GUI.HorizontalSlider(new Rect(755, 150, 140, 100), hSlider, 1.0f, 100f);
 		/*
 			if(GUI.Button(new Rect(900, 150, 140, 100), "Vsync On")) {
 				QualitySettings.vSyncCount = 1;
