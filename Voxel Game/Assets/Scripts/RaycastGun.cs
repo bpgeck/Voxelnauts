@@ -23,12 +23,16 @@ public class RaycastGun : MonoBehaviour
 	public float nextFire = 0f;
 
 	private bool readyToFire = true;
+	public float range;
 	private float fireTime;
+
+	Camera camera;
 	
 	// Use this for initialization
 	void Start ()
 	{
-		
+		GameObject eyes = GameObject.Find ("Eyes");
+		camera = eyes.GetComponent<Camera> ();
 	}
 	
 	// Update is called once per frame
@@ -39,35 +43,38 @@ public class RaycastGun : MonoBehaviour
 		{
 			if(Input.GetButton(buttonName))
 			{
-				heat += .01;
 				firing = true;
 				if(Time.time > nextFire)
 				{
-				nextFire = Time.time + fireRate;
-				fireTime += Time.deltaTime;
-				RaycastHit hit;
+					heat += .02;
+					nextFire = Time.time + fireRate;
+					fireTime += Time.deltaTime;
+					RaycastHit hit;
 
-				Vector3 fireDirection = transform.forward;
+					Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2, 0f));
+
+					Vector3 fireDirection = ray.direction;
+
+					Quaternion fireRotation = Quaternion.LookRotation(fireDirection);
 			
-				Quaternion fireRotation = Quaternion.LookRotation(fireDirection);
+					Quaternion randomRotation = Random.rotation;
 			
-				Quaternion randomRotation = Random.rotation;
+					float currentSpread = bulletSpreadCurve.Evaluate(fireTime/timeTillMaxSpreadAngle)*maxBulletSpreadAngle;
+				
+					//float currentSpread = Mathf.Lerp(0.0f, maxBulletSpreadAngle, fireTime/timeTillMaxSpreadAngle);
+				
+					fireRotation = Quaternion.RotateTowards(fireRotation,randomRotation,Random.Range(0.0f,currentSpread));
 			
-				float currentSpread = bulletSpreadCurve.Evaluate(fireTime/timeTillMaxSpreadAngle)*maxBulletSpreadAngle;
-			
-				//float currentSpread = Mathf.Lerp(0.0f, maxBulletSpreadAngle, fireTime/timeTillMaxSpreadAngle);
-			
-				fireRotation = Quaternion.RotateTowards(fireRotation,randomRotation,Random.Range(0.0f,currentSpread));
-			
-				if(Physics.Raycast(transform.position,fireRotation*Vector3.forward,out hit,Mathf.Infinity,layerMask))
-				{
-					GunHit gunHit = new GunHit();
-					gunHit.damage = damage;
-					gunHit.raycastHit = hit;
-					hit.collider.SendMessage("Damage",gunHit,SendMessageOptions.DontRequireReceiver);
-					readyToFire = false;
-					Invoke("SetReadyToFire", fireDelay);
-				}
+					if(Physics.Raycast(transform.position,fireRotation*Vector3.forward,out hit,Mathf.Infinity,layerMask))
+					{
+						GunHit gunHit = new GunHit();
+						gunHit.damage = damage;
+						gunHit.raycastHit = hit;
+						hit.collider.SendMessage("Damage",gunHit,SendMessageOptions.DontRequireReceiver);
+						readyToFire = false;
+						Invoke("SetReadyToFire", fireDelay);
+					}
+					Debug.DrawRay(this.transform.position, fireRotation*Vector3.forward*range, Color.red, 0f, false);
 				}
 			}
 			else
@@ -75,11 +82,13 @@ public class RaycastGun : MonoBehaviour
 				firing = false;
 			}
 		}
+
 		if(!firing)
 		{
 			fireTime = 0.0f;
-			heat -= .005;
+			heat -= .01;
 		}
+
 		if (heat >= 1) 
 		{
 			canFire = false;
@@ -94,7 +103,6 @@ public class RaycastGun : MonoBehaviour
 			heat = 0;
 			canFire = true;
 		}
-		Debug.Log ("Heat: " + heat);
 	}
 
 	

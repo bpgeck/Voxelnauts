@@ -18,31 +18,67 @@ public class ItemProperties : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.name.Contains("Character"))
+        if (col.gameObject.name.Contains("GeckstroNOT"))
         {   
-			int teamState = col.gameObject.GetComponent<TeamCheck>().SameTeam(this.gameObject);
-			if(this.ID == 1)
+			GameObject character = col.gameObject;
+			int teamState = character.GetComponent<TeamCheck>().SameTeam(this.gameObject);
+			GameObject flag_b = GameObject.Find ("Flag Burgundy");
+			GameObject flag_c = GameObject.Find ("Flag Cerulean");
+			if(this.ID == 2)
 			{
 				GameObject.Destroy(this.gameObject);
 				if(teamState == 1)
 				{
-					GameObject flag = GameObject.Find ("Flag");
-					flag.GetComponent<FlagBehavior> ().Reappear ();
+					flag_b.GetComponent<FlagBehavior> ().Reappear ();
 				}
-				else if(teamState == 2)
+				else if(teamState == 4)
 				{
-
+					character.GetComponent<Inventory>().PickUp(flag_b);
+				}
+			}
+			else if(this.ID == 3)
+			{
+				GameObject.Destroy(this.gameObject);
+				if(teamState == 2)
+				{
+					flag_c.GetComponent<FlagBehavior> ().Reappear ();
+				}
+				else if(teamState == 3)
+				{
+					character.GetComponent<Inventory>().PickUp(flag_c);
 				}
 			}
 			else
 			{
 
-				if (this.ID == 0) // if flag, just disable mesh
+				if (this.ID == 0) // if flag_, just disable mesh
 				{
-					if(teamState == 2)
+					if(teamState == 4)
 					{
-						col.gameObject.GetComponent<Inventory>().PickUp(this.gameObject);
-						this.GetComponent<FlagBehavior>().Disappear();
+						character.GetComponent<Inventory>().PickUp(flag_b);
+						flag_b.GetComponent<FlagBehavior>().Disappear();
+					}
+					else if(teamState == 1 && character.GetComponent<Inventory>().IsInInventory(1))
+					{
+						Debug.Log("You get a point!");
+						flag_c.GetComponent<FlagBehavior>().Reappear();
+						character.GetComponent<Inventory>().inventory.Remove(character.GetComponent<Inventory>().find(1));
+					}
+				}
+				else if(this.ID == 1)
+				{
+					GameObject flag_ = GameObject.Find ("flag_ Cerulean");
+					if(teamState == 3)
+					{
+						character.GetComponent<Inventory>().PickUp(flag_c);
+						flag_c.GetComponent<FlagBehavior>().Disappear();
+					}
+					else if(teamState == 2 && character.GetComponent<Inventory>().IsInInventory(0))
+					{
+						Debug.Log("You get a point!");
+						flag_ = GameObject.Find ("flag_ Burgundy");
+						flag_b.GetComponent<FlagBehavior>().Reappear();
+						character.GetComponent<Inventory>().inventory.Remove(character.GetComponent<Inventory>().find(0));
 					}
 				}
 				else

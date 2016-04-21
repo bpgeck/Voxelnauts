@@ -6,6 +6,9 @@ using System.IO;
 
 public class Inventory : MonoBehaviour 
 {
+	public GameObject Flag_B;
+	public GameObject Flag_C;
+
     public List<Item> inventory = new List<Item>();
 
     void Start () 
@@ -52,6 +55,18 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
+	public Item find(int checkId)
+	{
+		for (int i = 0; i < inventory.Count; i++)
+		{
+			if (inventory[i].ID == checkId)
+			{
+				return inventory[i];
+			}
+		}
+		return null;
+	}
+
     public void DropAll()
     {
         //TODO
@@ -70,11 +85,14 @@ public class Inventory : MonoBehaviour
         // create prefab of Item argument
         // drop prefab
         // remove 1 copy of the corresponding item from `inventory` List
-        if (item.ID == 0) 
-		{ // if the user is dropping a flag, don't spawn a prefab, just reset the flag's mesh
-			GameObject flag = GameObject.Find ("Flag");
-			flag.GetComponent<FlagBehavior> ().Reappear ();
+        if (item.ID == 0)
+		{ 
+			Instantiate(Flag_B,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
 		} 
+		else if (item.ID == 1) 
+		{
+			Instantiate(Flag_C,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
+		}
         else
         {
             GameObject droppedItem = (GameObject)Instantiate(Resources.Load("Item"));

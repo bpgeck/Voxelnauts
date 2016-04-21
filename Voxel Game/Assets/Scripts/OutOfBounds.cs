@@ -15,9 +15,9 @@ public class OutOfBounds : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.name.Contains("Character"))
+        if (col.gameObject.name.Contains("GeckstroNot"))
         {
-            col.gameObject.GetComponent<FirstPersonControl>().Die();
+            col.gameObject.GetComponent<AstroFirstPersonControl>().Die();
         }
     }
 }
