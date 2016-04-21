@@ -11,20 +11,21 @@ public class RaycastGun : MonoBehaviour
 {
 	public float fireDelay = 0.1f;
 	public float damage = 1.0f;
-	public string buttonName = "Fire1";
 	public float maxBulletSpreadAngle = 15.0f;
 	public float timeTillMaxSpreadAngle = 1.0f;
 	public AnimationCurve bulletSpreadCurve;
 	public LayerMask layerMask = -1;
+
 	public double heat;
 	public bool canFire;
 	public bool firing;
 	public float fireRate;
 	public float nextFire = 0f;
-
-	private bool readyToFire = true;
+	
 	public float range;
 	private float fireTime;
+
+	public GameObject objectToSpawn;
 
 	Camera camera;
 	
@@ -41,7 +42,7 @@ public class RaycastGun : MonoBehaviour
 		 //GetButtonDown for semi-auto, GetButton for automatic fire
 		if (canFire)
 		{
-			if(Input.GetButton(buttonName))
+			if(Input.GetButton("Fire1"))
 			{
 				firing = true;
 				if(Time.time > nextFire)
@@ -70,9 +71,8 @@ public class RaycastGun : MonoBehaviour
 						GunHit gunHit = new GunHit();
 						gunHit.damage = damage;
 						gunHit.raycastHit = hit;
-						hit.collider.SendMessage("Damage",gunHit,SendMessageOptions.DontRequireReceiver);
-						readyToFire = false;
-						Invoke("SetReadyToFire", fireDelay);
+						//hit.collider.SendMessage("Damage",gunHit,SendMessageOptions.DontRequireReceiver);
+						Instantiate(objectToSpawn,gunHit.raycastHit.point,Quaternion.LookRotation(gunHit.raycastHit.normal));
 					}
 					Debug.DrawRay(this.transform.position, fireRotation*Vector3.forward*range, Color.red, 0f, false);
 				}
@@ -103,12 +103,6 @@ public class RaycastGun : MonoBehaviour
 			heat = 0;
 			canFire = true;
 		}
-	}
-
-	
-	void SetReadyToFire()
-	{
-		readyToFire = true;
 	}
 }
 

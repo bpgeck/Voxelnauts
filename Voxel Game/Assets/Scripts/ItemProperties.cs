@@ -4,13 +4,11 @@ using System.Collections;
 public class ItemProperties : MonoBehaviour {
     public int ID;
 
-	// Use this for initialization
 	void Start ()
     {
 
 	}
-	
-	// Update is called once per frame
+
 	void Update ()
     {
 	    
@@ -50,8 +48,8 @@ public class ItemProperties : MonoBehaviour {
 			}
 			else
 			{
-
-				if (this.ID == 0) // if flag_, just disable mesh
+				GameObject score = GameObject.Find("Scoreboard");
+				if (this.ID == 0)
 				{
 					if(teamState == 4)
 					{
@@ -60,14 +58,15 @@ public class ItemProperties : MonoBehaviour {
 					}
 					else if(teamState == 1 && character.GetComponent<Inventory>().IsInInventory(1))
 					{
-						Debug.Log("You get a point!");
+						Debug.Log("You get a point!"); //team burgundy
+						score.GetComponent<Scoreboard>().score_b++;
 						flag_c.GetComponent<FlagBehavior>().Reappear();
 						character.GetComponent<Inventory>().inventory.Remove(character.GetComponent<Inventory>().find(1));
 					}
 				}
 				else if(this.ID == 1)
 				{
-					GameObject flag_ = GameObject.Find ("flag_ Cerulean");
+					GameObject flag = GameObject.Find ("flag_ Cerulean");
 					if(teamState == 3)
 					{
 						character.GetComponent<Inventory>().PickUp(flag_c);
@@ -75,8 +74,9 @@ public class ItemProperties : MonoBehaviour {
 					}
 					else if(teamState == 2 && character.GetComponent<Inventory>().IsInInventory(0))
 					{
-						Debug.Log("You get a point!");
-						flag_ = GameObject.Find ("flag_ Burgundy");
+						Debug.Log("You get a point!"); //team cerulean
+						score.GetComponent<Scoreboard>().score_c++;
+						flag = GameObject.Find ("flag_ Burgundy");
 						flag_b.GetComponent<FlagBehavior>().Reappear();
 						character.GetComponent<Inventory>().inventory.Remove(character.GetComponent<Inventory>().find(0));
 					}
