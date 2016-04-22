@@ -10,7 +10,9 @@ public class changePlayerName : MonoBehaviour {
 
 		void Start() {
 			gt = GetComponent<TextMesh>();
+			gt.text = PlayerPrefs.GetString ("Player Name", "Player Name");
 			manager = GameObject.FindGameObjectWithTag ("GameController");
+			manager.GetComponent<GameManagerScript> ().playerName = PlayerPrefs.GetString ("Player Name", "Player Name");
 		}
 
 		void Update() {
@@ -33,6 +35,7 @@ public class changePlayerName : MonoBehaviour {
 					}
 				}
 			}
+			PlayerPrefs.SetString("Player Name", gt.text);
 		}
 		}
 

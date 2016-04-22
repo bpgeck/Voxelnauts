@@ -8,7 +8,13 @@ public class GameManagerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-			DontDestroyOnLoad (this);
+		DontDestroyOnLoad (this);
+		playerName = PlayerPrefs.GetString ("Player Name");
+		mouseSensitivity = PlayerPrefs.GetInt ("Mouse Sensitivity");
+		if (PlayerPrefs.GetInt ("Raw Mouse") == 0)
+			rawMouse = false;
+		else 
+			rawMouse = true;
 
 	}
 	

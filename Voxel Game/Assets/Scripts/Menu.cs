@@ -8,6 +8,8 @@ public class Menu : MonoBehaviour {
 	public float shadowDrawDistance;
 	private float hSlider = 5.0f;
 	private string mouseSens = "Mouse Sensitivity";
+	private int raw = 0;
+	private int vsync = 0;
 	public int ResX;
 	public int ResY;
 	public bool Fullscreen;
@@ -16,11 +18,22 @@ public class Menu : MonoBehaviour {
 	void Start () {
 		showOptions = false;
 		manager = GameObject.FindGameObjectWithTag ("GameController");
-
+		hSlider = PlayerPrefs.GetFloat ("Mouse Sensitivity", 5.0f);
+		raw = PlayerPrefs.GetInt ("Raw Mouse", 0);
+		if (raw == 1)
+			manager.GetComponent<GameManagerScript> ().rawMouse = true;
+		else
+			manager.GetComponent<GameManagerScript> ().rawMouse = false;
+		vsync = PlayerPrefs.GetInt ("VSync", 0);
+		if (vsync == 1)
+			QualitySettings.vSyncCount = 1;
+		else
+			QualitySettings.vSyncCount = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		PlayerPrefs.SetFloat ("Mouse Sensitivity", hSlider);
 		manager.GetComponent<GameManagerScript> ().mouseSensitivity = hSlider;
 	}
 	
@@ -125,24 +138,28 @@ public class Menu : MonoBehaviour {
 				//VSync is currently off
 				if(GUI.Button(new Rect(900, 150, 140, 100), "Vsync: Off")) {
 					QualitySettings.vSyncCount = 1;
+					PlayerPrefs.SetInt ("VSync", 1);
 				}
 			}
 			else if (QualitySettings.vSyncCount == 1){
 				//Vsync is currently on
 				if(GUI.Button(new Rect(900, 150, 140, 100), "Vsync: On")) {
 					QualitySettings.vSyncCount = 0;
+					PlayerPrefs.SetInt ("VSync", 0);
 				}
 			}
 			if (manager.GetComponent<GameManagerScript>().rawMouse == false){
 				//Turns raw mouse input on
 				if(GUI.Button(new Rect(1045, 150, 140, 100), "Raw Mouse Input: Off")) {
 					manager.GetComponent<GameManagerScript>().rawMouse = true;
+					PlayerPrefs.SetInt("Raw Mouse", 1);
 				}
 			}
 			if (manager.GetComponent<GameManagerScript>().rawMouse == true){
 				//Turns raw mouse input off
 				if(GUI.Button(new Rect(1045, 150, 140, 100), "Raw Mouse Input: On")) {
 					manager.GetComponent<GameManagerScript>().rawMouse = false;
+					PlayerPrefs.SetInt("Raw Mouse", 0);
 				}
 			}
 
