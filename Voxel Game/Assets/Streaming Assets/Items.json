@@ -1,10 +1,18 @@
 [
     {
         "id": 0,
-        "title": "Flag"
+        "title": "Flag Bergundy"
     },
     {
         "id": 1,
-        "title":  "Block"
+        "title":  "Flag Cerulean"
+    },
+    {
+        "id": 2,
+        "title":  "Body Flag Bergundy"
+    },
+    {
+        "id": 3,
+        "title":  "Body Flag Cerulean"
     }
 ]

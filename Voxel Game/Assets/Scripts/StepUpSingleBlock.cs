@@ -16,8 +16,8 @@ public class StepUpSingleBlock : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        footCaster = GameObject.Find("FootBlockDetector"); // continually get the position of the raycasters
-        ankleCaster = GameObject.Find("AnkleBlockDetector");
+        footCaster = this.transform.Find("FootBlockDetector").gameObject; // continually get the position of the raycasters
+        ankleCaster = this.transform.Find("AnkleBlockDetector").gameObject;
         
         
         if (shouldStepUp())
