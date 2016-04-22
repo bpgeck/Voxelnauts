@@ -10,7 +10,7 @@ public class GunHit
 public class RaycastGun : MonoBehaviour
 {
 	public float fireDelay = 0.1f;
-	public float damage = 1.0f;
+	public float damage = .02f;
 	public float maxBulletSpreadAngle = 15.0f;
 	public float timeTillMaxSpreadAngle = 1.0f;
 	public AnimationCurve bulletSpreadCurve;
@@ -29,10 +29,10 @@ public class RaycastGun : MonoBehaviour
 
 	public Vector3 fireDirection;
 
-	public GameObject missile;
+	private GameObject missile;
 	public GameObject heatmark;
 
-	public bool launcher;
+	private bool launcher;
 
 	Camera camera;
 	
@@ -46,14 +46,7 @@ public class RaycastGun : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (launcher) 
-		{
-			Launcher();
-		} 
-		else 
-		{
-			Automatic();
-		}
+		Automatic ();
 	}
 
 	void Automatic()
@@ -138,10 +131,6 @@ public class RaycastGun : MonoBehaviour
 		if (heat >= 1) 
 		{
 			canFire = false;
-		} 
-		else if (heat <= .2 && heat > 0) 
-		{
-			canFire = true;
 		} 
 		else if (heat <= 0) 
 		{

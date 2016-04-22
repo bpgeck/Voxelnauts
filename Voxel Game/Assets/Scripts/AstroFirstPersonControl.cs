@@ -23,11 +23,11 @@ public class AstroFirstPersonControl : MonoBehaviour
     Quaternion eyesStartRot;
     Quaternion bodyStartRot;
     public Vector3 deathRotationAxis;
+	public Vector3 deathPosition;
     bool alive = true;
 
     private GameObject manager;
 
-    public GameObject bodyFlag;
 
     Camera firstPersonCamera;
     Animator geckAnimator;
@@ -133,7 +133,7 @@ public class AstroFirstPersonControl : MonoBehaviour
             }
 
             // If player is shooting, set shooting animation
-            if (Input.GetMouseButton(0))
+			if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
                 geckAnimator.SetBool("Shooting", true);
                 if (forwardSpeed > 5.0F)
@@ -195,24 +195,31 @@ public class AstroFirstPersonControl : MonoBehaviour
 
     // On death, drop all items
     // Flag drops in a special way
-    public void Die()
-    {
-        geckAnimator.SetBool("Idle", true);
-        geckAnimator.SetBool("Walking", false);
-        geckAnimator.SetBool("Running", false);
 
-        if (this.GetComponent<Inventory>().IsInInventory(0) || this.GetComponent<Inventory>().IsInInventory(1)) 
-		{
-			Instantiate(bodyFlag, new Vector3(this.transform.position.x,this.transform.position.y,this.transform.position.z), Quaternion.identity);
-		}
-        this.GetComponent<Inventory>().DropAll(); // drop the whole inventory
-        alive = false;
-    }
+	public void Die()
+	{
+		deathPosition =  new Vector3(this.transform.position.x, this.transform.position.y + 1.95f, this.transform.position.z);
+		geckAnimator.SetBool("Idle", true);
+		geckAnimator.SetBool("Walking", false);
+		geckAnimator.SetBool("Running", false);
+		StartCoroutine("wait");
+		this.GetComponentInChildren<RaycastGun> ().enabled = false;
+		this.GetComponentInChildren<RaycastGun> ().heat = 0;
+		this.GetComponentInChildren<PlayerHealth> ().health = 1;
+		alive = false;
+	}
+	
+	IEnumerator wait()
+	{
+		yield return new WaitForSeconds (.01f);
+		this.GetComponent<Inventory>().DropAll();
+	}
 
     public void Respawn()
     {
         spinSpeed = 0;
 
+		this.GetComponentInChildren<RaycastGun> ().enabled = true;
         this.transform.position = startPosition;
         eyes.transform.position = eyesStartPos;
         body.transform.position = bodyStartPos;
