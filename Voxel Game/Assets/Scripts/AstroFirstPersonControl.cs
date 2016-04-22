@@ -220,12 +220,13 @@ public class AstroFirstPersonControl : MonoBehaviour
         spinSpeed = 0;
 
 		this.GetComponentInChildren<RaycastGun> ().enabled = true;
-        this.transform.position = startPosition;
-        eyes.transform.position = eyesStartPos;
-        body.transform.position = bodyStartPos;
 
         this.transform.rotation = startRot;
         eyes.transform.rotation = eyesStartRot;
         body.transform.rotation = bodyStartRot;
+
+        this.transform.position = startPosition;
+        eyes.transform.position = eyesStartPos;
+        body.transform.position = bodyStartPos;
     }
 }

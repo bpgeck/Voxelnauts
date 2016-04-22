@@ -4,6 +4,8 @@ using System.Collections;
 public class AsteroidShit : MonoBehaviour
 {
     public float timeToImpact = 5; // time taken to move from spawn point to map
+    public bool hitPlayer = false;
+
     float startTime = 0;
     Vector3 startPoint = new Vector3(0, 0, 0);
     Vector3 endPoint = new Vector3(0, 0, 0);
@@ -14,7 +16,15 @@ public class AsteroidShit : MonoBehaviour
     {
         startTime = Time.time;
         startPoint = this.transform.position;
-        endPoint = new Vector3(Random.Range(0, 512), 0, Random.Range(0, 512)); // this is the point that the asteroid will move to
+        if (hitPlayer)
+        {
+            endPoint = GameObject.Find("GeckstroNOT").transform.position;
+            endPoint.y += 5;
+        }
+        else
+        {
+            endPoint = new Vector3(Random.Range(0, 512), 0, Random.Range(0, 512)); // this is the point that the asteroid will move to
+        }
 
         cubeSize = Random.Range(3, 6);
         this.transform.localScale = new Vector3(cubeSize, cubeSize, cubeSize);
