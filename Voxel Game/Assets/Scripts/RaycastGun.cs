@@ -17,6 +17,8 @@ public class RaycastGun : MonoBehaviour
 	public LayerMask layerMask = -1;
 
 	public double heat;
+	public double overheat;
+	public double cooldown;
 	public bool canFire;
 	public bool firing;
 	public float fireRate;
@@ -25,7 +27,12 @@ public class RaycastGun : MonoBehaviour
 	public float range;
 	private float fireTime;
 
-	public GameObject objectToSpawn;
+	public Vector3 fireDirection;
+
+	public GameObject missile;
+	public GameObject heatmark;
+
+	public bool launcher;
 
 	Camera camera;
 	
@@ -39,7 +46,18 @@ public class RaycastGun : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		 //GetButtonDown for semi-auto, GetButton for automatic fire
+		if (launcher) 
+		{
+			Launcher();
+		} 
+		else 
+		{
+			Automatic();
+		}
+	}
+
+	void Automatic()
+	{
 		if (canFire)
 		{
 			if(Input.GetButton("Fire1"))
@@ -47,32 +65,31 @@ public class RaycastGun : MonoBehaviour
 				firing = true;
 				if(Time.time > nextFire)
 				{
-					heat += .02;
+					heat += overheat;
 					nextFire = Time.time + fireRate;
 					fireTime += Time.deltaTime;
 					RaycastHit hit;
-
+					
 					Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2, 0f));
-
-					Vector3 fireDirection = ray.direction;
-
+					
+					fireDirection = ray.direction;
+					
 					Quaternion fireRotation = Quaternion.LookRotation(fireDirection);
-			
+					
 					Quaternion randomRotation = Random.rotation;
-			
+					
 					float currentSpread = bulletSpreadCurve.Evaluate(fireTime/timeTillMaxSpreadAngle)*maxBulletSpreadAngle;
-				
+					
 					//float currentSpread = Mathf.Lerp(0.0f, maxBulletSpreadAngle, fireTime/timeTillMaxSpreadAngle);
-				
+					
 					fireRotation = Quaternion.RotateTowards(fireRotation,randomRotation,Random.Range(0.0f,currentSpread));
-			
 					if(Physics.Raycast(transform.position,fireRotation*Vector3.forward,out hit,Mathf.Infinity,layerMask))
 					{
 						GunHit gunHit = new GunHit();
 						gunHit.damage = damage;
 						gunHit.raycastHit = hit;
 						//hit.collider.SendMessage("Damage",gunHit,SendMessageOptions.DontRequireReceiver);
-						Instantiate(objectToSpawn,gunHit.raycastHit.point,Quaternion.LookRotation(gunHit.raycastHit.normal));
+						Instantiate(heatmark,gunHit.raycastHit.point,Quaternion.LookRotation(gunHit.raycastHit.normal));
 					}
 					Debug.DrawRay(this.transform.position, fireRotation*Vector3.forward*range, Color.red, 0f, false);
 				}
@@ -82,17 +99,45 @@ public class RaycastGun : MonoBehaviour
 				firing = false;
 			}
 		}
-
+		
 		if(!firing)
 		{
 			fireTime = 0.0f;
-			heat -= .01;
+			heat -= cooldown;
 		}
-
+		
 		if (heat >= 1) 
 		{
 			canFire = false;
 			firing = false;
+		} 
+		else if (heat <= .2 && heat > 0) 
+		{
+			canFire = true;
+		} 
+		else if (heat <= 0) 
+		{
+			heat = 0;
+			canFire = true;
+		}
+	}
+	void Launcher()
+	{
+		if (canFire)
+		{
+			if(Input.GetButtonDown("Fire1"))
+			{
+				heat += 1.1;
+				GameObject launcherTip = GameObject.Find("LauncherTip");
+				Instantiate(missile,launcherTip.transform.position, Quaternion.identity);
+			}
+		}
+		
+		heat -= .01;
+		
+		if (heat >= 1) 
+		{
+			canFire = false;
 		} 
 		else if (heat <= .2 && heat > 0) 
 		{

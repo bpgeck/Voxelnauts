@@ -12,10 +12,9 @@ public class AstroFirstPersonControl : MonoBehaviour
 	float verticalRotation = 0;
 	float verticalVelocity = 0;
     Vector3 startPosition;
+	public Vector3 deathPosition;
 
 	private GameObject manager;
-
-	public GameObject bodyFlag;
 
     Camera firstPersonCamera;
     Animator geckAnimator;
@@ -100,7 +99,7 @@ public class AstroFirstPersonControl : MonoBehaviour
         }
 
         // If player is shooting, set shooting animation
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             geckAnimator.SetBool("Shooting", true);
             if (forwardSpeed > 5.0F)
@@ -148,13 +147,17 @@ public class AstroFirstPersonControl : MonoBehaviour
 
     // On death, drop all items
     // Flag drops in a special way
-    public void Die()
-    {
-		if (this.GetComponent<Inventory>().IsInInventory (0)) 
-		{
-			Instantiate(bodyFlag, new Vector3(this.transform.position.x,this.transform.position.y,this.transform.position.z), Quaternion.identity);
-		}
-        this.GetComponent<Inventory>().DropAll();
-        this.transform.position = startPosition;
-    }
+	public void Die()
+	{
+		deathPosition =  new Vector3(this.transform.position.x, this.transform.position.y + 1.95f, this.transform.position.z);
+		StartCoroutine("wait");
+		this.GetComponentInChildren<RaycastGun> ().heat = 0;
+		this.transform.position = startPosition;
+	}
+	
+	IEnumerator wait()
+	{
+		yield return new WaitForSeconds (.01f);
+		this.GetComponent<Inventory>().DropAll();
+	}
 }
