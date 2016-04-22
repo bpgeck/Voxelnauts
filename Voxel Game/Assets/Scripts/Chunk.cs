@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -32,26 +31,9 @@ public class Chunk : MonoBehaviour {
 		world = worldGO.GetComponent<World>();
 		chunkSize = world.GetChunkSize();
 		col = GetComponent<MeshCollider> ();
-		try {
-			mesh = AssetDatabase.LoadAssetAtPath("Assets/Resources/" + world.worldName + "/" + name, mesh.GetType()) as Mesh;
-		} catch {
-			mesh = new Mesh();
-			AssetDatabase.CreateAsset (mesh, "Assets/Resources/" + world.worldName + "/" + name + ".asset");
-			AssetDatabase.SaveAssets ();
-		}
-		meshFilter = GetComponent<MeshFilter>();
-		meshFilter.mesh = mesh;
-		GenerateMesh ();
-	}
 
-	void Update() {
-		//shift+S
-		if (Input.GetKey (KeyCode.LeftShift) && Input.GetKeyDown (KeyCode.S)) {
-			print ("Saved " + name + ".");
-			AssetDatabase.DeleteAsset ("Assets/Resources/" + world.worldName + "/" + name + ".asset");
-			AssetDatabase.CreateAsset (mesh, "Assets/Resources/" + world.worldName + "/" + name + ".asset");
-			AssetDatabase.SaveAssets();
-		}
+		meshFilter = GetComponent<MeshFilter>();
+		mesh = meshFilter.mesh;
 	}
 
 	void LateUpdate () {
