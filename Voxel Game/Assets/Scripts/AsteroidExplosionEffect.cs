@@ -8,7 +8,7 @@ public class AsteroidExplosionEffect : MonoBehaviour {
 
     ArrayList pieces = new ArrayList();
 
-    class Cupiece // a Cube-shaped piece. Not as clever as the Astroid tail, I know
+    class Cupiece // a Cube-shaped piece. Not as clever as the Astroid tail cubicles, I know
     {
         public Vector3 startPoint;
         public Vector3 parentCenter;
@@ -60,7 +60,7 @@ public class AsteroidExplosionEffect : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        asteroidSize = new Vector3(this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
+        asteroidSize = new Vector3(this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z); // get the scale of the parent
     }
 	
 	// Update is called once per frame
@@ -70,7 +70,7 @@ public class AsteroidExplosionEffect : MonoBehaviour {
         {
             for(int i = 0; i < pieces.Count; i++)
             {
-                if (((Cupiece)pieces[i]).checkAndDestroy())
+                if (((Cupiece)pieces[i]).checkAndDestroy()) // once those five seconds are up, destroy everything
                 {
                     DeleteAll();
                 }
@@ -112,11 +112,11 @@ public class AsteroidExplosionEffect : MonoBehaviour {
     {
         for (int i = 0; i < pieces.Count; i++)
         {
-            ((Cupiece)pieces[i]).justDestroy();
+            ((Cupiece)pieces[i]).justDestroy(); // delete all the explosion pieces
             pieces.RemoveAt(i);
             i--;
         }
 
-        Destroy(this.gameObject);
+        Destroy(this.gameObject); // delete the invisible asteroid
     }
 }
