@@ -87,11 +87,11 @@ public class Inventory : MonoBehaviour
         // remove 1 copy of the corresponding item from `inventory` List
         if (item.ID == 0)
 		{ 
-			Instantiate(Flag_B,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
+			//Instantiate(Flag_B,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
 		} 
 		else if (item.ID == 1) 
 		{
-			Instantiate(Flag_C,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
+			//Instantiate(Flag_C,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
 		}
         else
         {
