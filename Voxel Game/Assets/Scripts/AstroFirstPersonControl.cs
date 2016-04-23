@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 [RequireComponent(typeof(CharacterController))]
-public class AstroFirstPersonControl : MonoBehaviour
+public class AstroFirstPersonControl : NetworkBehaviour
 {
     GameObject eyes;
     GameObject body;
@@ -35,7 +36,6 @@ public class AstroFirstPersonControl : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         Cursor.visible = true; // temporarily set to true for testing
 
         eyes = this.transform.Find("Eyes").gameObject;
@@ -67,6 +67,9 @@ public class AstroFirstPersonControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (!isLocalPlayer) {
+			return;
+		}
         if (alive)
         {
             // Rotation stuff
