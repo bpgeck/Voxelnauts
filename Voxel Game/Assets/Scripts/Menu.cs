@@ -162,8 +162,8 @@ public class Menu : MonoBehaviour {
 					PlayerPrefs.SetInt("Raw Mouse", 0);
 				}
 			}
-			GUI.Label (new Rect(700, 180, 165, 200), mouseSens);
-			hSlider = GUI.HorizontalSlider(new Rect(620, 200, 250, 15), hSlider, 1.0f, 100f);
+			GUI.Label (new Rect(700, 190, 165, 200), mouseSens);
+			hSlider = GUI.HorizontalSlider(new Rect(620, 215, 250, 15), hSlider, 1.0f, 100f);
 		/*
 			if(GUI.Button(new Rect(900, 150, 140, 100), "Vsync On")) {
 				QualitySettings.vSyncCount = 1;

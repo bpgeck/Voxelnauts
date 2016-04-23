@@ -1,37 +1,16 @@
 fileFormatVersion: 2
-guid: 755a0db37d94df04fb197d4a5d8abac6
-timeCreated: 1461372689
+guid: bb20d335ae49c4840be7ef76cfdd9238
+timeCreated: 1461381075
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
-    100002: ambientLight1
-    100004: directionalLight1
-    100006: mirrorCutPlane1
-    100008: mirrorCutPlane2
-    100010: mirrorCutPlane3
-    100012: pCube1
-    100014: pCube2
-    100016: spaceWindow
-    100018: transform1
-    100020: transform2
     400000: //RootNode
-    400002: ambientLight1
-    400004: directionalLight1
-    400006: mirrorCutPlane1
-    400008: mirrorCutPlane2
-    400010: mirrorCutPlane3
-    400012: pCube1
-    400014: pCube2
-    400016: spaceWindow
-    400018: transform1
-    400020: transform2
     2300000: //RootNode
-    2300002: spaceWindow
     3300000: //RootNode
-    3300002: spaceWindow
-    4300000: spaceWindow
+    4300000: pCube1
+    4300002: rectangularPrism
   materials:
     importMaterials: 1
     materialName: 0
