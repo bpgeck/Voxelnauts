@@ -136,28 +136,28 @@ public class Menu : MonoBehaviour {
 			}
 			if (QualitySettings.vSyncCount == 0){ 
 				//VSync is currently off
-				if(GUI.Button(new Rect(900, 150, 140, 100), "Vsync: Off")) {
+				if(GUI.Button(new Rect(905, 140, 140, 100), "Vsync: Off")) {
 					QualitySettings.vSyncCount = 1;
 					PlayerPrefs.SetInt ("VSync", 1);
 				}
 			}
 			else if (QualitySettings.vSyncCount == 1){
 				//Vsync is currently on
-				if(GUI.Button(new Rect(900, 150, 140, 100), "Vsync: On")) {
+				if(GUI.Button(new Rect(905, 140, 140, 100), "Vsync: On")) {
 					QualitySettings.vSyncCount = 0;
 					PlayerPrefs.SetInt ("VSync", 0);
 				}
 			}
 			if (manager.GetComponent<GameManagerScript>().rawMouse == false){
 				//Turns raw mouse input on
-				if(GUI.Button(new Rect(1045, 150, 140, 100), "Raw Mouse Input: Off")) {
+				if(GUI.Button(new Rect(1055, 140, 140, 100), "Raw Mouse Input: Off")) {
 					manager.GetComponent<GameManagerScript>().rawMouse = true;
 					PlayerPrefs.SetInt("Raw Mouse", 1);
 				}
 			}
 			if (manager.GetComponent<GameManagerScript>().rawMouse == true){
 				//Turns raw mouse input off
-				if(GUI.Button(new Rect(1045, 150, 140, 100), "Raw Mouse Input: On")) {
+				if(GUI.Button(new Rect(1055, 140, 140, 100), "Raw Mouse Input: On")) {
 					manager.GetComponent<GameManagerScript>().rawMouse = false;
 					PlayerPrefs.SetInt("Raw Mouse", 0);
 				}

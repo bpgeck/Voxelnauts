@@ -8,7 +8,7 @@ public class AstroFirstPersonControl : NetworkBehaviour
     GameObject eyes;
     GameObject body;
     public float movementSpeed = 5.0f;
-    private float mouseSensitivity;
+    public float mouseSensitivity;
     public float jumpSpeed = 20.0f;
     public float upDownRange = 60.0f;
     private float rotLeftRight;
@@ -61,7 +61,8 @@ public class AstroFirstPersonControl : NetworkBehaviour
         geckAnimator.SetBool("Shooting", false);
 
         manager = GameObject.FindGameObjectWithTag("GameController");
-        mouseSensitivity = manager.GetComponent<GameManagerScript>().mouseSensitivity; // get mouse sensitivity from GameController object
+		mouseSensitivity = PlayerPrefs.GetFloat ("Mouse Sensitivity");
+			//manager.GetComponent<GameManagerScript>().mouseSensitivity; // get mouse sensitivity from GameController object
     }
 
     // Update is called once per frame
@@ -75,21 +76,21 @@ public class AstroFirstPersonControl : NetworkBehaviour
             // Rotation stuff
             if (manager.GetComponent<GameManagerScript>().rawMouse == false)
             {
-                rotLeftRight = Input.GetAxis("Mouse X") * mouseSensitivity;
+                rotLeftRight = Input.GetAxis("Mouse X") * (mouseSensitivity * 1.5f);
             }
             else if (manager.GetComponent<GameManagerScript>().rawMouse == true)
             {
-                rotLeftRight = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
+				rotLeftRight = Input.GetAxisRaw("Mouse X") * (mouseSensitivity * 1.5f);
             }
             transform.Rotate(0, rotLeftRight, 0);
 
             if (manager.GetComponent<GameManagerScript>().rawMouse == false)
             {
-                verticalRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
+				verticalRotation -= Input.GetAxis("Mouse Y") * (mouseSensitivity * 1.5f);
             }
             if (manager.GetComponent<GameManagerScript>().rawMouse == true)
             {
-                verticalRotation -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+				verticalRotation -= Input.GetAxisRaw("Mouse Y") * (mouseSensitivity * 1.5f);
             }
             verticalRotation = Mathf.Clamp(verticalRotation, -upDownRange, upDownRange);
 
