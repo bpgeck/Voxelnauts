@@ -40,7 +40,7 @@ public class Menu : MonoBehaviour {
 	void OnGUI() {
 
 		if(GUI.Button(new Rect(900, 250, 300, 100), "Connect")) {
-			// Application.LoadLevel(1);
+			Application.LoadLevel(1);
 		}
 		if(GUI.Button(new Rect(900, 360, 300, 100), "Disconnect")) {
 			Application.Quit();
