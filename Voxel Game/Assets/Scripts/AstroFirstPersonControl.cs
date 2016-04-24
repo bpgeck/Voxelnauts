@@ -77,119 +77,94 @@ public class AstroFirstPersonControl : NetworkBehaviour
 		if (!isLocalPlayer) {
 			return;
 		}
-        if (alive)
-        {
-			if(able) {
-	            // Rotation stuff
-	            if (manager.GetComponent<GameManagerScript>().rawMouse == false)
-	            {
-	                rotLeftRight = Input.GetAxis("Mouse X") * (mouseSensitivity * 1.5f);
-	            }
-	            else if (manager.GetComponent<GameManagerScript>().rawMouse == true)
-	            {
-					rotLeftRight = Input.GetAxisRaw("Mouse X") * (mouseSensitivity * 1.5f);
-	            }
-	            transform.Rotate(0, rotLeftRight, 0);
+        if (alive) {
+			if (able) {
+				// Rotation stuff
+				if (manager.GetComponent<GameManagerScript> ().rawMouse == false) {
+					rotLeftRight = Input.GetAxis ("Mouse X") * (mouseSensitivity * 1.5f);
+				} else if (manager.GetComponent<GameManagerScript> ().rawMouse == true) {
+					rotLeftRight = Input.GetAxisRaw ("Mouse X") * (mouseSensitivity * 1.5f);
+				}
+				transform.Rotate (0, rotLeftRight, 0);
 
-	            if (manager.GetComponent<GameManagerScript>().rawMouse == false)
-	            {
-					verticalRotation -= Input.GetAxis("Mouse Y") * (mouseSensitivity * 1.5f);
-	            }
-	            if (manager.GetComponent<GameManagerScript>().rawMouse == true)
-	            {
-					verticalRotation -= Input.GetAxisRaw("Mouse Y") * (mouseSensitivity * 1.5f);
-	            }
-	            verticalRotation = Mathf.Clamp(verticalRotation, -upDownRange, upDownRange);
+				if (manager.GetComponent<GameManagerScript> ().rawMouse == false) {
+					verticalRotation -= Input.GetAxis ("Mouse Y") * (mouseSensitivity * 1.5f);
+				}
+				if (manager.GetComponent<GameManagerScript> ().rawMouse == true) {
+					verticalRotation -= Input.GetAxisRaw ("Mouse Y") * (mouseSensitivity * 1.5f);
+				}
+				verticalRotation = Mathf.Clamp (verticalRotation, -upDownRange, upDownRange);
 
-	            firstPersonCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
+				firstPersonCamera.transform.localRotation = Quaternion.Euler (verticalRotation, 0, 0);
 
-	            // Movement stuff
-	            float forwardSpeed = Input.GetAxis("Vertical") * movementSpeed;
-	            float sideSpeed = Input.GetAxis("Horizontal") * movementSpeed;
+				// Movement stuff
+				float forwardSpeed = Input.GetAxis ("Vertical") * movementSpeed;
+				float sideSpeed = Input.GetAxis ("Horizontal") * movementSpeed;
 
-	            if (characterController.isGrounded && Input.GetButton("Jump"))
-	            {
-	                verticalVelocity = jumpSpeed;
-	            }
-	            else if (characterController.isGrounded)
-	            {
-	                verticalVelocity = 0.0F;
-	            }
+				if (characterController.isGrounded && Input.GetButton ("Jump")) {
+					verticalVelocity = jumpSpeed;
+				} else if (characterController.isGrounded) {
+					verticalVelocity = 0.0F;
+				}
 
-	            // If the player is in the air then accelerate the player toward the ground
-	            if (!characterController.isGrounded)
-	            {
-	                verticalVelocity += Physics.gravity.y * Time.deltaTime;
-	            }
+				// If the player is in the air then accelerate the player toward the ground
+				if (!characterController.isGrounded) {
+					verticalVelocity += Physics.gravity.y * Time.deltaTime;
+				}
 
-	            // Check if player is holding a gun
-	            if (this.transform.Find("geckstronautAnimatedWithGun").transform.Find("SpaceAR:SpaceAR:Mesh") != null)
-	            {
-	                geckAnimator.SetBool("HasGun", true);
-	                this.transform.Find("geckstronautAnimatedWithGun").transform.Find("SpaceAR:SpaceAR:Mesh").gameObject.SetActive(true);
-	            }
-	            else
-	            {
-	                geckAnimator.SetBool("HasGun", false);
-	                this.transform.Find("geckstronautAnimatedWithGun").transform.Find("SpaceAR:SpaceAR:Mesh").gameObject.SetActive(false);
-	            }
+				// Check if player is holding a gun
+				if (this.transform.Find ("geckstronautAnimatedWithGun").transform.Find ("SpaceAR:SpaceAR:Mesh") != null) {
+					geckAnimator.SetBool ("HasGun", true);
+					this.transform.Find ("geckstronautAnimatedWithGun").transform.Find ("SpaceAR:SpaceAR:Mesh").gameObject.SetActive (true);
+				} else {
+					geckAnimator.SetBool ("HasGun", false);
+					this.transform.Find ("geckstronautAnimatedWithGun").transform.Find ("SpaceAR:SpaceAR:Mesh").gameObject.SetActive (false);
+				}
 
-	            // If player is pressing left CTRL, then walk
-	            if (Input.GetKey(KeyCode.LeftControl))
-	            {
-	                if (forwardSpeed > 5.0F)
-	                {
-	                    forwardSpeed = 4.9F;
-	                }
-	            }
+				// If player is pressing left CTRL, then walk
+				if (Input.GetKey (KeyCode.LeftControl)) {
+					if (forwardSpeed > 5.0F) {
+						forwardSpeed = 4.9F;
+					}
+				}
 
-	            // If player is shooting, set shooting animation
-				if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
-	            {
-	                geckAnimator.SetBool("Shooting", true);
-	                if (forwardSpeed > 5.0F)
-	                {
-	                    geckAnimator.SetBool("Running", false);
-	                    geckAnimator.SetBool("Walking", true);
-	                    forwardSpeed = 4.9F;
-	                }
-	            }
+				// If player is shooting, set shooting animation
+				if (Input.GetMouseButton (0) || Input.GetMouseButton (1)) {
+					geckAnimator.SetBool ("Shooting", true);
+					if (forwardSpeed > 5.0F) {
+						geckAnimator.SetBool ("Running", false);
+						geckAnimator.SetBool ("Walking", true);
+						forwardSpeed = 4.9F;
+					}
+				} else {
+					geckAnimator.SetBool ("Shooting", false);
+				}
+
+				// set the speed
+				Vector3 speed = new Vector3 (sideSpeed, verticalVelocity, forwardSpeed);
+				speed = transform.rotation * speed;
+
+				// Adjust animation depending on speed of player
+				if (speed.magnitude > 0.5F) {
+					if (speed.magnitude > 5.0F) {
+						geckAnimator.SetBool ("Idle", false);
+						geckAnimator.SetBool ("Walking", false);
+						geckAnimator.SetBool ("Running", true);
+					} else {
+						geckAnimator.SetBool ("Idle", false);
+						geckAnimator.SetBool ("Walking", true);
+						geckAnimator.SetBool ("Running", false);
+					}
+				} else {
+					geckAnimator.SetBool ("Idle", true);
+					geckAnimator.SetBool ("Walking", false);
+					geckAnimator.SetBool ("Running", false);
+				}
+
+				// move that bitch
+				characterController.Move (speed * Time.deltaTime);
 			}
-            else
-            {
-                geckAnimator.SetBool("Shooting", false);
-            }
-
-            // set the speed
-            Vector3 speed = new Vector3(sideSpeed, verticalVelocity, forwardSpeed);
-            speed = transform.rotation * speed;
-
-            // Adjust animation depending on speed of player
-            if (speed.magnitude > 0.5F)
-            {
-                if (speed.magnitude > 5.0F)
-                {
-                    geckAnimator.SetBool("Idle", false);
-                    geckAnimator.SetBool("Walking", false);
-                    geckAnimator.SetBool("Running", true);
-                }
-                else
-                {
-                    geckAnimator.SetBool("Idle", false);
-                    geckAnimator.SetBool("Walking", true);
-                    geckAnimator.SetBool("Running", false);
-                }
-            }
-            else
-            {
-                geckAnimator.SetBool("Idle", true);
-                geckAnimator.SetBool("Walking", false);
-                geckAnimator.SetBool("Running", false);
-            }
-
-            // move that bitch
-            characterController.Move(speed * Time.deltaTime);
-        }
+		}
         else
         {
             this.transform.Find("geckstronautAnimatedWithGun").RotateAround(this.GetComponent<CharacterController>().bounds.center, deathRotationAxis, spinSpeed);
