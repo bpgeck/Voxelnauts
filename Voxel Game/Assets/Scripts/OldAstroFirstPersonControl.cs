@@ -8,7 +8,7 @@ public class OldAstroFirstPersonControl : MonoBehaviour
     GameObject eyes;
     GameObject body;
     public float movementSpeed = 5.0f;
-    public float mouseSensitivity;
+    public float mouseSensitivity = 5.0f;
     public float jumpSpeed = 20.0f;
     public float upDownRange = 60.0f;
     private float rotLeftRight;
@@ -70,25 +70,10 @@ public class OldAstroFirstPersonControl : MonoBehaviour
     {
         if (alive)
         {
-            // Rotation stuff
-            if (manager.GetComponent<GameManagerScript>().rawMouse == false)
-            {
-                rotLeftRight = Input.GetAxis("Mouse X") * (mouseSensitivity * 1.5f);
-            }
-            else if (manager.GetComponent<GameManagerScript>().rawMouse == true)
-            {
-				rotLeftRight = Input.GetAxisRaw("Mouse X") * (mouseSensitivity * 1.5f);
-            }
+            rotLeftRight = Input.GetAxis("Mouse X") * (mouseSensitivity * 1.5f);
             transform.Rotate(0, rotLeftRight, 0);
-
-            if (manager.GetComponent<GameManagerScript>().rawMouse == false)
-            {
-				verticalRotation -= Input.GetAxis("Mouse Y") * (mouseSensitivity * 1.5f);
-            }
-            if (manager.GetComponent<GameManagerScript>().rawMouse == true)
-            {
-				verticalRotation -= Input.GetAxisRaw("Mouse Y") * (mouseSensitivity * 1.5f);
-            }
+            
+			verticalRotation -= Input.GetAxis("Mouse Y") * (mouseSensitivity * 1.5f);
             verticalRotation = Mathf.Clamp(verticalRotation, -upDownRange, upDownRange);
 
             firstPersonCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
