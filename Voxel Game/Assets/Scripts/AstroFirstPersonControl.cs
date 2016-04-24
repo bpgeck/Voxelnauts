@@ -26,7 +26,7 @@ public class AstroFirstPersonControl : NetworkBehaviour
     public Vector3 deathRotationAxis;
 	public Vector3 deathPosition;
     bool alive = true;
-	bool able = true;
+	public bool able = true;
 
     private GameObject manager;
 
