@@ -163,6 +163,10 @@ public class AstroFirstPersonControl : NetworkBehaviour
 
 				// move that bitch
 				characterController.Move (speed * Time.deltaTime);
+			} else {
+				geckAnimator.SetBool ("Idle", true);
+				geckAnimator.SetBool ("Walking", false);
+				geckAnimator.SetBool ("Running", false);
 			}
 		}
         else
