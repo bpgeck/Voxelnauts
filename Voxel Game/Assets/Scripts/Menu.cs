@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class Menu : MonoBehaviour {
 	
 	private bool showOptions = false;
@@ -14,17 +15,32 @@ public class Menu : MonoBehaviour {
 	public int ResY;
 	public bool Fullscreen;
 
+	public AudioClip click;
+	AudioSource aud;
+
+
+	private string hover;
+
 	// Use this for initialization
 	void Start () {
+
+
 		showOptions = false;
+
 		manager = GameObject.FindGameObjectWithTag ("GameController");
+
 		hSlider = PlayerPrefs.GetFloat ("Mouse Sensitivity", 5.0f);
 		raw = PlayerPrefs.GetInt ("Raw Mouse", 0);
+
+		aud = GetComponent<AudioSource> ();
+
 		if (raw == 1)
 			manager.GetComponent<GameManagerScript> ().rawMouse = true;
 		else
 			manager.GetComponent<GameManagerScript> ().rawMouse = false;
+
 		vsync = PlayerPrefs.GetInt ("VSync", 0);
+
 		if (vsync == 1)
 			QualitySettings.vSyncCount = 1;
 		else
@@ -38,6 +54,17 @@ public class Menu : MonoBehaviour {
 	}
 	
 	void OnGUI() {
+		hover = GUI.tooltip;
+		if (hover.Equals("Connect") || hover == "Disconnect" || hover == "Options" || 
+			hover == "Increase Quality" || hover == "Decrease Quality" || hover == "No AA" ||
+			hover == "2x AA" || hover == "4x AA" || hover == "8x AA" || hover == "Triple Buffering On" ||
+			hover == "Triple Buffering Off" || hover == "Anisotropic Filtering On" || hover == "Anisotropic Filtering Off" ||
+			hover == "60Hz" || hover == "120Hz" || hover == "1080p" || hover == "720p" || hover == "480p" ||
+			hover == "VSync: Off" || hover == "VSync: On" || hover == "Raw Mouse Input: On" || 
+			hover == "Raw Mouse Input: Off") {
+			Debug.Log ("Over");
+			aud.PlayOneShot (click);
+		}
 
 		if(GUI.Button(new Rect(900, 250, 300, 100), "Connect")) {
 			// Application.LoadLevel(1);
