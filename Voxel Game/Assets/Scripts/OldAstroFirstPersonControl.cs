@@ -29,7 +29,6 @@ public class OldAstroFirstPersonControl : MonoBehaviour
 
     private GameObject manager;
 
-
     Camera firstPersonCamera;
     Animator geckAnimator;
     CharacterController characterController;
@@ -182,19 +181,22 @@ public class OldAstroFirstPersonControl : MonoBehaviour
     // On death, drop all items
     // Flag drops in a special way
 
-	public void Die()
-	{
-		deathPosition =  new Vector3(this.transform.position.x, this.transform.position.y + 1.95f, this.transform.position.z);
-		geckAnimator.SetBool("Idle", true);
-		geckAnimator.SetBool("Walking", false);
-		geckAnimator.SetBool("Running", false);
-		StartCoroutine("wait");
-		this.GetComponentInChildren<RaycastGun> ().enabled = false;
-		this.GetComponentInChildren<RaycastGun> ().heat = 0;
-		this.GetComponentInChildren<PlayerHealth> ().health = 1;
-		alive = false;
-	}
-	
+    public void Die()
+    {
+        deathPosition = new Vector3(this.transform.position.x, this.transform.position.y + 1.95f, this.transform.position.z);
+
+        geckAnimator.SetBool("Idle", true);
+        geckAnimator.SetBool("Walking", false);
+        geckAnimator.SetBool("Running", false);
+
+        StartCoroutine("wait");
+        this.GetComponentInChildren<RaycastGun>().enabled = false;
+        this.GetComponentInChildren<RaycastGun>().heat = 0;
+        this.GetComponentInChildren<PlayerHealth>().health = 1;
+
+        alive = false;
+    }
+
 	IEnumerator wait()
 	{
 		yield return new WaitForSeconds (.01f);

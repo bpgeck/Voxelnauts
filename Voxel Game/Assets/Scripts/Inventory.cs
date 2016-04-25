@@ -8,6 +8,9 @@ public class Inventory : MonoBehaviour
 {
 	public GameObject Flag_B;
 	public GameObject Flag_C;
+    
+    FlagAudioBroadcaster friendlyAudio;
+    FlagAudioBroadcaster enemyAudio;
 
     public List<Item> inventory = new List<Item>();
 
@@ -81,18 +84,23 @@ public class Inventory : MonoBehaviour
 
     public void Drop(Item item)
     {
-        //TODO
-        // create prefab of Item argument
-        // drop prefab
+        GetFlagAudio();
+
         // remove 1 copy of the corresponding item from `inventory` List
         if (item.ID == 0)
-		{ 
-			//Instantiate(Flag_B,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
-		} 
+		{
+            //Instantiate(Flag_B,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
+
+            friendlyAudio.BroadcastWeDroppedTheirFlag(); // if the player dies while he is holding the flag, play this shit
+            enemyAudio.BroadcastTheyDroppedOurFlag();
+        } 
 		else if (item.ID == 1) 
 		{
-			//Instantiate(Flag_C,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
-		}
+            //Instantiate(Flag_C,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
+
+            friendlyAudio.BroadcastWeDroppedTheirFlag(); // if the player dies while he is holding the flag, play this shit
+            enemyAudio.BroadcastTheyDroppedOurFlag();
+        }
         else
         {
             GameObject droppedItem = (GameObject)Instantiate(Resources.Load("Item"));
@@ -101,5 +109,43 @@ public class Inventory : MonoBehaviour
         }
 
         inventory.Remove(item);
+    }
+
+
+    void GetFlagAudio()
+    {
+        GameObject[] possibilities = GameObject.FindGameObjectsWithTag("Burgundy");
+        for (int i = 0; i < possibilities.Length; i++)
+        {
+            if (possibilities[i].name.Contains("Flag "))
+            {
+                if (possibilities[i].tag == this.tag)
+                {
+                    friendlyAudio = possibilities[i].GetComponent<FlagAudioBroadcaster>();
+                }
+                else
+                {
+                    enemyAudio = possibilities[i].GetComponent<FlagAudioBroadcaster>();
+                }
+                break;
+            }
+        }
+
+        possibilities = GameObject.FindGameObjectsWithTag("Cerulean");
+        for (int i = 0; i < possibilities.Length; i++)
+        {
+            if (possibilities[i].name.Contains("Flag "))
+            {
+                if (possibilities[i].tag == this.tag)
+                {
+                    friendlyAudio = possibilities[i].GetComponent<FlagAudioBroadcaster>();
+                }
+                else
+                {
+                    enemyAudio = possibilities[i].GetComponent<FlagAudioBroadcaster>();
+                }
+                break;
+            }
+        }
     }
 }

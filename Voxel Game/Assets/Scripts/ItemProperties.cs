@@ -3,11 +3,45 @@ using System.Collections;
 
 public class ItemProperties : MonoBehaviour {
     public int ID;
+    FlagAudioBroadcaster friendlyAudio;
+    FlagAudioBroadcaster enemyAudio;
 
-	void Start ()
+    void Start()
     {
+        GameObject[] possibilities = GameObject.FindGameObjectsWithTag("Burgundy");
+        for (int i = 0; i < possibilities.Length; i++)
+        {
+            if (possibilities[i].name.Contains("Flag "))
+            {
+                if (possibilities[i].tag == this.tag)
+                {
+                    friendlyAudio = possibilities[i].GetComponent<FlagAudioBroadcaster>();
+                }
+                else
+                {
+                    enemyAudio = possibilities[i].GetComponent<FlagAudioBroadcaster>();
+                }
+                break;
+            }
+        }
 
-	}
+        possibilities = GameObject.FindGameObjectsWithTag("Cerulean");
+        for (int i = 0; i < possibilities.Length; i++)
+        {
+            if (possibilities[i].name.Contains("Flag "))
+            {
+                if (possibilities[i].tag == this.tag)
+                {
+                    friendlyAudio = possibilities[i].GetComponent<FlagAudioBroadcaster>();
+                }
+                else
+                {
+                    enemyAudio = possibilities[i].GetComponent<FlagAudioBroadcaster>();
+                }
+                break;
+            }
+        }
+    }
 
 	void Update ()
     {
@@ -16,8 +50,6 @@ public class ItemProperties : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log("LOL");
-
         if (col.gameObject.name.Contains("Geck"))
         {   
 			GameObject character = col.gameObject;
@@ -30,11 +62,17 @@ public class ItemProperties : MonoBehaviour {
 				if(teamState == 1)
 				{
 					flag_b.GetComponent<FlagBehavior> ().Reappear ();
-				}
+
+                    friendlyAudio.BroadcastWeRecoveredOurFlag(); // if this flag is touched and caused to reappear, then the flag's own team touched it (friendly)
+                    enemyAudio.BroadcastTheyRecoveredTheirFlag();
+                }
 				else if(teamState == 4)
 				{
 					character.GetComponent<Inventory>().PickUp(flag_b);
-				}
+
+                    enemyAudio.BroadcastWePickedUpTheirFlag(); // if this flag is touched and picked back up, then it was touched by the opposig team (enemy)
+                    friendlyAudio.BroadcastTheyPickedUpOurFlag();    
+                }
 			}
 			else if(this.ID == 3)
 			{
@@ -42,11 +80,17 @@ public class ItemProperties : MonoBehaviour {
 				if(teamState == 2)
 				{
 					flag_c.GetComponent<FlagBehavior> ().Reappear ();
-				}
+
+                    friendlyAudio.BroadcastWeRecoveredOurFlag(); // if this flag is touched and caused to reappear, then the flag's own team touched it (friendly)
+                    enemyAudio.BroadcastTheyRecoveredTheirFlag();
+                }
 				else if(teamState == 3)
 				{
 					character.GetComponent<Inventory>().PickUp(flag_c);
-				}
+
+                    enemyAudio.BroadcastWePickedUpTheirFlag(); // if this flag is touched and picked back up, then it was touched by the opposig team (enemy)
+                    friendlyAudio.BroadcastTheyPickedUpOurFlag();
+                }
 			}
 			else
 			{
@@ -57,6 +101,9 @@ public class ItemProperties : MonoBehaviour {
 					{
 						character.GetComponent<Inventory>().PickUp(flag_b);
 						flag_b.GetComponent<FlagBehavior>().Disappear();
+
+                        enemyAudio.BroadcastWeGotTheirFlag(); // if this flag is picked up, it has been taken by the enemy
+                        friendlyAudio.BroadcastTheyGotOurFlag();
 					}
 					else if(teamState == 1 && character.GetComponent<Inventory>().IsInInventory(1))
 					{
@@ -67,16 +114,21 @@ public class ItemProperties : MonoBehaviour {
                         }
 						flag_c.GetComponent<FlagBehavior>().Reappear();
 						character.GetComponent<Inventory>().inventory.Remove(character.GetComponent<Inventory>().find(1));
-					}
+
+                        friendlyAudio.BroadcastWeCappedTheirFlag(); // if this flag touches the other team's flag, then we got a point
+                        enemyAudio.BroadcastTheyCappedOurFlag();
+                    }
 				}
 				else if(this.ID == 1)
 				{
-					GameObject flag = GameObject.Find ("Flag Cerulean");
 					if(teamState == 3)
 					{
 						character.GetComponent<Inventory>().PickUp(flag_c);
 						flag_c.GetComponent<FlagBehavior>().Disappear();
-					}
+
+                        enemyAudio.BroadcastWeGotTheirFlag(); // if this flag is picked up, it has been taken by the enemy
+                        friendlyAudio.BroadcastTheyGotOurFlag();
+                    }
 					else if(teamState == 2 && character.GetComponent<Inventory>().IsInInventory(0))
 					{
 						Debug.Log("You get a point!"); //team cerulean
@@ -84,10 +136,12 @@ public class ItemProperties : MonoBehaviour {
                         {
                             score.GetComponent<Scoreboard>().score_c++;
                         }
-						flag = GameObject.Find ("Flag Burgundy");
 						flag_b.GetComponent<FlagBehavior>().Reappear();
 						character.GetComponent<Inventory>().inventory.Remove(character.GetComponent<Inventory>().find(0));
-					}
+
+                        friendlyAudio.BroadcastWeCappedTheirFlag(); // if this flag touches the other team's flag, then we got a point
+                        enemyAudio.BroadcastTheyCappedOurFlag();
+                    }
 				}
 				else
 				{
