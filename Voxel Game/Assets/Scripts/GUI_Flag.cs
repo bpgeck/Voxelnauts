@@ -9,15 +9,18 @@ public class GUI_Flag : MonoBehaviour
 	Color burgundy;
 	Color cerulean;
 
-	void Start ()
+    GameObject character;
+
+    void Start ()
 	{
 		burgundy = new Vector4 (125f/255, 30f/255, 29f/255, 1f);
 		cerulean = new Vector4 (0f, 123f, 167f, 1f);
-	}
+
+        character = this.transform.parent.gameObject.transform.parent.gameObject; // gets the parent of the parent of this script
+    }
 
 	void Update () 
 	{
-		GameObject character = GameObject.Find ("GeckstroNOT");
 		if (character.GetComponent<Inventory> ().IsInInventory (0)) 
 		{
 			flag.enabled = true;
