@@ -216,5 +216,7 @@ public class OldAstroFirstPersonControl : MonoBehaviour
         this.transform.position = startPosition;
         eyes.transform.position = eyesStartPos;
         body.transform.position = bodyStartPos;
+
+        this.GetComponent<PlayerHealth>().health = 100;
     }
 }

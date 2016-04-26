@@ -21,6 +21,5 @@ public class PlayerHealth : MonoBehaviour
 	void Damage(GunHit gunHit)
 	{
 		health -= gunHit.damage;
-
 	}
 }
