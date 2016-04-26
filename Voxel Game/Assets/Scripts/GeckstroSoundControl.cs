@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class GeckstroSoundControl : MonoBehaviour {
-    AudioSource gunAudioSource;
+    AudioSource shootingAudioSource;
+    AudioSource overheatAudioSource;
     AudioSource runDirtAudioSource;
     AudioSource walkDirtAudioSource;
     AudioSource runMetalAudioSource;
@@ -14,6 +15,8 @@ public class GeckstroSoundControl : MonoBehaviour {
 
     Animator animatorBools;
 
+    bool overheated;
+
     // Use this for initialization
     void Start ()
     {
@@ -21,7 +24,8 @@ public class GeckstroSoundControl : MonoBehaviour {
 
         animatorBools = this.transform.Find("geckstronautAnimatedWithGun").GetComponent<Animator>();
 
-        gunAudioSource = this.transform.Find("geckstronautAnimatedWithGun/SpaceAR:SpaceAR:Mesh/Gun Sounds").gameObject.GetComponents<AudioSource>()[0];
+        shootingAudioSource = this.transform.Find("geckstronautAnimatedWithGun/SpaceAR:SpaceAR:Mesh/Gun Sounds").gameObject.GetComponents<AudioSource>()[0];
+        overheatAudioSource = this.transform.Find("geckstronautAnimatedWithGun/SpaceAR:SpaceAR:Mesh/Gun Sounds").gameObject.GetComponents<AudioSource>()[1];
         runDirtAudioSource = this.transform.Find("Feet Sounds").gameObject.GetComponents<AudioSource>()[0];
         walkDirtAudioSource = this.transform.Find("Feet Sounds").gameObject.GetComponents<AudioSource>()[1];
         runMetalAudioSource = this.transform.Find("Feet Sounds").gameObject.GetComponents<AudioSource>()[2];
@@ -31,14 +35,22 @@ public class GeckstroSoundControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (animatorBools.GetBool("Shooting") && !gunAudioSource.isPlaying) // if you START shooting, start the gun audio
+        if (animatorBools.GetBool("Shooting") && !shootingAudioSource.isPlaying && this.GetComponentInChildren<RaycastGun>().canFire) // if you START shooting, start the gun audio
         {
-            gunAudioSource.Play();
+            overheated = false;
+            shootingAudioSource.Play();
         }
         else if (!animatorBools.GetBool("Shooting")) // if you let go of the mouse button, stop the audio
         {
-            gunAudioSource.Stop();
+            shootingAudioSource.Stop();
         }
+        else if (!this.GetComponentInChildren<RaycastGun>().canFire && !overheated)
+        {
+            overheated = true;
+            overheatAudioSource.Play();
+            shootingAudioSource.Stop();
+        }
+
 
         downRay = new Ray(groundDetector.transform.position, -this.transform.up);
         Physics.Raycast(downRay, out whatWalkingOn); // cast one ray downward to see the surface below us
