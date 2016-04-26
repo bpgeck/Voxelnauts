@@ -9,7 +9,7 @@ public class OldAstroFirstPersonControl : MonoBehaviour
     GameObject body;
     public float movementSpeed = 5.0f;
     public float mouseSensitivity = 5.0f;
-    public float jumpSpeed = 20.0f;
+    public float jumpSpeed = 10.0f;
     public float upDownRange = 60.0f;
     private float rotLeftRight;
     float verticalRotation = 0;
@@ -86,6 +86,10 @@ public class OldAstroFirstPersonControl : MonoBehaviour
                 verticalVelocity = jumpSpeed;
             }
             else if (characterController.isGrounded)
+            {
+                verticalVelocity = 0.0F;
+            }
+            else if (!characterController.isGrounded && characterController.velocity.y < 0.1f && characterController.velocity.y > -0.1f)
             {
                 verticalVelocity = 0.0F;
             }
@@ -190,6 +194,7 @@ public class OldAstroFirstPersonControl : MonoBehaviour
         geckAnimator.SetBool("Running", false);
 
         StartCoroutine("wait");
+
         this.GetComponentInChildren<RaycastGun>().enabled = false;
         this.GetComponentInChildren<RaycastGun>().heat = 0;
         this.GetComponentInChildren<PlayerHealth>().health = 1;

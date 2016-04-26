@@ -9,7 +9,7 @@ public class AstroFirstPersonControl : NetworkBehaviour
     GameObject body;
     public float movementSpeed = 5.0f;
     public float mouseSensitivity;
-    public float jumpSpeed = 20.0f;
+    public float jumpSpeed = 10.0f;
     public float upDownRange = 60.0f;
     private float rotLeftRight;
     float verticalRotation = 0;
@@ -101,14 +101,21 @@ public class AstroFirstPersonControl : NetworkBehaviour
 				float forwardSpeed = Input.GetAxis ("Vertical") * movementSpeed;
 				float sideSpeed = Input.GetAxis ("Horizontal") * movementSpeed;
 
-				if (characterController.isGrounded && Input.GetButton ("Jump")) {
-					verticalVelocity = jumpSpeed;
-				} else if (characterController.isGrounded) {
-					verticalVelocity = 0.0F;
-				}
+                if (characterController.isGrounded && Input.GetButton("Jump"))
+                {
+                    verticalVelocity = jumpSpeed;
+                }
+                else if (characterController.isGrounded)
+                {
+                    verticalVelocity = 0.0F;
+                }
+                else if (!characterController.isGrounded && characterController.velocity.y < 0.1f && characterController.velocity.y > -0.1f)
+                {
+                    verticalVelocity = 0.0F;
+                }
 
-				// If the player is in the air then accelerate the player toward the ground
-				if (!characterController.isGrounded) {
+                // If the player is in the air then accelerate the player toward the ground
+                if (!characterController.isGrounded) {
 					verticalVelocity += Physics.gravity.y * Time.deltaTime;
 				}
 
@@ -189,14 +196,18 @@ public class AstroFirstPersonControl : NetworkBehaviour
 
 	public void Die()
 	{
-		deathPosition =  new Vector3(this.transform.position.x, this.transform.position.y + 1.95f, this.transform.position.z);
+		deathPosition = new Vector3(this.transform.position.x, this.transform.position.y + 1.95f, this.transform.position.z);
+
 		geckAnimator.SetBool("Idle", true);
 		geckAnimator.SetBool("Walking", false);
 		geckAnimator.SetBool("Running", false);
+
 		StartCoroutine("wait");
+
 		this.GetComponentInChildren<RaycastGun> ().enabled = false;
 		this.GetComponentInChildren<RaycastGun> ().heat = 0;
 		this.GetComponentInChildren<PlayerHealth> ().health = 1;
+
 		alive = false;
 	}
 	
