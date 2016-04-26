@@ -22,6 +22,7 @@ public class SpawnAsteroid : MonoBehaviour {
         {
             timeSinceLastAsteroid = 0;
             GameObject spawnedAsteroid = (GameObject)Instantiate(asteroid, startPoint, new Quaternion(0, 0, 0, 0)); // spawn an asteroid at the designated start point with no rotation
+            spawnedAsteroid.GetComponent<AsteroidShit>().endPoint = new Vector3(Random.Range(0, 512), 0, Random.Range(0, 512)); // this is the point that the asteroid will move to
         }
 	}
 }

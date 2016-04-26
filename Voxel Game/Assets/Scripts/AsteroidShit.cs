@@ -8,7 +8,7 @@ public class AsteroidShit : MonoBehaviour
 
     float startTime = 0;
     Vector3 startPoint = new Vector3(0, 0, 0);
-    Vector3 endPoint = new Vector3(0, 0, 0);
+    public Vector3 endPoint = new Vector3(0, 0, 0);
     Vector3 deathRotationAxis;
     int cubeSize = 0;
 
@@ -23,9 +23,8 @@ public class AsteroidShit : MonoBehaviour
         }
         else
         {
-            endPoint = new Vector3(Random.Range(0, 512), 0, Random.Range(0, 512)); // this is the point that the asteroid will move to
-        }
 
+        }
         cubeSize = Random.Range(3, 6);
         this.transform.localScale = new Vector3(cubeSize, cubeSize, cubeSize);
 
