@@ -45,11 +45,15 @@ public class gameMenu : NetworkBehaviour {
 		mS = hSlider;
 		manager.GetComponent<GameManagerScript> ().mouseSensitivity = hSlider;
 
-		raw = PlayerPrefs.GetInt ("Raw Mouse", 0);
-		if (raw == 1)
+		raw = PlayerPrefs.GetInt ("Raw Mouse",0);
+
+		if (raw == 1) { 
 			manager.GetComponent<GameManagerScript> ().rawMouse = true;
-		else
+
+		}
+		else if (raw == 0)
 			manager.GetComponent<GameManagerScript> ().rawMouse = false;
+
 		vsync = PlayerPrefs.GetInt ("VSync", 0);
 		if (vsync == 1)
 			QualitySettings.vSyncCount = 1;

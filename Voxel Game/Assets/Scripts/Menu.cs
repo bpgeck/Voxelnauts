@@ -85,170 +85,26 @@ public class Menu : MonoBehaviour {
 		//Checks if the mouse is hovering over a button
 		switch (hover) {
 		case "CNT":
-		{
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "DIS":
-		{
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "OPT":
-		{
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "IQ":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "DQ":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "NOA":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "2A":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "4A":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "8A":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "TBON":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "TBOFF":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "AFON":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "AFOFF":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "60Hz":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "120Hz":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "1080p":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "720p":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "480p":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "VS0":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "VS1":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			lastToolTip = hover;
-			break;
-		}
 		case "RM0":
-		{
-			
-			//If hovering, play sound
-			overButton = true;
-			break;
-			lastToolTip = hover;
-		}
 		case "RM1":
 		{
 			
