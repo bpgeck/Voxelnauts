@@ -18,7 +18,7 @@ public class AsteroidShit : MonoBehaviour
         startPoint = this.transform.position;
         if (hitPlayer)
         {
-            endPoint = GameObject.Find("GeckstroNOT").transform.position;
+            endPoint = GameObject.Find("GeckstroNOTwithSound").transform.position;
             endPoint.y += 5;
         }
         else
