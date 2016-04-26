@@ -11,7 +11,7 @@ public class ItemProperties : MonoBehaviour {
         GameObject[] possibilities = GameObject.FindGameObjectsWithTag("Burgundy");
         for (int i = 0; i < possibilities.Length; i++)
         {
-            if (possibilities[i].name.Contains("Flag "))
+            if (possibilities[i].name.Contains("Flag") && !possibilities[i].name.Contains("Body"))
             {
                 if (possibilities[i].tag == this.tag)
                 {
@@ -28,7 +28,7 @@ public class ItemProperties : MonoBehaviour {
         possibilities = GameObject.FindGameObjectsWithTag("Cerulean");
         for (int i = 0; i < possibilities.Length; i++)
         {
-            if (possibilities[i].name.Contains("Flag "))
+            if (possibilities[i].name.Contains("Flag") && !possibilities[i].name.Contains("Body"))
             {
                 if (possibilities[i].tag == this.tag)
                 {
@@ -66,12 +66,12 @@ public class ItemProperties : MonoBehaviour {
                     friendlyAudio.BroadcastWeRecoveredOurFlag(); // if this flag is touched and caused to reappear, then the flag's own team touched it (friendly)
                     enemyAudio.BroadcastTheyRecoveredTheirFlag();
                 }
-				else if(teamState == 4)
+				else if(teamState == 4 && character.GetComponent<OldAstroFirstPersonControl>().timeDead == 0)
 				{
 					character.GetComponent<Inventory>().PickUp(flag_b);
 
                     enemyAudio.BroadcastWePickedUpTheirFlag(); // if this flag is touched and picked back up, then it was touched by the opposig team (enemy)
-                    friendlyAudio.BroadcastTheyPickedUpOurFlag();    
+                    friendlyAudio.BroadcastTheyPickedUpOurFlag();   
                 }
 			}
 			else if(this.ID == 3)
@@ -84,7 +84,7 @@ public class ItemProperties : MonoBehaviour {
                     friendlyAudio.BroadcastWeRecoveredOurFlag(); // if this flag is touched and caused to reappear, then the flag's own team touched it (friendly)
                     enemyAudio.BroadcastTheyRecoveredTheirFlag();
                 }
-				else if(teamState == 3)
+				else if(teamState == 3 && character.GetComponent<OldAstroFirstPersonControl>().timeDead == 0)
 				{
 					character.GetComponent<Inventory>().PickUp(flag_c);
 

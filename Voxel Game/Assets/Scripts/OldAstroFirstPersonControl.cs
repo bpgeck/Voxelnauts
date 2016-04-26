@@ -14,7 +14,7 @@ public class OldAstroFirstPersonControl : MonoBehaviour
     private float rotLeftRight;
     float verticalRotation = 0;
     float verticalVelocity = 0;
-    float timeDead = 0;
+    public float timeDead = 0;
     float timeStayDead = 5;
     public float spinSpeed = 0;
     Vector3 startPosition;
