@@ -53,7 +53,7 @@ public class RaycastGun : MonoBehaviour
 	{
 		if (canFire)
 		{
-			if(Input.GetButton("Fire1"))
+			if(Input.GetMouseButton(0))
 			{
 				firing = true;
 				if(Time.time > nextFire)
@@ -114,6 +114,7 @@ public class RaycastGun : MonoBehaviour
 			canFire = true;
 		}
 	}
+
 	void Launcher()
 	{
 		if (canFire)
