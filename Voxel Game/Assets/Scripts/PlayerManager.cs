@@ -7,6 +7,7 @@ public class PlayerManager : MonoBehaviour {
 
 	public GameObject[] playerPrefabs;
 	public NetworkManager nm;
+	public subPlayer sub = new subPlayer();
 
 	int[] teamSize = {0,0};
 	int nextPlayer = -1;
@@ -44,9 +45,12 @@ public class PlayerManager : MonoBehaviour {
 	public GameObject SpawnObject(Vector3 position, NetworkHash128 assetId) {
 		GameObject player = (GameObject)Instantiate (playerPrefabs[nextPlayer], spawnPts[nextPlayer].transform.position, spawnPts[nextPlayer].transform.rotation);
 		player.transform.Rotate (new Vector3 ((float)((nextPlayer-1)*180.0), 0.0f, 0.0f));
+		player.GetComponentInChildren<TextMesh> ().text = name;
 		teamSize[nextPlayer]++;
 		return player;
 	}
+
+
 
 	public void UnSpawnObject(GameObject spawned) {
 		int team;
