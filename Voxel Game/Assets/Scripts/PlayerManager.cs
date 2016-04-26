@@ -3,7 +3,7 @@ using UnityEngine.Networking;
 using System.Collections.Generic;
 using System.Collections;
 
-public class PlayerManager : NetworkBehaviour {
+public class PlayerManager : MonoBehaviour {
 
 	public GameObject[] playerPrefabs;
 	public NetworkManager nm;
@@ -17,15 +17,10 @@ public class PlayerManager : NetworkBehaviour {
 	public delegate void UnSpawnDelegate(GameObject spawned);
 	
 	void Start () {
-		if(playerPrefabs.GetLength (0) < 2) {
-			print("set player prefabs, one for each team");
-		}
-
+		assetIds = new NetworkHash128[2];
 		nm = FindObjectOfType<NetworkManager> ();
-
 		assetIds[0] = playerPrefabs[0].GetComponent<NetworkIdentity> ().assetId;
 		assetIds[1] = playerPrefabs[1].GetComponent<NetworkIdentity> ().assetId;
-		spawnPts = GameObject.FindObjectsOfType<NetworkStartPosition> ();
 		ClientScene.RegisterSpawnHandler (assetIds[0], SpawnObject, UnSpawnObject);
 	}
 
@@ -42,8 +37,8 @@ public class PlayerManager : NetworkBehaviour {
 		}
 	}
 
-	void OnSceneChange() {
-
+	void OnLevelWasLoaded(int level) {
+		spawnPts = GameObject.FindObjectsOfType<NetworkStartPosition> ();
 	}
 
 	public GameObject SpawnObject(Vector3 position, NetworkHash128 assetId) {
