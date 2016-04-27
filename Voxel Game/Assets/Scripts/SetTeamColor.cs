@@ -6,7 +6,7 @@ public class SetTeamColor : MonoBehaviour {
     Color color;
 
     // Use this for initialization
-    void Start()
+    public void SetColor ()
     {
         /* fill thingsToColor with all the gameobjects that need to be colored */
         if (this.gameObject.name.Contains("Flag"))
