@@ -55,7 +55,7 @@ public class GeckstroSoundControl : MonoBehaviour {
         downRay = new Ray(groundDetector.transform.position, -this.transform.up);
         Physics.Raycast(downRay, out whatWalkingOn); // cast one ray downward to see the surface below us
 
-        if (whatWalkingOn.distance < 2) // check to see if you are on the ground
+		if (whatWalkingOn.distance < 2) // check to see if you are on the ground
         {
             if (whatWalkingOn.collider.tag == "Chunk") // if you are walking on a chunk, play the dirt sounds (chunk is moon rock)
             {

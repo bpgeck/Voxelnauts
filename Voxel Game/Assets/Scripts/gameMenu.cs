@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 
-public class gameMenu : NetworkBehaviour {
-
+public class gameMenu : MonoBehaviour {
+	
 	private bool showMenu = false;
 	private bool showOptions = false;
 
@@ -12,7 +12,7 @@ public class gameMenu : NetworkBehaviour {
 
 	private GameObject[] cerulean;
 	private GameObject[] burgundy;
-	private GameObject nwManager;
+	public GameObject nwManager;
 	private GameObject player;
 
 	private int raw = 0;
@@ -21,94 +21,98 @@ public class gameMenu : NetworkBehaviour {
 	private float hSlider = 5.0f;
 	private string mouseSens = "Mouse Sensitivity";
 	private float mS;
-	
+	private bool start = false;
+
 	public int ResX;
 	public int ResY;
 	public bool Fullscreen;
 	public float shadowDrawDistance;
-	
 
 	private GameObject manager;
 	
 	void Start () {
-		cerulean = GameObject.FindGameObjectsWithTag ("Cerulean");
-		burgundy = GameObject.FindGameObjectsWithTag ("Burgundy");
+		DontDestroyOnLoad (this);
+	}
 
-		nwManager = GameObject.Find ("NetworkManager");
-		nwManager.GetComponent<NetworkManagerHUD> ().enabled = false;
-
-		manager = GameObject.FindGameObjectWithTag ("GameController");
-
-		//Options Menu Settings
-		showOptions = false;
-		hSlider = PlayerPrefs.GetFloat ("Mouse Sensitivity", 5.0f);
-		mS = hSlider;
-		manager.GetComponent<GameManagerScript> ().mouseSensitivity = hSlider;
-
-		raw = PlayerPrefs.GetInt ("Raw Mouse",0);
-
-		if (raw == 1) { 
-			manager.GetComponent<GameManagerScript> ().rawMouse = true;
-
-		}
-		else if (raw == 0)
-			manager.GetComponent<GameManagerScript> ().rawMouse = false;
-
-		vsync = PlayerPrefs.GetInt ("VSync", 0);
-		if (vsync == 1)
-			QualitySettings.vSyncCount = 1;
-		else
-			QualitySettings.vSyncCount = 0;
+	void OnLevelWasLoaded(int level) {
+		if (Application.loadedLevelName == "base_1_networked") {
+			start = true;
+			cerulean = GameObject.FindGameObjectsWithTag ("Cerulean");
+			burgundy = GameObject.FindGameObjectsWithTag ("Burgundy");
 		
-		//Gets all players in an ArrayList, looks for local player
-		foreach (GameObject e in cerulean) {
-			fpsController.Add (e);
-		}
-		foreach (GameObject e in burgundy){
-			fpsController.Add (e);
-		}
-		foreach (GameObject p in fpsController){
-			Debug.Log (p);
-			if (p.GetComponent<AstroFirstPersonControl>().isLocalPlayer == true)
-				player = p;
+			nwManager.GetComponent<NetworkManagerHUD> ().enabled = false;
+		
+			manager = GameObject.FindGameObjectWithTag ("GameController");
+		
+			//Options Menu Settings
+			showOptions = false;
+			hSlider = PlayerPrefs.GetFloat ("Mouse Sensitivity", 5.0f);
+			mS = hSlider;
+			manager.GetComponent<GameManagerScript> ().mouseSensitivity = hSlider;
+		
+			raw = PlayerPrefs.GetInt ("Raw Mouse", 0);
+		
+			if (raw == 1) { 
+				manager.GetComponent<GameManagerScript> ().rawMouse = true;
 			
+			} else if (raw == 0)
+				manager.GetComponent<GameManagerScript> ().rawMouse = false;
+		
+			vsync = PlayerPrefs.GetInt ("VSync", 0);
+			if (vsync == 1)
+				QualitySettings.vSyncCount = 1;
+			else
+				QualitySettings.vSyncCount = 0;
+		
+			//Gets all players in an ArrayList, looks for local player
+			foreach (GameObject e in cerulean) {
+				fpsController.Add (e);
+			}
+			foreach (GameObject e in burgundy) {
+				fpsController.Add (e);
+			}
+			foreach (GameObject p in fpsController) {
+				Debug.Log (p);
+				if (p.GetComponent<AstroFirstPersonControl> ().isLocalPlayer == true)
+					player = p;
+			
+			}
 		}
 	}
 
 	void Update () {
-		if (showOptions == true) {
-			if (mS != hSlider) {
-			PlayerPrefs.SetFloat ("Mouse Sensitivity", hSlider);
-			manager.GetComponent<GameManagerScript> ().mouseSensitivity = hSlider;//PlayerPrefs.GetFloat ("Mouse Sensitivity");
-			player.GetComponent<AstroFirstPersonControl> ().mouseSensitivity = hSlider;
-			mS = hSlider;
+		if (start) {
+			if (showOptions == true) {
+				if (mS != hSlider) {
+					PlayerPrefs.SetFloat ("Mouse Sensitivity", hSlider);
+					manager.GetComponent<GameManagerScript> ().mouseSensitivity = hSlider;//PlayerPrefs.GetFloat ("Mouse Sensitivity");
+					player.GetComponent<AstroFirstPersonControl> ().mouseSensitivity = hSlider;
+					mS = hSlider;
+				}
+			}
+
+			if (Input.GetButtonDown ("Escape")) {
+				Debug.Log ("Pressed Escape");
+				if (showMenu == false && showOptions == false) {
+					showMenu = true;
+					Cursor.visible = true;
+					//Freezes player movement
+					player.GetComponent<AstroFirstPersonControl> ().able = false;
+					Debug.Log ("Show Menu True");
+
+				} else if (showMenu == false && showOptions == true) {
+					showOptions = false;
+					showMenu = true;
+					Debug.Log ("Show Options");
+				} else {
+					showMenu = false;
+					Cursor.visible = false;
+					player.GetComponent<AstroFirstPersonControl> ().able = true;
+					Debug.Log ("Show Menu False");
+
+				}
 			}
 		}
-
-		if (Input.GetButtonDown ("Escape")) {
-			Debug.Log ("Pressed Escape");
-			if (showMenu == false && showOptions == false){
-				showMenu = true;
-				Cursor.visible = true;
-				//Freezes player movement
-				player.GetComponent<AstroFirstPersonControl>().able = false;
-				Debug.Log ("Show Menu True");
-
-			}
-			else if (showMenu == false && showOptions == true) {
-				showOptions = false;
-				showMenu = true;
-				Debug.Log ("Show Options");
-			}
-			else {
-				showMenu = false;
-				Cursor.visible = false;
-				player.GetComponent<AstroFirstPersonControl>().able = true;
-				Debug.Log ("Show Menu False");
-
-			}
-		}
-
 	}
 	
 	

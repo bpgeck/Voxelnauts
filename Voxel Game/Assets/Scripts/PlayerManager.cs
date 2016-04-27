@@ -7,7 +7,7 @@ public class PlayerManager : MonoBehaviour {
 
 	public GameObject playerPrefab;
 	public NetworkManager nm;
-	public subPlayer sub = new subPlayer();
+	//public subPlayer sub = new subPlayer();
 
 	int[] teamSize = {0,0};
 	int nextPlayer = -1;
@@ -25,11 +25,11 @@ public class PlayerManager : MonoBehaviour {
 
 	void Update() {
 		if (nm.numPlayers != teamSize[0] + teamSize[1]) {
-			if( teamSize[0] <= teamSize[1]) {
+			if( teamSize[0] <= teamSize[1])
 				nextPlayer = 0;
-			} else {
+			else
 				nextPlayer = 1;
-			}
+
 			print("Connected: " + nm.numPlayers);
 			print("Visible: " + teamSize[0] + teamSize[1]);
 			print("Team 0: " + teamSize[0] + ", Team 1: " + teamSize[1]);
@@ -41,15 +41,30 @@ public class PlayerManager : MonoBehaviour {
 	}
 
 	public GameObject SpawnObject(Vector3 position, NetworkHash128 assetId) {
-		GameObject player = (GameObject)Instantiate (playerPrefab, spawnPts[nextPlayer].transform.position, spawnPts[nextPlayer].transform.rotation);
-		player.transform.Rotate (new Vector3 ((float)((nextPlayer-1)*180.0), 0.0f, 0.0f));
-		player.GetComponentInChildren<TextMesh> ().text = name;
+
+		FlagAudioBroadcaster[] flags = FindObjectsOfType<FlagAudioBroadcaster> ();
+
 		if (nextPlayer == 1) {
-			player.tag = "Cerulean";
+			print ("setting player tag to cerulean");
+			playerPrefab.tag = "Cerulean";
 		} else {
-			player.tag = "Burgundy";
+			print ("setting player tag to burgundy");
+			playerPrefab.tag = "Burgundy";
 		}
+
+		GameObject player = (GameObject)Instantiate (playerPrefab, spawnPts [nextPlayer].transform.position, spawnPts [nextPlayer].transform.rotation);
+		player.transform.Rotate (new Vector3 ((float)((nextPlayer - 1) * 180.0), 0.0f, 0.0f));
+		player.GetComponentInChildren<TextMesh> ().text = GameObject.FindObjectOfType<GameManagerScript> ().name;
+
+
+
 		teamSize[nextPlayer]++;
+
+		if (flags [0].tag == player.tag)
+			flags [0].GetPlayersOnTeam ();
+		else
+			flags [1].GetPlayersOnTeam ();
+
 		return player;
 	}
 
