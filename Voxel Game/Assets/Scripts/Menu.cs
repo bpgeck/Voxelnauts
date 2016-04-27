@@ -139,7 +139,7 @@ public class Menu : MonoBehaviour {
 
 
 		if (GUI.Button (rectCNT, new GUIContent ("Connect", "CNT"))) {
-			// Application.LoadLevel(1);
+			 Application.LoadLevel(1);
 		}
 
 		if (GUI.Button (rectDIS, new GUIContent ("Disconnect", "DIS"))) {

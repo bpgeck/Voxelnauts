@@ -31,6 +31,7 @@ public class subPlayer : NetworkManager {
 	public override void OnClientConnect (NetworkConnection conn) {
 		base.OnClientConnect(conn);
 		//AddPlayer (PlayerPrefs.getString("Player Name"), playerControllerID:);
+		SpawnDelegate(Vector3.zero, new NetworkHash128);
 
 	}
 	

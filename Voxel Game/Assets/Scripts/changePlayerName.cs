@@ -62,14 +62,14 @@ public class changePlayerName : MonoBehaviour
         }
 
     void OnMouseDown(){
-		if (playerNameEditable == true) {
-			playerNameEditable = false;
-			Debug.Log ("Editable false");
-		}
-		else {
+	//	if (playerNameEditable == true) {
+	//		playerNameEditable = false;
+	//		Debug.Log ("Editable false");
+	//	}
+	//	else {
 			playerNameEditable = true;
 			Debug.Log ("Editable true");
-			}
+	//		}
 		}
 	}
 

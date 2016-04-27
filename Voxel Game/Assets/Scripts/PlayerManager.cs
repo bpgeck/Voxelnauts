@@ -5,24 +5,22 @@ using System.Collections;
 
 public class PlayerManager : MonoBehaviour {
 
-	public GameObject[] playerPrefabs;
+	public GameObject playerPrefab;
 	public NetworkManager nm;
 	public subPlayer sub = new subPlayer();
 
 	int[] teamSize = {0,0};
 	int nextPlayer = -1;
-	NetworkHash128[] assetIds;
+	NetworkHash128 assetId;
 	NetworkStartPosition[] spawnPts;
 
 	public delegate GameObject SpawnDelegate(Vector3 position, NetworkHash128 assetId);
 	public delegate void UnSpawnDelegate(GameObject spawned);
 	
 	void Start () {
-		assetIds = new NetworkHash128[2];
 		nm = FindObjectOfType<NetworkManager> ();
-		assetIds[0] = playerPrefabs[0].GetComponent<NetworkIdentity> ().assetId;
-		assetIds[1] = playerPrefabs[1].GetComponent<NetworkIdentity> ().assetId;
-		ClientScene.RegisterSpawnHandler (assetIds[0], SpawnObject, UnSpawnObject);
+		assetId = playerPrefab.GetComponent<NetworkIdentity> ().assetId;
+		ClientScene.RegisterSpawnHandler (assetId, SpawnObject, UnSpawnObject);
 	}
 
 	void Update() {
@@ -43,9 +41,14 @@ public class PlayerManager : MonoBehaviour {
 	}
 
 	public GameObject SpawnObject(Vector3 position, NetworkHash128 assetId) {
-		GameObject player = (GameObject)Instantiate (playerPrefabs[nextPlayer], spawnPts[nextPlayer].transform.position, spawnPts[nextPlayer].transform.rotation);
+		GameObject player = (GameObject)Instantiate (playerPrefab, spawnPts[nextPlayer].transform.position, spawnPts[nextPlayer].transform.rotation);
 		player.transform.Rotate (new Vector3 ((float)((nextPlayer-1)*180.0), 0.0f, 0.0f));
 		player.GetComponentInChildren<TextMesh> ().text = name;
+		if (nextPlayer == 1) {
+			player.tag = "Cerulean";
+		} else {
+			player.tag = "Burgundy";
+		}
 		teamSize[nextPlayer]++;
 		return player;
 	}
