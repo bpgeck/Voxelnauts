@@ -231,6 +231,6 @@ public class AstroFirstPersonControl : NetworkBehaviour
         eyes.transform.position = eyesStartPos;
         body.transform.position = bodyStartPos;
 
-        this.GetComponent<PlayerHealth>().health = 100;
+        this.GetComponent<PlayerHealth>().health = 1;
     }
 }
