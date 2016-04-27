@@ -89,7 +89,7 @@ public class Inventory : MonoBehaviour
         // remove 1 copy of the corresponding item from `inventory` List
         if (item.ID == 0)
 		{
-            Instantiate(Flag_B, this.GetComponent<OldAstroFirstPersonControl>().deathPosition, Quaternion.identity);
+            Instantiate(Flag_B, this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
             // Instantiate(Flag_B,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
 
             friendlyAudio.BroadcastWeDroppedTheirFlag(); // if the player dies while he is holding the flag, play this shit
@@ -97,7 +97,7 @@ public class Inventory : MonoBehaviour
         } 
 		else if (item.ID == 1) 
 		{
-            Instantiate(Flag_C, this.GetComponent<OldAstroFirstPersonControl>().deathPosition, Quaternion.identity);
+            Instantiate(Flag_C, this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
             // Instantiate(Flag_C,this.GetComponent<AstroFirstPersonControl>().deathPosition, Quaternion.identity);
 
             friendlyAudio.BroadcastWeDroppedTheirFlag(); // if the player dies while he is holding the flag, play this shit
