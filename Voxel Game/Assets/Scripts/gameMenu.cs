@@ -12,7 +12,7 @@ public class gameMenu : MonoBehaviour {
 
 	private GameObject[] cerulean;
 	private GameObject[] burgundy;
-	public GameObject nwManager;
+	private NetworkManager nwManager;
 	private GameObject player;
 
 	private int raw = 0;
@@ -31,52 +31,47 @@ public class gameMenu : MonoBehaviour {
 	private GameObject manager;
 	
 	void Start () {
-		DontDestroyOnLoad (this);
-	}
-
-	void OnLevelWasLoaded(int level) {
-		if (Application.loadedLevelName == "base_1_networked") {
-			start = true;
-			cerulean = GameObject.FindGameObjectsWithTag ("Cerulean");
-			burgundy = GameObject.FindGameObjectsWithTag ("Burgundy");
+		nwManager = GameObject.FindObjectOfType<NetworkManager> ();
+		start = true;
+		cerulean = GameObject.FindGameObjectsWithTag ("Cerulean");
+		burgundy = GameObject.FindGameObjectsWithTag ("Burgundy");
 		
-			GetComponent<NetworkManagerHUD> ().enabled = false;
+		nwManager.GetComponentInParent<NetworkManagerHUD> ().enabled = false;
 		
-			manager = GameObject.FindGameObjectWithTag ("GameController");
+		manager = GameObject.FindGameObjectWithTag ("GameController");
 		
-			//Options Menu Settings
-			showOptions = false;
-			hSlider = PlayerPrefs.GetFloat ("Mouse Sensitivity", 5.0f);
-			mS = hSlider;
-			manager.GetComponent<GameManagerScript> ().mouseSensitivity = hSlider;
+		//Options Menu Settings
+		showOptions = false;
+		hSlider = PlayerPrefs.GetFloat ("Mouse Sensitivity", 5.0f);
+		mS = hSlider;
+		manager.GetComponent<GameManagerScript> ().mouseSensitivity = hSlider;
 		
-			raw = PlayerPrefs.GetInt ("Raw Mouse", 0);
+		raw = PlayerPrefs.GetInt ("Raw Mouse", 0);
 		
-			if (raw == 1) { 
-				manager.GetComponent<GameManagerScript> ().rawMouse = true;
+		if (raw == 1) { 
+			manager.GetComponent<GameManagerScript> ().rawMouse = true;
 			
-			} else if (raw == 0)
-				manager.GetComponent<GameManagerScript> ().rawMouse = false;
+		} else if (raw == 0)
+			manager.GetComponent<GameManagerScript> ().rawMouse = false;
 		
-			vsync = PlayerPrefs.GetInt ("VSync", 0);
-			if (vsync == 1)
-				QualitySettings.vSyncCount = 1;
-			else
-				QualitySettings.vSyncCount = 0;
+		vsync = PlayerPrefs.GetInt ("VSync", 0);
+		if (vsync == 1)
+			QualitySettings.vSyncCount = 1;
+		else
+			QualitySettings.vSyncCount = 0;
 		
-			//Gets all players in an ArrayList, looks for local player
-			foreach (GameObject e in cerulean) {
-				fpsController.Add (e);
-			}
-			foreach (GameObject e in burgundy) {
-				fpsController.Add (e);
-			}
-			foreach (GameObject p in fpsController) {
-				Debug.Log (p);
-				if (p.GetComponent<AstroFirstPersonControl> ().isLocalPlayer == true)
-					player = p;
+		//Gets all players in an ArrayList, looks for local player
+		foreach (GameObject e in cerulean) {
+			fpsController.Add (e);
+		}
+		foreach (GameObject e in burgundy) {
+			fpsController.Add (e);
+		}
+		foreach (GameObject p in fpsController) {
+			Debug.Log (p);
+			if (p.GetComponent<AstroFirstPersonControl> ().isLocalPlayer == true)
+				player = p;
 			
-			}
 		}
 	}
 
