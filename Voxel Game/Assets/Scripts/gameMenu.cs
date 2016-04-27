@@ -40,7 +40,7 @@ public class gameMenu : MonoBehaviour {
 			cerulean = GameObject.FindGameObjectsWithTag ("Cerulean");
 			burgundy = GameObject.FindGameObjectsWithTag ("Burgundy");
 		
-			nwManager.GetComponent<NetworkManagerHUD> ().enabled = false;
+			GetComponent<NetworkManagerHUD> ().enabled = false;
 		
 			manager = GameObject.FindGameObjectWithTag ("GameController");
 		
