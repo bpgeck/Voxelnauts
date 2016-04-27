@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 
@@ -37,7 +37,7 @@ public class AstroFirstPersonControl : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        Cursor.visible = true; // temporarily set to true for testing
+        Cursor.visible = false; // temporarily set to true for testing
 
         eyes = this.transform.Find("Eyes").gameObject;
         body = this.transform.Find("geckstronautAnimatedWithGun").gameObject;
