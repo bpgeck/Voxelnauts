@@ -9,12 +9,7 @@ public class SetTeamColor : MonoBehaviour {
     public void SetColor ()
     {
         /* fill thingsToColor with all the gameobjects that need to be colored */
-        if (this.gameObject.name.Contains("Flag"))
-        {
-            thingsToColor.Add(this.transform.Find("Flag").gameObject.GetComponent<Renderer>().material);
-            thingsToColor.Add(this.transform.Find("Pole").gameObject.GetComponent<Renderer>().material);
-        }
-        else if (this.gameObject.name.Contains("Geck"))
+        if (this.gameObject.name.Contains("Geck"))
         {
             thingsToColor.Add(this.transform.Find("geckstronautAnimatedWithGun/SpaceAR:SpaceAR:Mesh").GetComponent<Renderer>().materials[0]);
             thingsToColor.Add(this.transform.Find("geckstronautAnimatedWithGun/geckstronaut:skinned_GEO_GRP/geckstronaut:headBodySkinned").GetComponent<Renderer>().materials[3]);
@@ -22,7 +17,7 @@ public class SetTeamColor : MonoBehaviour {
         }
         else
         {
-            Debug.Log("I don't regognize that name to color");
+            Debug.LogError("SetTeamColor is attached to " + this.gameObject.name + ", which is not a Geckstronaut");
             return;
         }
 
