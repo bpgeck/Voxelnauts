@@ -58,37 +58,38 @@ public class ItemProperties : MonoBehaviour {
 			GameObject flag_c = GameObject.Find ("Flag Cerulean");
 			if(this.ID == 2)
 			{
-				GameObject.Destroy(this.gameObject);
+                GameObject.Destroy(this.gameObject); // we touched a body flag so destroy it no matter what team I'm on
 				if(teamState == 1)
-				{
-					flag_b.GetComponent<FlagBehavior> ().Reappear ();
+                {
+                    flag_b.GetComponent<FlagBehavior> ().Reappear ();
 
                     friendlyAudio.BroadcastWeRecoveredOurFlag(); // if this flag is touched and caused to reappear, then the flag's own team touched it (friendly)
                     enemyAudio.BroadcastTheyRecoveredTheirFlag();
                 }
-				else if(teamState == 4 && character.GetComponent<OldAstroFirstPersonControl>().timeDead == 0)
+				else if(teamState == 4 && character.GetComponent<AstroFirstPersonControl>().alive == true)
 				{
-					character.GetComponent<Inventory>().PickUp(flag_b);
+                    character.GetComponent<AstroFirstPersonControl>().holdingFlag = true;
 
                     enemyAudio.BroadcastWePickedUpTheirFlag(); // if this flag is touched and picked back up, then it was touched by the opposig team (enemy)
-                    friendlyAudio.BroadcastTheyPickedUpOurFlag();   
+                    friendlyAudio.BroadcastTheyPickedUpOurFlag();
                 }
 			}
 			else if(this.ID == 3)
 			{
-				GameObject.Destroy(this.gameObject);
+                GameObject.Destroy(this.gameObject); // touched a body flag
 				if(teamState == 2)
 				{
-					flag_c.GetComponent<FlagBehavior> ().Reappear ();
+
+                    flag_c.GetComponent<FlagBehavior> ().Reappear ();
 
                     friendlyAudio.BroadcastWeRecoveredOurFlag(); // if this flag is touched and caused to reappear, then the flag's own team touched it (friendly)
                     enemyAudio.BroadcastTheyRecoveredTheirFlag();
                 }
-				else if(teamState == 3 && character.GetComponent<OldAstroFirstPersonControl>().timeDead == 0)
+				else if(teamState == 3 && character.GetComponent<AstroFirstPersonControl>().alive == true)
 				{
-					character.GetComponent<Inventory>().PickUp(flag_c);
+                    character.GetComponent<AstroFirstPersonControl>().holdingFlag = true;
 
-                    enemyAudio.BroadcastWePickedUpTheirFlag(); // if this flag is touched and picked back up, then it was touched by the opposig team (enemy)
+                    enemyAudio.BroadcastWePickedUpTheirFlag(); // if this flag is touched and picked back up, then it was touched by the opposing team (enemy)
                     friendlyAudio.BroadcastTheyPickedUpOurFlag();
                 }
 			}
@@ -97,47 +98,46 @@ public class ItemProperties : MonoBehaviour {
 				GameObject score = GameObject.Find("Scoreboard");
 				if (this.ID == 0)
 				{
-					if(teamState == 4)
-					{
-						character.GetComponent<Inventory>().PickUp(flag_b);
+                    if (teamState == 4)
+                    {
+                        character.GetComponent<AstroFirstPersonControl>().holdingFlag = true;
 						flag_b.GetComponent<FlagBehavior>().Disappear();
 
                         enemyAudio.BroadcastWeGotTheirFlag(); // if this flag is picked up, it has been taken by the enemy
                         friendlyAudio.BroadcastTheyGotOurFlag();
 					}
-					else if(teamState == 1 && character.GetComponent<Inventory>().IsInInventory(1))
+					else if(teamState == 1 && character.GetComponent<AstroFirstPersonControl>().holdingFlag == true)
 					{
-						Debug.Log("You get a point!"); //team burgundy
                         if (score != null)
                         {
                             score.GetComponent<Scoreboard>().score_b++;
                         }
 						flag_c.GetComponent<FlagBehavior>().Reappear();
-						character.GetComponent<Inventory>().inventory.Remove(character.GetComponent<Inventory>().find(1));
+                        character.GetComponent<AstroFirstPersonControl>().holdingFlag = false;
 
                         friendlyAudio.BroadcastWeCappedTheirFlag(); // if this flag touches the other team's flag, then we got a point
-                        enemyAudio.BroadcastTheyCappedOurFlag();
+                        enemyAudio.BroadcastTheyCappedOurFlag(); 
                     }
 				}
 				else if(this.ID == 1)
 				{
-					if(teamState == 3)
+                    if (teamState == 3)
 					{
-						character.GetComponent<Inventory>().PickUp(flag_c);
-						flag_c.GetComponent<FlagBehavior>().Disappear();
+
+                        character.GetComponent<AstroFirstPersonControl>().holdingFlag = true;
+                        flag_c.GetComponent<FlagBehavior>().Disappear();
 
                         enemyAudio.BroadcastWeGotTheirFlag(); // if this flag is picked up, it has been taken by the enemy
                         friendlyAudio.BroadcastTheyGotOurFlag();
                     }
-					else if(teamState == 2 && character.GetComponent<Inventory>().IsInInventory(0))
+					else if(teamState == 2 && character.GetComponent<AstroFirstPersonControl>().holdingFlag == true)
 					{
-						Debug.Log("You get a point!"); //team cerulean
                         if (score != null)
                         {
                             score.GetComponent<Scoreboard>().score_c++;
                         }
 						flag_b.GetComponent<FlagBehavior>().Reappear();
-						character.GetComponent<Inventory>().inventory.Remove(character.GetComponent<Inventory>().find(0));
+                        character.GetComponent<AstroFirstPersonControl>().holdingFlag = false;
 
                         friendlyAudio.BroadcastWeCappedTheirFlag(); // if this flag touches the other team's flag, then we got a point
                         enemyAudio.BroadcastTheyCappedOurFlag();
@@ -145,8 +145,10 @@ public class ItemProperties : MonoBehaviour {
 				}
 				else
 				{
-					// next, destroy this object
-					GameObject.Destroy(this.gameObject);
+                    Debug.Log("Destroying flag for some strange fucking reason");
+
+                    // next, destroy this object
+                    GameObject.Destroy(this.gameObject);
 				}
 			}
         }

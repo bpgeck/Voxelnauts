@@ -39,52 +39,54 @@ public class RaycastGun : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		GameObject eyes = GameObject.Find ("Eyes");
+		GameObject eyes = this.transform.parent.transform.parent.transform.parent.transform.Find ("Eyes").gameObject;
 		camera = eyes.GetComponent<Camera> ();
 	}
 	
 	// Update is called once per frame
 	void Update ()
-	{
-		Automatic ();
+    {
+        Automatic ();
 	}
 
 	void Automatic()
 	{
 		if (canFire)
 		{
-			if(Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0)) 
 			{
 				firing = true;
 				if(Time.time > nextFire)
 				{
 					heat += overheat;
 					nextFire = Time.time + fireRate;
-					fireTime += Time.deltaTime;
+                    fireTime += Time.deltaTime;
 					RaycastHit hit;
-					
-					Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2, 0f));
+
+                    Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0f));
 					
 					fireDirection = ray.direction;
 					
 					Quaternion fireRotation = Quaternion.LookRotation(fireDirection);
 					
 					Quaternion randomRotation = Random.rotation;
-					
-					float currentSpread = bulletSpreadCurve.Evaluate(fireTime/timeTillMaxSpreadAngle)*maxBulletSpreadAngle;
-					
-					//float currentSpread = Mathf.Lerp(0.0f, maxBulletSpreadAngle, fireTime/timeTillMaxSpreadAngle);
-					
-					fireRotation = Quaternion.RotateTowards(fireRotation,randomRotation,Random.Range(0.0f,currentSpread));
-					if(Physics.Raycast(transform.position,fireRotation*Vector3.forward,out hit,Mathf.Infinity,layerMask))
+
+                    float currentSpread = bulletSpreadCurve.Evaluate(fireTime / timeTillMaxSpreadAngle) * maxBulletSpreadAngle;
+
+                    fireRotation = Quaternion.RotateTowards(fireRotation, randomRotation, Random.Range(0.0f, currentSpread));
+                    if (Physics.Raycast(transform.position, fireRotation * Vector3.forward, out hit, Mathf.Infinity, layerMask)) 
 					{
 						GunHit gunHit = new GunHit();
 						gunHit.damage = damage;
 						gunHit.raycastHit = hit;
-						//hit.collider.SendMessage("Damage",gunHit,SendMessageOptions.DontRequireReceiver);
-						Instantiate(heatmark,gunHit.raycastHit.point,Quaternion.LookRotation(gunHit.raycastHit.normal));
+
+                        if (hit.collider.name.Contains("Geck"))
+                        {
+                            hit.collider.GetComponent<PhotonView>().RPC("Damage", PhotonTargets.All, gunHit.damage);
+                        }
+                        Instantiate(heatmark, gunHit.raycastHit.point, Quaternion.LookRotation(gunHit.raycastHit.normal));
 					}
-					Debug.DrawRay(this.transform.position, fireRotation*Vector3.forward*range, Color.red, 0f, false);
+                    Debug.DrawRay(this.transform.position, fireRotation * Vector3.forward * range, Color.red, 0f, false);
 				}
 			}
 			else

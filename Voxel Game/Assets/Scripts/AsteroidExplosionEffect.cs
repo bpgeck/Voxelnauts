@@ -22,10 +22,11 @@ public class AsteroidExplosionEffect : MonoBehaviour {
             parentCenter = parent.transform.position;
 
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube); // the actual cube itself
+            cube.transform.parent = parent.transform;
             cube.AddComponent<Rigidbody>(); // make the thing have gravity
             cube.GetComponent<Rigidbody>().drag = 1; // make the thing have gravity
             cube.transform.position = startPoint; // set the position
-            cube.transform.localScale = new Vector3(1, 1, 1); // make it small and particle
+            cube.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f); // make it 1x1x1
 
             deathTime = time + timeAlive; // the amount of time the piece is allowed to stay alive
         }

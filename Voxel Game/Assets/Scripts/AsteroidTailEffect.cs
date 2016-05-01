@@ -27,9 +27,10 @@ public class AsteroidTailEffect : MonoBehaviour {
             endPoint = parent.transform.position + worldOffset; // set the end point to be behind the object
 
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube); // the actual cube itself
+            cube.transform.parent = parent.gameObject.transform; // make the tail a child of the asteroid itself
             Destroy(cube.GetComponent<BoxCollider>());
             cube.transform.position = startPoint; // set the position
-            cube.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // make it small and particley
+            cube.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f); // make it small and particley
 
             lerpTime = time; // the time it takes for the particle to move toward the rear of the asteroid
             startTime = Time.time;

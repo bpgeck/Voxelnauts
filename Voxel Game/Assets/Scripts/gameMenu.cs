@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Networking;
 
 public class gameMenu : MonoBehaviour {
 	
@@ -12,7 +11,7 @@ public class gameMenu : MonoBehaviour {
 
 	private GameObject[] cerulean;
 	private GameObject[] burgundy;
-	private NetworkManager nwManager;
+	//private NetworkManager nwManager;
 	private GameObject player;
 
 	private int raw = 0;
@@ -31,12 +30,12 @@ public class gameMenu : MonoBehaviour {
 	private GameObject manager;
 	
 	void Start () {
-		nwManager = GameObject.FindObjectOfType<NetworkManager> ();
+		//nwManager = GameObject.FindObjectOfType<NetworkManager> ();
 		start = true;
 		cerulean = GameObject.FindGameObjectsWithTag ("Cerulean");
 		burgundy = GameObject.FindGameObjectsWithTag ("Burgundy");
 		
-		nwManager.GetComponentInParent<NetworkManagerHUD> ().enabled = false;
+		//nwManager.GetComponentInParent<NetworkManagerHUD> ().enabled = false;
 		
 		manager = GameObject.FindGameObjectWithTag ("GameController");
 		
@@ -69,8 +68,8 @@ public class gameMenu : MonoBehaviour {
 		}
 		foreach (GameObject p in fpsController) {
 			Debug.Log (p);
-			if (p.GetComponent<AstroFirstPersonControl> ().isLocalPlayer == true)
-				player = p;
+			//if (p.GetComponent<AstroFirstPersonControl> ().isLocalPlayer == true)
+			//	player = p;
 			
 		}
 	}
@@ -126,7 +125,7 @@ public class gameMenu : MonoBehaviour {
 		
 			if(GUI.Button(new Rect(Screen.width/2-80, Screen.height/2-55, 160, 20), "Disconnect")) {
 				//
-				Destroy(nwManager);
+				//Destroy(nwManager);
 				Debug.Log ("Disconnect");
 			}
 

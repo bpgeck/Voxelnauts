@@ -26,18 +26,18 @@ public class FlagAudioBroadcaster : MonoBehaviour
     
     void Start ()
     {
-        myTag = this.tag;
         GetPlayersOnTeam();
 	}
 
     public void GetPlayersOnTeam ()
     {
+        myTag = this.tag;
         playersOnTeam = GameObject.FindGameObjectsWithTag(myTag);
         headsets = new AudioSource[playersOnTeam.Length-1][];
 
         for (int i = 0, j = 0; i < playersOnTeam.Length; i++) // start at 1 to skip the flag itself
         {
-            if (playersOnTeam[i].name.Contains("Flag"))
+            if (!playersOnTeam[i].name.Contains("Geck"))
                 continue;
 
             headsets[j] = playersOnTeam[i].transform.Find("Headset").GetComponents<AudioSource>();

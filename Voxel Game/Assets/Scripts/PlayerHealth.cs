@@ -18,8 +18,10 @@ public class PlayerHealth : MonoBehaviour
 		}
 	}
 
-	void Damage(GunHit gunHit)
+    [PunRPC]
+	void Damage(float damage)
 	{
-		health -= gunHit.damage;
+        if (this.gameObject.GetComponent<AstroFirstPersonControl>().alive)
+    		health -= damage;
 	}
 }

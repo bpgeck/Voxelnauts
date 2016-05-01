@@ -4,7 +4,6 @@ using System.Collections;
 
 public class Scoreboard : MonoBehaviour 
 {
-	
 	public int score_b;
 	public int score_c;
 	Text text; //Reference to the score text gui
@@ -24,6 +23,5 @@ public class Scoreboard : MonoBehaviour
 	void Update () 
 	{
 		text.text = "| Burgundy: " + score_b + " || " +"Cerulean: " + score_c+ " |"; // How the text gui be set
-		
 	}
 }

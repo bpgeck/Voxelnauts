@@ -21,13 +21,13 @@ public class GUI_Flag : MonoBehaviour
 
 	void Update () 
 	{
-		if (character.GetComponent<Inventory> ().IsInInventory (0)) 
+		if (character.GetComponent<AstroFirstPersonControl> ().holdingFlag == true && character.tag == "Cerulean") 
 		{
 			flag.enabled = true;
 			flag.color = burgundy;
 		} 
-		else if (character.GetComponent<Inventory> ().IsInInventory (1)) 
-		{
+		else if (character.GetComponent<AstroFirstPersonControl>().holdingFlag == true && character.tag == "Burgundy") 
+        {
 			flag.enabled = true;
 			flag.color = cerulean;
 		} 
