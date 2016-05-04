@@ -1,5 +1,9 @@
 # voxel-game
-Teams build voxel fortresses only to have them destroyed by their enemies. A fun voxel-based take on capture the flag.
+Conquer your enemies and even the laws of pyiscs themselves as you dodge asteroid and the lasers of your opponents in the fun voxel-based take on capture the flag. Made by the UC Merced Game Development Club members:
 
-The "master" branch should ALWAYS WORK, so don't commmit anything that's broken or incomplete.
-Any broken or incomplete stuff should be committed into the "development" branch.
+Brendan Geck (bpgeck)
+Joseph Kotlarek (jkotlarek)
+Brazen Abelgas (xzygon)
+Brandon Baldomero (bbaldomero)
+Marylou Robles (mrobles7)
+and Fisher Dietz (fisherpie)
