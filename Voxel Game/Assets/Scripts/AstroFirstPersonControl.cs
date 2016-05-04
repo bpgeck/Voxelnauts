@@ -268,11 +268,12 @@ public class AstroFirstPersonControl : MonoBehaviour
 		geckAnimator.SetBool("Walking", false);
 		geckAnimator.SetBool("Running", false);
 
-		this.GetComponentInChildren<RaycastGun> ().enabled = false;
-		this.GetComponentInChildren<RaycastGun> ().heat = 0;
-		this.GetComponentInChildren<PlayerHealth> ().health = 1;
+        this.GetComponentInChildren<RaycastGun>().enabled = false;
+        this.GetComponentInChildren<RaycastGun>().heat = 0;
+        this.GetComponentInChildren<PlayerHealth>().health = 1;
 
 		alive = false;
+        holdingFlag = false;
 	}
 
     public void Respawn()
@@ -281,7 +282,7 @@ public class AstroFirstPersonControl : MonoBehaviour
 
         spinSpeed = 0;
 
-		this.GetComponentInChildren<RaycastGun> ().enabled = true;
+        this.GetComponentInChildren<RaycastGun>().enabled = true;
 
         this.transform.rotation = startRot;
         eyes.transform.rotation = eyesStartRot;
@@ -292,5 +293,6 @@ public class AstroFirstPersonControl : MonoBehaviour
         body.transform.position = bodyStartPos;
 
         this.GetComponent<PlayerHealth>().health = 1;
+        holdingFlag = false;
     }
 }
